@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">График смени</string>
+    <string name="tab_text_1">Общи</string>
+    <string name="tab_text_2">Смени</string>
+    <string name="tab_text_3">Недели</string>
+    <string name="tab_text_4">Извънредни</string>
+    <string name="tab_text_5">Профил</string>
+    <string name="tab_text_6">АДМИН</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="hours">Часове</string>
+    <string name="days">Дни</string>
+    <string name="username">Потребител</string>
+
+    <!-- Login form  -->
+    <string name="register">Регистрация</string>
+    <string name="labelFName">Име</string>
+    <string name="labelSName">Презиме</string>
+</resources>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "167351221780",
+    "firebase_url": "https://system-d9193.firebaseio.com",
+    "project_id": "system-d9193",
+    "storage_bucket": "system-d9193.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:167351221780:android:76a7ef333351bea8a53101",
+        "android_client_info": {
+          "package_name": "com.brannik.system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "167351221780-gpgb4ebhfnb7qljso05vftm5okpohfp4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkRIFGyw1Bex0rCiQUBNpi5ze-wY1sJDI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "167351221780-gpgb4ebhfnb7qljso05vftm5okpohfp4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
