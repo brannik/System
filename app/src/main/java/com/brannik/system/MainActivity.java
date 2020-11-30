@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
+import android.text.format.Formatter;
 
 import com.google.android.material.tabs.TabLayout;
 
@@ -20,13 +23,23 @@ import com.brannik.system.ui.main.SectionsPagerAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 
 import java.net.SocketException;
+import java.net.URL;
 import java.util.Enumeration;
 import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
 
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
@@ -34,14 +47,14 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class MainActivity extends AppCompatActivity {
     public static Context appContext;
     public static Context getAppContext(){return appContext;}
-    public static boolean userExs;
+    public static boolean userExs=true;
     public static void setUserExs(boolean st){userExs = st;}
     public static boolean getUserExs(){return userExs;}
     public static String devId;
     public static String getDevId(){return devId;}
     public static Intent i;
 
-    public static int userRank;
+    public static int userRank=2;
     public static void setUserRank(int i){userRank = i;}
     public static int getUserRank(){return userRank;}
 
@@ -56,7 +69,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         devId = getUniquePsuedoID();
-        new socketThread().start();
+
+        //"149.62.204.110";
         String ip = getLocalIpAddress();
         // to do unique , request login with ip and devId and if acc exsist -> display tabs else display register page
         JSONObject json = new JSONObject();
@@ -68,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         new BackgroundTask().execute(json.toString());
-
+        new socketThread().start();
         wait(1000);
 
         if(getUserExs()){
@@ -162,4 +176,6 @@ public class MainActivity extends AppCompatActivity {
             Thread.currentThread().interrupt();
         }
     }
+
+
 }

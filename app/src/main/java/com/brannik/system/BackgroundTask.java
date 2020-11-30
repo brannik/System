@@ -11,7 +11,7 @@ public class BackgroundTask extends AsyncTask<String,Void,Void> {
     protected Void doInBackground(String... voids) {
         try {
             String message = voids[0];
-            s = new Socket("http://app-api.servehttp.com",6000);
+            s = new Socket("app-api.servehttp.com",6000);
             writer = new PrintWriter(s.getOutputStream());
             writer.write(message.replace(" ","_"));
             writer.flush();
