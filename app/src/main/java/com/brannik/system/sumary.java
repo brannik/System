@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,10 +26,16 @@ public class sumary extends Fragment implements View.OnClickListener {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_PARAM3 = "param3";
+    private static final String ARG_PARAM4 = "param4";
 
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private String mParam3;
+    private String mParam4;
+
+    Globals GLOBE = new Globals(MainActivity.getAppContext());
 
     public sumary() {
         // Required empty public constructor
@@ -45,11 +50,13 @@ public class sumary extends Fragment implements View.OnClickListener {
      * @return A new instance of fragment sumary.
      */
     // TODO: Rename and change types and number of parameters
-    public static sumary newInstance(String param1, String param2) {
+    public static sumary newInstance(String param1, String param2,String param3,String param4) {
         sumary fragment = new sumary();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM3, param3);
+        args.putString(ARG_PARAM4, param4);
         fragment.setArguments(args);
         return fragment;
     }
@@ -57,31 +64,24 @@ public class sumary extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam3 = getArguments().getString(ARG_PARAM3);
+            mParam4 = getArguments().getString(ARG_PARAM4);
         }
 
     }
     public void send_data(View v){
-        String message = el.getText().toString();
-        JSONObject json = new JSONObject();
-        try {
-            json.put("REQUEST_TYPE","MESSAGE");
-            json.put("REQUEST_CONTENT",message);
-            json.put("SENDER",mParam1);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
-
-        new BackgroundTask().execute(json.toString());
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View inf = inflater.inflate(R.layout.fragment_sumary, container, false);
         TextView tv = (TextView) inf.findViewById(R.id.txtHours);
         tv.setText("10");
@@ -89,17 +89,18 @@ public class sumary extends Fragment implements View.OnClickListener {
         TextView tv2 = (TextView) inf.findViewById(R.id.txtDays);
         tv2.setText("3");
 
-        TextView tv3 = (TextView) inf.findViewById(R.id.txtUsername);
+        TextView tv3 = (TextView) inf.findViewById(R.id.txtDev);
         tv3.setText(mParam1);
 
-        el = (TextView) inf.findViewById(R.id.textView1);
-        btn = (Button) inf.findViewById(R.id.button);
-        btn.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                send_data(v);
-                el.setText("");
-            }
-        });
+        TextView tv4 = (TextView) inf.findViewById(R.id.txtUsername);
+        tv4.setText(GLOBE.getUsername());
+
+        TextView tv5 = (TextView) inf.findViewById(R.id.txtNames);
+        tv5.setText(GLOBE.getNames());
+
+        TextView tv6 = (TextView) inf.findViewById(R.id.txtRank);
+        String txt = String.valueOf(GLOBE.userRank());
+        tv6.setText(txt);
         return inf;
     }
 

@@ -2,7 +2,6 @@ package com.brannik.system;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,12 +19,13 @@ public class Register extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
+
         btnRegister = (Button) findViewById(R.id.btnRegister);
         fName = (EditText) findViewById(R.id.txtFName);
         sName = (EditText) findViewById(R.id.txtSName);
         btnRegister.setOnClickListener(listener);
         txtDevId = (TextView) findViewById(R.id.txtDevId);
-        txtDevId.setText(MainActivity.getDevId());
+        txtDevId.setText(Globals.getDevId());
     }
 
     @Override
@@ -50,7 +50,7 @@ public class Register extends AppCompatActivity {
     };
 
     private void registerUser(String name){
-        Log.d("DEBUG","ID -> " + MainActivity.getDevId() + " NAME -> " + name);
+        Log.d("DEBUG","ID -> " + Globals.getDevId() + " NAME -> " + name);
         android.os.Process.killProcess(android.os.Process.myPid());
     }
 

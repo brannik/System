@@ -26,6 +26,6 @@ public class reciever extends Service {
     public void onCreate() {
         super.onCreate();
         //Log.d("DEBUG","SERVICE start");
-
+        //new LoginRequest().execute();
     }
 }

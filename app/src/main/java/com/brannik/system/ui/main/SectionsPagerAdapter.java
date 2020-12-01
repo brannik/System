@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
+import com.brannik.system.Globals;
 import com.brannik.system.MainActivity;
 import com.brannik.system.R;
 import com.brannik.system.admin;
@@ -23,7 +24,7 @@ import com.brannik.system.sundays;
  * one of the sections/tabs/pages.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
+    Globals GLOBE = new Globals(MainActivity.getAppContext());
     @StringRes
     private static final int[] TAB_TITLES = new int[]{
             R.string.tab_text_1,
@@ -51,22 +52,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment=null;
         switch(position){
             case 0:
-                fragment = sumary.newInstance(MainActivity.devId,"sumary");
+                fragment = sumary.newInstance(GLOBE.getDevId(),"username","names","rank");
                 break;
             case 1:
-                fragment = shifts.newInstance(MainActivity.devId,"shifts");
+                fragment = shifts.newInstance(GLOBE.getDevId(),"shifts");
                 break;
             case 2:
-                fragment = sundays.newInstance(MainActivity.devId,"sundays");
+                fragment = sundays.newInstance(GLOBE.getDevId(),"sundays");
                 break;
             case 3:
-                fragment = extra.newInstance(MainActivity.devId,"extra");
+                fragment = extra.newInstance(GLOBE.getDevId(),"extra");
                 break;
             case 5:
-                fragment = admin.newInstance(MainActivity.devId,"admin");
+                fragment = admin.newInstance(GLOBE.getDevId(),"admin");
                 break;
             case 4:
-                fragment = myAccount.newInstance(MainActivity.devId,"ACC");
+                fragment = myAccount.newInstance(GLOBE.getDevId(),"ACC");
                 break;
         }
         return fragment;
@@ -81,10 +82,10 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if(MainActivity.getUserRank() > 1){
-            return 6;
-        }else{
+        if(GLOBE.userRank() > 2){
             return 5;
+        }else{
+            return 6;
         }
 
     }
