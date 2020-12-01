@@ -17,4 +17,5 @@
     <string name="register">Регистрация</string>
     <string name="labelFName">Име</string>
     <string name="labelSName">Презиме</string>
+    <string name="labelUName">Портебител</string>
 </resources>

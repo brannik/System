@@ -63,11 +63,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             case 3:
                 fragment = extra.newInstance(GLOBE.getDevId(),"extra");
                 break;
-            case 5:
-                fragment = admin.newInstance(GLOBE.getDevId(),"admin");
-                break;
             case 4:
                 fragment = myAccount.newInstance(GLOBE.getDevId(),"ACC");
+                break;
+            case 5:
+                fragment = admin.newInstance(GLOBE.getDevId(),"admin");
                 break;
         }
         return fragment;
@@ -82,7 +82,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if(GLOBE.userRank() > 2){
+        if(GLOBE.userRank() < 2){
             return 5;
         }else{
             return 6;

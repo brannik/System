@@ -14,6 +14,19 @@ public class Register extends AppCompatActivity {
     EditText fName;
     EditText sName;
     TextView txtDevId;
+    EditText usrName;
+    private  static String f_name;
+    private static String s_name;
+    private static String user_name;
+    public static String getFName(){
+        return f_name;
+    }
+    public static String getSName(){
+        return s_name;
+    }
+    public static String getUserName(){
+        return user_name;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +39,7 @@ public class Register extends AppCompatActivity {
         btnRegister.setOnClickListener(listener);
         txtDevId = (TextView) findViewById(R.id.txtDevId);
         txtDevId.setText(Globals.getDevId());
+        usrName = (EditText) findViewById(R.id.txtEditUsrName);
     }
 
     @Override
@@ -39,19 +53,15 @@ public class Register extends AppCompatActivity {
         public void onClick(View v) {
             switch(v.getId()){
                 case R.id.btnRegister:
-                    String name = fName.getText().toString();
-                    name += " ";
-                    name += sName.getText().toString();
-                    Log.d("DEBUG","BUTTON REGISTER PRESSED");
-                    registerUser(name);
+                    new RegisterRequest().execute();
+
+                    f_name = fName.getText().toString();
+                    s_name = sName.getText().toString();
+                    user_name = usrName.getText().toString();
                     break;
             }
         }
     };
 
-    private void registerUser(String name){
-        Log.d("DEBUG","ID -> " + Globals.getDevId() + " NAME -> " + name);
-        android.os.Process.killProcess(android.os.Process.myPid());
-    }
 
 }

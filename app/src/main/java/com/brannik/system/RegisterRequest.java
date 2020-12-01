@@ -15,7 +15,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @SuppressWarnings("ALL")
-public class LoginRequest extends AsyncTask<String,String,String> {
+public class RegisterRequest extends AsyncTask<String,String,String> {
     HttpURLConnection conn;
     URL url = null;
 
@@ -26,7 +26,10 @@ public class LoginRequest extends AsyncTask<String,String,String> {
         try {
             // Enter URL address where your php file resides
             String id = Globals.getDevId();
-            url = new URL(GLOBE.URL + "?request=login&dev_id=" + id);
+            String f_name=Register.getFName();
+            String s_name=Register.getSName();
+            String username = Register.getUserName();
+            url = new URL(GLOBE.URL + "?request=register&dev_id=" + id + "&f_name=" + f_name + "&s_name=" + s_name + "&username=" + username);
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
@@ -69,28 +72,13 @@ public class LoginRequest extends AsyncTask<String,String,String> {
 
                 try {
                     JSONObject reader2 = new JSONObject(String.valueOf(result));
-                    String action  = reader2.getString("action");
-
-                    if(action.equals("login")){
-                        String username,fname,sname;
-                        int rank,userId,notiMsg,notiRequest,active;
-
-                        JSONObject sys  = reader2.getJSONObject("account");
-                        username = sys.getString("username");
-                        fname = sys.getString("name");
-                        sname = sys.getString("sur_name");
-
-                        rank = sys.getInt("rank");
-                        userId = sys.getInt("user_id");
-                        notiMsg = sys.getInt("noti_msg");
-                        notiRequest = sys.getInt("noti_req");
-                        active = sys.getInt("active");
-                        GLOBE.setUserExs(1);
-                        GLOBE.setCredintials(userId,username,fname,sname,rank,notiMsg,notiRequest,active);
-
+                    String action  = reader2.getString("result");
+                    if(action.equals("ok")){
+                        Toast.makeText(MainActivity.getAppContext(), "Успешно регистриран потребител", Toast.LENGTH_LONG).show();
+                        android.os.Process.killProcess(android.os.Process.myPid());
                     }else{
-                        GLOBE.setUserExs(0);
-
+                        // register error -> display error in textArea
+                        Toast.makeText(MainActivity.getAppContext(), result.toString(), Toast.LENGTH_LONG).show();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -116,20 +104,6 @@ public class LoginRequest extends AsyncTask<String,String,String> {
     // this method will interact with UI, display result sent from doInBackground method
     @Override
     protected void onPostExecute(String result) {
-        JSONObject reader3 = null;
-        try {
-            reader3 = new JSONObject(String.valueOf(result));
-            String action  = reader3.getString("action");
-            if(action.equals("login")){
-                Toast.makeText(MainActivity.getAppContext(), "Успешно вписване в системата", Toast.LENGTH_LONG).show();
-            }else{
-                Toast.makeText(MainActivity.getAppContext(), "Това устройство не е регистрирано в системата!!!", Toast.LENGTH_LONG).show();
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-
 
     }
 

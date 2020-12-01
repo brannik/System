@@ -2,7 +2,6 @@ package com.brannik.system;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +17,7 @@ public class Globals extends AppCompatActivity {
 
     }
 
+    public static String URL = "http://192.168.0.101/api.php";
 
     // getters
     public static String getDevId(){
