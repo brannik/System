@@ -99,8 +99,8 @@ public class sumary extends Fragment implements View.OnClickListener {
         tv5.setText(GLOBE.getNames());
 
         TextView tv6 = (TextView) inf.findViewById(R.id.txtRank);
-        String txt = String.valueOf(GLOBE.userRank());
-        tv6.setText(txt);
+        int index = GLOBE.userRank();
+        tv6.setText(GLOBE.getankByIndex(index));
         return inf;
     }
 

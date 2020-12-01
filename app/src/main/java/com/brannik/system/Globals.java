@@ -11,13 +11,17 @@ public class Globals extends AppCompatActivity {
 
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
+    public static String URL = "http://192.168.0.101/api.php";
+    public static String[] RANKS;
 
     public Globals(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
-
+        RANKS = new String[3];
+        RANKS[0] = "Гост";
+        RANKS[1] = "Потребител";
+        RANKS[2] = "Администратор";
     }
 
-    public static String URL = "http://192.168.0.101/api.php";
 
     // getters
     public static String getDevId(){
@@ -39,7 +43,9 @@ public class Globals extends AppCompatActivity {
         temp += sharedPreferences.getString("s_name","");
         return temp;
     }
-
+    public String getankByIndex(int i){
+        return RANKS[i];
+    }
     // setters
     public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active){
         editor = sharedPreferences.edit();
