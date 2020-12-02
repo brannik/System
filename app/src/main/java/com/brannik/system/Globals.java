@@ -36,6 +36,9 @@ public class Globals extends AppCompatActivity {
     public String getUsername(){
         return sharedPreferences.getString("username","");
     }
+    public int getAccId(){
+        return sharedPreferences.getInt("acc_id",0);
+    }
     public String getNames(){
         String temp="";
         temp += sharedPreferences.getString("f_name","");

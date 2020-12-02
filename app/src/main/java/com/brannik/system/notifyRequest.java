@@ -38,8 +38,8 @@ public class notifyRequest extends AsyncTask<String,String,String> {
     protected String doInBackground(String... strings) {
         try {
             // Enter URL address where your php file resides
-            String id = Globals.getDevId();
-            url = new URL(GLOBE.URL + "?request=notify&dev_id=" + id );
+            int id = GLOBE.getAccId();
+            url = new URL(GLOBE.URL + "?request=notify&acc_id=" + id );
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block

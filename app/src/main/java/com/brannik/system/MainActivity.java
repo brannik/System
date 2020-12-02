@@ -53,8 +53,6 @@ public class MainActivity extends AppCompatActivity {
             Log.d("DEBUG","check error");
         }
 
-
-
     }
 
     @Override

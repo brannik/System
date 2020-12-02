@@ -15,6 +15,8 @@ public class Register extends AppCompatActivity {
     EditText sName;
     TextView txtDevId;
     EditText usrName;
+    public static TextView errors;
+
     private  static String f_name;
     private static String s_name;
     private static String user_name;
@@ -40,6 +42,7 @@ public class Register extends AppCompatActivity {
         txtDevId = (TextView) findViewById(R.id.txtDevId);
         txtDevId.setText(Globals.getDevId());
         usrName = (EditText) findViewById(R.id.txtEditUsrName);
+        errors = (TextView) findViewById(R.id.errors_text);
     }
 
     @Override
@@ -47,6 +50,9 @@ public class Register extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
+    public static void send_error(String text){
+        errors.setText(text);
+    }
 
     private View.OnClickListener listener = new View.OnClickListener() {
         @Override

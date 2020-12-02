@@ -1,5 +1,7 @@
 package com.brannik.system;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -14,12 +16,13 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-@SuppressWarnings("ALL")
 public class RegisterRequest extends AsyncTask<String,String,String> {
     HttpURLConnection conn;
     URL url = null;
-
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+    @SuppressLint("StaticFieldLeak")
+    Context context = MainActivity.getAppContext();
+    @SuppressLint("StaticFieldLeak")
+    Globals GLOBE = new Globals(context);
 
     @Override
     protected String doInBackground(String... strings) {
@@ -74,11 +77,14 @@ public class RegisterRequest extends AsyncTask<String,String,String> {
                     JSONObject reader2 = new JSONObject(String.valueOf(result));
                     String action  = reader2.getString("result");
                     if(action.equals("ok")){
-                        Toast.makeText(MainActivity.getAppContext(), "Успешно регистриран потребител", Toast.LENGTH_LONG).show();
+                        Register.send_error("Успешно регистриран потребител");
                         android.os.Process.killProcess(android.os.Process.myPid());
+                    }else if(action.equals("error")) {
+                        Register.send_error("Не са позволени празни полета!!!");
+                        //android.os.Process.killProcess(android.os.Process.myPid());
                     }else{
                         // register error -> display error in textArea
-                        Toast.makeText(MainActivity.getAppContext(), result.toString(), Toast.LENGTH_LONG).show();
+                        Register.send_error(result.toString());
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
