@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
@@ -26,11 +27,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 @SuppressWarnings("ALL")
-public class notifyRequest extends AsyncTask<String,String,String> {
+public class UpdateApp extends AsyncTask<String,String,String> {
     HttpURLConnection conn;
     URL url = null;
     Context appContext = MainActivity.getAppContext();
-    Intent notificationIntent = new Intent(appContext, MainActivity.class);
 
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
@@ -39,7 +39,7 @@ public class notifyRequest extends AsyncTask<String,String,String> {
         try {
             // Enter URL address where your php file resides
             int id = GLOBE.getAccId();
-            url = new URL(GLOBE.URL + "?request=notify&acc_id=" + id );
+            url = new URL(GLOBE.URL + "?request=update");
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
@@ -82,11 +82,12 @@ public class notifyRequest extends AsyncTask<String,String,String> {
 
                 try {
                     JSONObject reader2 = new JSONObject(String.valueOf(result));
-                    int action  = reader2.getInt("count");
-                    if(action > 0){
-                        String title = "График на смените";
-                        String text = "Имате " + action + " нови известия.";
-                        showNotification(appContext,title,text,notificationIntent);
+                    int action  = reader2.getInt("last_version");
+                    int appVersion = GLOBE.getCurrVersion();
+                    if(action != appVersion){
+                        GLOBE.setNeedUpdate(1);
+                    }else{
+                        GLOBE.setNeedUpdate(0);
                     }
 
                 } catch (JSONException e) {
@@ -114,39 +115,6 @@ public class notifyRequest extends AsyncTask<String,String,String> {
     @Override
     protected void onPostExecute(String result) {
 
-    }
-
-    public void showNotification(Context context, String title, String body, Intent intent) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-        int notificationId = 1;
-        String channelId = "channel-01";
-        String channelName = "Channel Name";
-        int importance = NotificationManager.IMPORTANCE_HIGH;
-
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            NotificationChannel mChannel = new NotificationChannel(
-                    channelId, channelName, importance);
-            notificationManager.createNotificationChannel(mChannel);
-        }
-
-
-        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(title)
-                .setContentText(body)
-                .setSound(uri);
-
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(
-                0,
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
-        mBuilder.setContentIntent(resultPendingIntent);
-
-        notificationManager.notify(notificationId, mBuilder.build());
     }
 
 }

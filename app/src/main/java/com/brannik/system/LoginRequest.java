@@ -73,7 +73,7 @@ public class LoginRequest extends AsyncTask<String,String,String> {
 
                     if(action.equals("login")){
                         String username,fname,sname;
-                        int rank,userId,notiMsg,notiRequest,active;
+                        int rank,userId,notiMsg,notiRequest,active,sklad;
 
                         JSONObject sys  = reader2.getJSONObject("account");
                         username = sys.getString("username");
@@ -85,8 +85,10 @@ public class LoginRequest extends AsyncTask<String,String,String> {
                         notiMsg = sys.getInt("noti_msg");
                         notiRequest = sys.getInt("noti_req");
                         active = sys.getInt("active");
+                        sklad = sys.getInt("sklad");
+
                         GLOBE.setUserExs(1);
-                        GLOBE.setCredintials(userId,username,fname,sname,rank,notiMsg,notiRequest,active);
+                        GLOBE.setCredintials(userId,username,fname,sname,rank,notiMsg,notiRequest,active,sklad);
 
                     }else{
                         GLOBE.setUserExs(0);

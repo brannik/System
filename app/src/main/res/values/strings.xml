@@ -12,6 +12,7 @@
     <string name="hours">Часове</string>
     <string name="days">Дни</string>
     <string name="username">Потребител</string>
+    <string name="btnUpdate">Инсталирай нова версия</string>
 
     <!-- Login form  -->
     <string name="register">Регистрация</string>

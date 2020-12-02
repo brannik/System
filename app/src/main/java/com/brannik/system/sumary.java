@@ -1,16 +1,31 @@
 package com.brannik.system;
 
+import android.Manifest;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
 import org.w3c.dom.Text;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,7 +35,6 @@ import org.w3c.dom.Text;
 public class sumary extends Fragment implements View.OnClickListener {
     TextView el;
     Button btn;
-
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,29 +97,56 @@ public class sumary extends Fragment implements View.OnClickListener {
         // Inflate the layout for this fragment
 
         View inf = inflater.inflate(R.layout.fragment_sumary, container, false);
-        TextView tv = (TextView) inf.findViewById(R.id.txtHours);
-        tv.setText("10");
+        TextView hours = (TextView) inf.findViewById(R.id.txtHours);
+        hours.setText("10");
 
-        TextView tv2 = (TextView) inf.findViewById(R.id.txtDays);
-        tv2.setText("3");
+        TextView days = (TextView) inf.findViewById(R.id.txtDays);
+        days.setText("3");
 
-        TextView tv3 = (TextView) inf.findViewById(R.id.txtDev);
-        tv3.setText(mParam1);
+        TextView dev_id = (TextView) inf.findViewById(R.id.txtDev);
+        dev_id.setText(mParam1);
 
-        TextView tv4 = (TextView) inf.findViewById(R.id.txtUsername);
-        tv4.setText(GLOBE.getUsername());
+        TextView user_name = (TextView) inf.findViewById(R.id.txtUsername);
+        user_name.setText(GLOBE.getUsername());
 
-        TextView tv5 = (TextView) inf.findViewById(R.id.txtNames);
-        tv5.setText(GLOBE.getNames());
+        TextView names = (TextView) inf.findViewById(R.id.txtNames);
+        names.setText(GLOBE.getNames());
 
-        TextView tv6 = (TextView) inf.findViewById(R.id.txtRank);
+        TextView sklad = (TextView) inf.findViewById(R.id.txtSkladNumber);
+        int indexSklad = GLOBE.getSklad();
+        sklad.setText(GLOBE.getSkladByIndex(indexSklad));
+
+        TextView rank = (TextView) inf.findViewById(R.id.txtRank);
         int index = GLOBE.userRank();
-        tv6.setText(GLOBE.getankByIndex(index));
+        rank.setText(GLOBE.getankByIndex(index));
+
+
+
+        Button updateBtn = (Button) inf.findViewById(R.id.btnUpdateApp);
+        TextView updNotify = (TextView) inf.findViewById(R.id.txtUpdateNotify);
+
+        updateBtn.setOnClickListener(this);
+
+        int newUpd = GLOBE.needUpdate();
+        if(newUpd == 1){
+            updateBtn.setVisibility(View.VISIBLE);
+            updNotify.setText("Налична е нова версия !" );
+        }else{
+            updateBtn.setVisibility(View.GONE);
+            updNotify.setText("Инсталирана е последната версия " + GLOBE.getCurrVersion());
+        }
         return inf;
     }
 
+
     @Override
     public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnUpdateApp:
+                Log.d("DEBUG","start updating app");
 
+                new updaterFTP().execute();
+                break;
+        }
     }
 }

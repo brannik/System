@@ -25,7 +25,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class reciever extends Service {
-    Context appContext = MainActivity.getAppContext();
 
     public reciever() {
     }
@@ -39,7 +38,17 @@ public class reciever extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        new notifyRequest().execute();
+
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                new notifyRequest().execute();
+                handler.postDelayed(this, 100000);
+            }
+        };
+        handler.post(runnable);
     }
 
 }

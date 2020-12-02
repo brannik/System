@@ -1,18 +1,18 @@
 package com.brannik.system;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 
-import androidx.core.app.NotificationCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,8 +27,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         appContext = getApplicationContext();
+
         Globals GLOBE = new Globals(appContext);
         new LoginRequest().execute();
+        new UpdateApp().execute();
 
         wait(1000);
         super.onCreate(savedInstanceState);
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             tabs.setupWithViewPager(viewPager);
             //addNotification();
 
+
         }else if(check == 0){
             // display register form
             i = new Intent(MainActivity.this, Register.class);
@@ -52,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Log.d("DEBUG","check error");
         }
+
+
 
     }
 
@@ -78,5 +83,6 @@ public class MainActivity extends AppCompatActivity {
             Thread.currentThread().interrupt();
         }
     }
+
 
 }
