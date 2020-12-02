@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -85,11 +87,7 @@ public class notifyRequest extends AsyncTask<String,String,String> {
                         String title = "График на смените";
                         String text = "Имате нови " + action + " известия.";
                         showNotification(appContext,title,text,notificationIntent);
-                    }else{
-                        // register error -> display error in textArea
-                        Toast.makeText(MainActivity.getAppContext(), result.toString(), Toast.LENGTH_LONG).show();
                     }
-
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -132,10 +130,13 @@ public class notifyRequest extends AsyncTask<String,String,String> {
             notificationManager.createNotificationChannel(mChannel);
         }
 
+
+        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
-                .setContentText(body);
+                .setContentText(body)
+                .setSound(uri);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(intent);
