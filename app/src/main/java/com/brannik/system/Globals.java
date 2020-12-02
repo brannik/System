@@ -11,7 +11,9 @@ public class Globals extends AppCompatActivity {
 
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
-    public static String URL = "http://192.168.0.101/api.php";
+    public static String URL = "http://app-api.servehttp.com/api.php";
+    // debuggin on lockal network only
+    //public static String URL = "http://app-api.servehttp.com/api.php";
     public static String[] RANKS;
 
     public Globals(Context context) {
