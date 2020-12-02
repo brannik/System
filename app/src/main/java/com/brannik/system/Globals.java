@@ -5,6 +5,7 @@ import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 public class Globals extends AppCompatActivity {
@@ -12,9 +13,9 @@ public class Globals extends AppCompatActivity {
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     public static String URL = "http://app-api.servehttp.com/api.php";
+    //public static String URL = "http://192.168.0.101/api.php";
     public static String[] RANKS;
     public static String[] SKLAD;
-    public boolean need_update;
 
     public Globals(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
@@ -31,6 +32,7 @@ public class Globals extends AppCompatActivity {
         SKLAD[4] = "Четвърти";
         SKLAD[5] = "Победа";
         SKLAD[6] = "Клетки";
+
 
     }
 
@@ -75,6 +77,7 @@ public class Globals extends AppCompatActivity {
         return sharedPreferences.getInt("version",0);
     }
 
+
     // setters
     public void setVersion(int ver){
         editor = sharedPreferences.edit();
@@ -106,6 +109,8 @@ public class Globals extends AppCompatActivity {
         editor.putInt("upd_state",state);
         editor.apply();
     }
+
+
     private static String getUniquePsuedoID() {
         String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) + (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10) + (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);
         String serial = null;

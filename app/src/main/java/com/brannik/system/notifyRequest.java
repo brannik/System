@@ -147,6 +147,8 @@ public class notifyRequest extends AsyncTask<String,String,String> {
         mBuilder.setContentIntent(resultPendingIntent);
 
         notificationManager.notify(notificationId, mBuilder.build());
+
+
     }
 
 }

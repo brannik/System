@@ -14,8 +14,17 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -26,6 +35,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -48,6 +58,8 @@ public class sumary extends Fragment implements View.OnClickListener {
     private String mParam2;
     private String mParam3;
     private String mParam4;
+    private ArrayList<String> array = new ArrayList<>();
+    ArrayAdapter arrayAdapter;
 
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
@@ -75,10 +87,14 @@ public class sumary extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
+    @SuppressWarnings("rawtypes")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        prepareList();
+        arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
+                android.R.layout.simple_list_item_1,
+                array);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -87,9 +103,7 @@ public class sumary extends Fragment implements View.OnClickListener {
         }
 
     }
-    public void send_data(View v){
 
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -135,10 +149,36 @@ public class sumary extends Fragment implements View.OnClickListener {
             updateBtn.setVisibility(View.GONE);
             updNotify.setText("Инсталирана е последната версия " + GLOBE.getCurrVersion());
         }
+
+        ListView listView = (ListView) inf.findViewById(R.id.listView);
+        // call function to prepare list
+
+
+        listView.setAdapter(arrayAdapter);
+
         return inf;
     }
 
-
+    private void prepareList(){
+        // send volley request
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        String url ="http://app-api.servehttp.com/api.php?request=test";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        // Display the first 500 characters of the response string.
+                        array.add(response);
+                        Log.d("DEBUG"," -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+        });
+        queue.add(stringRequest);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
