@@ -1,6 +1,10 @@
 package com.brannik.system;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +12,7 @@ import android.util.Log;
 
 import com.google.android.material.tabs.TabLayout;
 
+import androidx.core.app.NotificationCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setAdapter(sectionsPagerAdapter);
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
+            //addNotification();
 
         }else if(check == 0){
             // display register form
@@ -46,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         }else{
             Log.d("DEBUG","check error");
         }
+
 
 
     }
@@ -73,6 +80,5 @@ public class MainActivity extends AppCompatActivity {
             Thread.currentThread().interrupt();
         }
     }
-
 
 }
