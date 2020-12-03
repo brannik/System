@@ -28,6 +28,9 @@ import com.android.volley.toolbox.Volley;
 
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 import java.io.BufferedOutputStream;
@@ -58,13 +61,15 @@ public class sumary extends Fragment implements View.OnClickListener {
     private String mParam2;
     private String mParam3;
     private String mParam4;
+
     private ArrayList<String> array = new ArrayList<>();
-    ArrayAdapter arrayAdapter;
+
 
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
     public sumary() {
         // Required empty public constructor
+
     }
 
     /**
@@ -84,6 +89,7 @@ public class sumary extends Fragment implements View.OnClickListener {
         args.putString(ARG_PARAM3, param3);
         args.putString(ARG_PARAM4, param4);
         fragment.setArguments(args);
+
         return fragment;
     }
 
@@ -91,10 +97,6 @@ public class sumary extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        prepareList();
-        arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
-                android.R.layout.simple_list_item_1,
-                array);
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -102,9 +104,14 @@ public class sumary extends Fragment implements View.OnClickListener {
             mParam4 = getArguments().getString(ARG_PARAM4);
         }
 
+
+
     }
 
 
+
+
+    @SuppressWarnings("rawtypes")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -135,7 +142,6 @@ public class sumary extends Fragment implements View.OnClickListener {
         rank.setText(GLOBE.getankByIndex(index));
 
 
-
         Button updateBtn = (Button) inf.findViewById(R.id.btnUpdateApp);
         TextView updNotify = (TextView) inf.findViewById(R.id.txtUpdateNotify);
 
@@ -152,9 +158,12 @@ public class sumary extends Fragment implements View.OnClickListener {
 
         ListView listView = (ListView) inf.findViewById(R.id.listView);
         // call function to prepare list
-
-
+        prepareList();
+        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
+                android.R.layout.simple_list_item_1,
+                array);
         listView.setAdapter(arrayAdapter);
+
 
         return inf;
     }
@@ -162,12 +171,14 @@ public class sumary extends Fragment implements View.OnClickListener {
     private void prepareList(){
         // send volley request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        String url ="http://app-api.servehttp.com/api.php?request=test";
+        int ID = GLOBE.getAccId();
+        int SKLAD = GLOBE.getSklad();
+        String url = Globals.URL + "?request=in_app_notify&acc_id=" + ID + "&sklad_id=" + SKLAD;
+        //String url ="http://app-api.servehttp.com/api.php?request=test";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        // Display the first 500 characters of the response string.
                         array.add(response);
                         Log.d("DEBUG"," -> " + response);
                     }
@@ -176,6 +187,8 @@ public class sumary extends Fragment implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 Log.d("DEBUG", "VOLLEY ERROR -> " + error);
             }
+
+
         });
         queue.add(stringRequest);
     }
@@ -189,4 +202,5 @@ public class sumary extends Fragment implements View.OnClickListener {
                 break;
         }
     }
+
 }

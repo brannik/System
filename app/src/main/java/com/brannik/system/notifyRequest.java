@@ -1,5 +1,6 @@
 package com.brannik.system;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -130,13 +131,11 @@ public class notifyRequest extends AsyncTask<String,String,String> {
             notificationManager.createNotificationChannel(mChannel);
         }
 
-
-        Uri uri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setSound(uri);
+                .setDefaults(Notification.DEFAULT_SOUND);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(intent);

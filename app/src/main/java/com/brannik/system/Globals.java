@@ -32,10 +32,7 @@ public class Globals extends AppCompatActivity {
         SKLAD[4] = "Четвърти";
         SKLAD[5] = "Победа";
         SKLAD[6] = "Клетки";
-
-
     }
-
 
     // getters
     public int needUpdate(){
@@ -120,7 +117,6 @@ public class Globals extends AppCompatActivity {
         } catch (Exception exception) {
             serial = "serial"; // some value
         }
-
         return new UUID(m_szDevIDShort.hashCode(), serial.hashCode()).toString();
     }
 
