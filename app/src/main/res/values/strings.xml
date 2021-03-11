@@ -2,7 +2,7 @@
     <string name="app_name">График смени</string>
     <string name="tab_text_1">Общи</string>
     <string name="tab_text_2">Смени</string>
-    <string name="tab_text_3">Недели</string>
+    <string name="tab_text_3">Бележки</string>
     <string name="tab_text_4">Извънредни</string>
     <string name="tab_text_5">Профил</string>
     <string name="tab_text_6">АДМИН</string>
@@ -19,4 +19,11 @@
     <string name="labelFName">Име</string>
     <string name="labelSName">Презиме</string>
     <string name="labelUName">Портебител</string>
+
+    <!-- Belejki layout  -->
+    <string name="btnNewDocument">Добави бележка</string>
+    <string name="btnFindDocument">Намери бележка</string>
+    <string name="btnListDocument">Покажи всички мои бележки</string>
+    <string name="btnDocumentEnter">Режим отразяване</string>
+    <string name="btnDelDocument">Изтриване на бележка</string>
 </resources>

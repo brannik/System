@@ -5,9 +5,51 @@
     android:layout_height="match_parent"
     tools:context=".sundays">
 
-    <CalendarView
-        android:id="@+id/calendarView2"
-        style="@android:style/Widget.DeviceDefault.CalendarView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/editDocumentNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btnNewDocument"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnNewDocument" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnDelDocument" />
+
+        <Button
+            android:id="@+id/btnFindDocument"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnFindDocument" />
+
+        <Button
+            android:id="@+id/btnListDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnListDocument" />
+
+        <Button
+            android:id="@+id/btnDocumentEnter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnDocumentEnter" />
+
+        <ListView
+            android:id="@+id/listDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 </FrameLayout>

@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.os.Environment;
+import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -33,12 +36,18 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,8 +72,6 @@ public class sumary extends Fragment implements View.OnClickListener {
     private String mParam4;
 
     private ArrayList<String> array = new ArrayList<>();
-
-
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
     public sumary() {
@@ -124,8 +131,8 @@ public class sumary extends Fragment implements View.OnClickListener {
         TextView days = (TextView) inf.findViewById(R.id.txtDays);
         days.setText("3");
 
-        TextView dev_id = (TextView) inf.findViewById(R.id.txtDev);
-        dev_id.setText(mParam1);
+        //TextView dev_id = (TextView) inf.findViewById(R.id.txtDev);
+        //dev_id.setText(mParam1);
 
         TextView user_name = (TextView) inf.findViewById(R.id.txtUsername);
         user_name.setText(GLOBE.getUsername());
@@ -156,13 +163,10 @@ public class sumary extends Fragment implements View.OnClickListener {
             updNotify.setText("Инсталирана е последната версия " + GLOBE.getCurrVersion());
         }
 
-        ListView listView = (ListView) inf.findViewById(R.id.listView);
+
         // call function to prepare list
         prepareList();
-        ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
-                android.R.layout.simple_list_item_1,
-                array);
-        listView.setAdapter(arrayAdapter);
+
 
 
         return inf;
@@ -179,7 +183,25 @@ public class sumary extends Fragment implements View.OnClickListener {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        array.add(response);
+                        array.clear();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String notText = data.getString("notification_text");
+                                array.add(notText);
+                            }
+                            ListView listView = (ListView) getView().findViewById(R.id.listView);
+                            ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
+                                    android.R.layout.simple_list_item_1,
+                                    array);
+                            listView.setAdapter(arrayAdapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
                         Log.d("DEBUG"," -> " + response);
                     }
                 }, new Response.ErrorListener() {
@@ -190,6 +212,9 @@ public class sumary extends Fragment implements View.OnClickListener {
 
 
         });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
     @Override

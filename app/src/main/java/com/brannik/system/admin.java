@@ -7,6 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,7 +18,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class admin extends Fragment {
-
+    Globals GLOBE = new Globals(MainActivity.getAppContext());
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -58,7 +62,16 @@ public class admin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View inf = inflater.inflate(R.layout.fragment_admin, container, false);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_admin, container, false);
+        WebView web = (WebView) inf.findViewById(R.id.webView);
+        URL url = null;
+        try {
+            url = new URL(GLOBE.URLADMIN + "?user=" + GLOBE.getUsername() + "&acc_id=" + GLOBE.getAccId());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        web.loadUrl(String.valueOf(url));
+        return inf;
     }
 }
