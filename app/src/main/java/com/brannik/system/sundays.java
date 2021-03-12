@@ -1,18 +1,28 @@
 package com.brannik.system;
 
 import android.app.Dialog;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.hardware.Camera;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import android.text.Editable;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,16 +34,30 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.vision.CameraSource;
+import com.google.android.gms.vision.Tracker;
+import com.google.android.gms.vision.face.Face;
+import com.google.android.gms.vision.face.FaceDetector;
+import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Date;
+import java.util.List;
 
-import kotlinx.coroutines.channels.Send;
-
+import static android.app.Activity.RESULT_OK;
 import static java.lang.Integer.parseInt;
 import static java.lang.String.valueOf;
 
@@ -56,11 +80,19 @@ public class sundays extends Fragment implements View.OnClickListener {
     private ArrayList<String> array = new ArrayList<>();
     private String[][] documents;
     private Integer documentsCount = 0;
-    private Integer i =0;
+    private Integer i = 0;
     private Boolean allowToSend = true;
 
     Globals GLOBE = new Globals(MainActivity.getAppContext());
     Dialog myDialog;
+    Dialog messageDialog;
+    Dialog datePicker;
+    Dialog cameraCapture;
+    Dialog cameraView;
+    Dialog customCamera;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
+    Bitmap imageBitmap;
+
     public sundays() {
         // Required empty public constructor
     }
@@ -110,22 +142,71 @@ public class sundays extends Fragment implements View.OnClickListener {
         btnList.setOnClickListener(this);
         btnMode.setOnClickListener(this);
         myDialog = new Dialog(this.getContext());
+        messageDialog = new Dialog(this.getContext());
+        datePicker = new Dialog(this.getContext());
+        cameraCapture = new Dialog(this.getContext());
+        cameraView = new Dialog(this.getContext());
+        customCamera = new Dialog(this.getContext());
+
         return inf;
     }
-    public void sendItems(){
+
+    public void sendItems() {
         ListView listView = getView().findViewById(R.id.listDocuments);
         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
                 android.R.layout.simple_list_item_1,
                 array);
         listView.setAdapter(arrayAdapter);
     }
-    public void ShowPopup(){
+
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.message_popup);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+            }
+        });
+        messageDialog.show();
+
+    }
+
+    public void showDatePicker() {
+        datePicker.setContentView(R.layout.date_picker);
+        TextView txtDate = (TextView) datePicker.findViewById(R.id.txtDate);
+        TextView txtYear = (TextView) datePicker.findViewById(R.id.txtYear);
+        DateFormat dateFormat = new SimpleDateFormat("MM");
+        DateFormat yearFormat = new SimpleDateFormat("Y");
+        Date date = new Date();
+        //Log.d("Month",dateFormat.format(date));
+        txtDate.setText(dateFormat.format(date));
+        txtYear.setText(yearFormat.format(date));
+
+        Button btnSend = (Button) datePicker.findViewById(R.id.btnSendRequest);
+        btnSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String date = valueOf(txtDate.getText());
+                String year = valueOf(txtYear.getText());
+                SendRequest("LIST_ALL", parseInt(date), parseInt(year));
+                datePicker.dismiss();
+            }
+        });
+
+
+        datePicker.show();
+    }
+
+    public void ShowPopup() {
         // get first element from documents array and display it
         i = 0;
         myDialog.setContentView(R.layout.popup);
         TextView text = (TextView) myDialog.findViewById(R.id.txtShowDocument);
         TextView txtCounter = (TextView) myDialog.findViewById(R.id.txtCounter);
-        String temp = valueOf(i+1) + " от " +valueOf(documentsCount-1);
+        String temp = valueOf(i + 1) + " от " + valueOf(documentsCount - 1);
         txtCounter.setText(temp);
         text.setText("No -> " + documents[i][0]);
         Button btnSkip = myDialog.findViewById(R.id.btnSkip);
@@ -136,11 +217,11 @@ public class sundays extends Fragment implements View.OnClickListener {
             @Override
             public void onClick(View v) {
                 i = i + 1;
-                if(i<documentsCount-1){
+                if (i < documentsCount - 1) {
                     text.setText("No -> " + documents[i][0]);
-                    String temp = valueOf(i+1) + " от " +valueOf(documentsCount-1);
+                    String temp = valueOf(i + 1) + " от " + valueOf(documentsCount - 1);
                     txtCounter.setText(temp);
-                }else{
+                } else {
                     text.setText("Край !!!");
                 }
 
@@ -155,12 +236,12 @@ public class sundays extends Fragment implements View.OnClickListener {
         btnEnter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(i<documentsCount) {
-                    SendRequest("CHECK_DOCUMENT", parseInt(documents[i][1]));
+                if (i < documentsCount) {
+                    SendRequest("CHECK_DOCUMENT", parseInt(documents[i][1]), 0);
                     i = i + 1;
                     if (i < documentsCount - 1) {
                         text.setText("No -> " + documents[i][0]);
-                        String temp = valueOf(i+1) + " от " +valueOf(documentsCount-1);
+                        String temp = valueOf(i + 1) + " от " + valueOf(documentsCount - 1);
                         txtCounter.setText(temp);
                     } else {
                         text.setText("Край !!!");
@@ -171,6 +252,95 @@ public class sundays extends Fragment implements View.OnClickListener {
         });
         myDialog.show();
     }
+
+    public void showConfirmDialog(String msg) {
+        cameraCapture.setContentView(R.layout.confirm);
+        TextView docNumber = (TextView) cameraCapture.findViewById(R.id.editNumber);
+        docNumber.setText(msg);
+        Button btnDone = (Button) cameraCapture.findViewById(R.id.btnDone);
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String txt = docNumber.getText().toString();
+                Integer finalData = parseInt(txt);
+                SendRequest("NEW_DOC", finalData, 0);
+                cameraCapture.dismiss();
+            }
+        });
+        cameraCapture.show();
+
+    }
+
+
+    private void customCameraDialog() {
+        customCamera.setContentView(R.layout.custom_camera);
+        TextView btn = (TextView) customCamera.findViewById(R.id.captBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // after pic capture go to confirm dialog
+                //detectTextFromImage();
+                showConfirmDialog("123456789");
+                customCamera.dismiss();
+            }
+        });
+        customCamera.show();
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        try {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        } catch (ActivityNotFoundException e) {
+            // display error state to the user
+        }
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            imageBitmap = (Bitmap) extras.get("data");
+            detectTextFromImage();
+        }
+    }
+    private void displayTextFromImage(FirebaseVisionText firebaseVisionText){
+        List<FirebaseVisionText.Block> blockList = firebaseVisionText.getBlocks();
+        if(blockList.size() == 0){
+            // no text detected
+            showMessage("Не е засечен текст !!!");
+        }else{
+            for(FirebaseVisionText.Block block: firebaseVisionText.getBlocks()){
+                String text = block.getText();
+                showConfirmDialog(text);
+                String number  = text.replaceAll("[^0-9]{7}", "");
+                Log.d("DEBUG",number);
+
+                // find pathern in text
+
+            }
+        }
+
+    }
+    private void detectTextFromImage() {
+        FirebaseVisionImage firebaseVisionImage = FirebaseVisionImage.fromBitmap(imageBitmap);
+        FirebaseVisionTextDetector textDetector = FirebaseVision.getInstance().getVisionTextDetector();
+        textDetector.detectInImage(firebaseVisionImage).addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+            @Override
+            public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                displayTextFromImage(firebaseVisionText);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
+
+    }
+
     @Override
     public void onClick(View v) {
         EditText textBox = getView().findViewById(R.id.editDocumentNumber);
@@ -180,46 +350,53 @@ public class sundays extends Fragment implements View.OnClickListener {
                 case R.id.btnNewDocument:
 
                     if(value.matches("")){
-                        Toast.makeText(MainActivity.getAppContext(), "Текстовото поле не може да е празно !!!", Toast.LENGTH_LONG).show();
+
+                        dispatchTakePictureIntent();
+                        //customCameraDialog();
+                        // open camera
+                        // confirm dialog
+                        // send request from dialog
                     }else {
                         finalValue= parseInt(value);
-                        SendRequest("NEW_DOC", finalValue);
+                        SendRequest("NEW_DOC", finalValue,0);
                         textBox.setText("");
                     }
                     //Log.d("DEBUG","ADD NEW DOCUMENT");
                     break;
                 case R.id.btnDelete:
                     if(value.matches("")){
-                        Toast.makeText(MainActivity.getAppContext(), "Текстовото поле не може да е празно !!!", Toast.LENGTH_LONG).show();
+                        showMessage("Текстовото поле не може да е празно !!!");
                     }else {
                         finalValue = parseInt(value);
-                        SendRequest("DELETE_DOC", finalValue);
+                        SendRequest("DELETE_DOC", finalValue,0);
                         textBox.setText("");
                     }
                     //Log.d("DEBUG","DELETE DOCUMENT");
                     break;
                 case R.id.btnFindDocument:
                     if(value.matches("")){
-                        Toast.makeText(MainActivity.getAppContext(), "Текстовото поле не може да е празно !!!", Toast.LENGTH_LONG).show();
+                        showMessage("Текстовото поле не може да е празно !!!");
                     }else {
                         finalValue = parseInt(value);
-                        SendRequest("FIND_DOC", finalValue);
+                        SendRequest("FIND_DOC", finalValue,0);
                         textBox.setText("");
                     }
                     break;
                 case R.id.btnListDocuments:
-                    SendRequest("LIST_ALL",0);
+                    showDatePicker();
                     textBox.setText("");
                     break;
                 case R.id.btnDocumentEnter:
-                    SendRequest("GET_ALL_ENTER_MODE",0);
+                    SendRequest("GET_ALL_ENTER_MODE",0,0);
                     textBox.setText("");
                     break;
             }
 
     }
+
+
     public int requestType = 0;
-    private void SendRequest(String type,int data){
+    private void SendRequest(String type,int data,int dataTwo){
         // send volley request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
 
@@ -240,7 +417,10 @@ public class sundays extends Fragment implements View.OnClickListener {
                 requestType = 3;
                 break;
             case "LIST_ALL":
-                url = Globals.URL + "?request=list_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                // premesti sled dialog window-a
+                // purvo pokaji prozorec da se izbere mesec i godina
+
+                url = Globals.URL + "?request=list_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD + "&year=" + dataTwo;
                 requestType = 4;
                 break;
             case "GET_ALL_ENTER_MODE":
@@ -268,7 +448,7 @@ public class sundays extends Fragment implements View.OnClickListener {
                                 for(int i=0;i<jsonArray.length();i++){
                                     JSONObject data = jsonArray.getJSONObject(i);
                                     String notText = data.getString("RESPONSE");
-                                    Toast.makeText(MainActivity.getAppContext(), notText, Toast.LENGTH_LONG).show();
+                                    showMessage(notText);
                                 }
 
                             } catch (JSONException e) {
@@ -336,7 +516,6 @@ public class sundays extends Fragment implements View.OnClickListener {
                                     documents[i][1] = doc_id;
                                 }
                                 Log.d("DEBUG",response);
-
                                 ShowPopup();
                             } catch (JSONException e) {
                                 e.printStackTrace();
