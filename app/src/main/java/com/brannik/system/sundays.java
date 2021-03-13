@@ -5,7 +5,16 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PixelFormat;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.hardware.Camera;
+import android.media.ThumbnailUtils;
+import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -20,6 +29,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -81,7 +91,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     Dialog cameraView;
     Dialog customCamera;
     static final int REQUEST_IMAGE_CAPTURE = 1;
-    Bitmap imageBitmap;
+    public static Bitmap imageBitmap;
 
     public sundays() {
         // Required empty public constructor
@@ -263,6 +273,8 @@ public class sundays extends Fragment implements View.OnClickListener{
     }
     Camera camera;
     FrameLayout frameLayout;
+    public static boolean previewing = false;
+
     private void customCameraDialog(){
         customCamera.setContentView(R.layout.custom_camera);
         Button btn = (Button) customCamera.findViewById(R.id.captBtn);
@@ -274,11 +286,13 @@ public class sundays extends Fragment implements View.OnClickListener{
         cameraCallback cam = new cameraCallback(getContext(),camera);
         frameLayout.addView(cam);
 
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // capture image
-                captureImage();
+                takeAPicture();
+
                 // after pic capture go to confirm dialog
             }
         });
@@ -292,28 +306,56 @@ public class sundays extends Fragment implements View.OnClickListener{
         customCamera.show();
     }
 
-    public void captureImage(){
-        if(camera != null){
-            camera.takePicture(null, null, new Camera.PictureCallback() {
+    public void takeAPicture(){
 
-                @Override
-                public void onPictureTaken(byte[] data, Camera camera) {
-                    try {
-                        // convert byte array into bitmap
-                        Log.d("DEBUG",data.toString());
-                        imageBitmap = BitmapFactory.decodeByteArray(data, 0,
-                                data.length);
-                        detectTextFromImage();
-                        customCamera.dismiss();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+        Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+            @Override
+            public void onPictureTaken(byte[] data, Camera camera) {
+                Log.d("DEBUG",data.toString());
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inMutable = true;
+                imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+                //detectTextFromImage();
 
-                }
-            });
+
+                Matrix matrix = new Matrix();
+
+                matrix.postRotate(90);
+
+                Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth(), imageBitmap.getHeight(), true);
+
+                Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+
+                rotatedBitmap = getCroppedBitmap(rotatedBitmap);
+                ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
+                image.setImageBitmap(rotatedBitmap);
+            }
+        };
+        camera.takePicture(null, null, mPictureCallback);
+
+
     }
-    }
 
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        //canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+        canvas.drawRect(-100, 0, 50, 150, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
+    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -337,12 +379,13 @@ public class sundays extends Fragment implements View.OnClickListener{
         if(blockList.size() == 0){
             // no text detected
             showMessage("Не е засечен текст !!!");
+            customCamera.dismiss();
         }else{
             for(FirebaseVisionText.Block block: firebaseVisionText.getBlocks()){
                 String text = block.getText();
                 showConfirmDialog(text);
                 Log.d("DEBUG",text);
-
+                customCamera.dismiss();
                 // find pathern in text
 
             }

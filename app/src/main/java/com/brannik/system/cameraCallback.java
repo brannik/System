@@ -2,6 +2,8 @@ package com.brannik.system;
 
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -15,12 +17,15 @@ import java.util.List;
 public class cameraCallback extends SurfaceView implements SurfaceHolder.Callback {
     Camera camera;
     SurfaceHolder holder;
+    public static boolean previewing = false;
+
     public cameraCallback(Context context,Camera camera) {
         super(context);
         this.camera = camera;
         holder = getHolder();
         holder.addCallback(this);
         holder.setType(SurfaceHolder.SURFACE_TYPE_PUSH_BUFFERS);
+
     }
 
     @Override
@@ -58,7 +63,9 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
+
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
@@ -69,5 +76,7 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
     public void surfaceDestroyed(@NonNull SurfaceHolder holder) {
         camera.stopPreview();
         camera.release();
+        camera = null;
+        previewing = false;
     }
 }

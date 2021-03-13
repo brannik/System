@@ -10,7 +10,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context="com.javacodegeeks.androidsurfaceviewexample.AndroidSurfaceviewExample" >
-
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:elevation="0dp"
+            />
         <FrameLayout
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
@@ -19,13 +24,6 @@
             android:elevation="2dp"
             >
 
-            <FrameLayout
-                android:id="@+id/surfaceView2"
-                android:layout_width="180dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:background="@drawable/layout_border"
-                android:elevation="1dp" />
         </FrameLayout>
 
         <LinearLayout
