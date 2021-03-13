@@ -3,15 +3,12 @@ package com.brannik.system;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.hardware.Camera;
 import android.os.Bundle;
-
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,7 +23,6 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -37,20 +33,13 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.vision.CameraSource;
-import com.google.android.gms.vision.Tracker;
-import com.google.android.gms.vision.face.Face;
-import com.google.android.gms.vision.face.FaceDetector;
-import com.google.android.gms.vision.face.LargestFaceFocusingProcessor;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,7 +55,8 @@ import static java.lang.String.valueOf;
  * Use the {@link sundays#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class sundays extends Fragment implements View.OnClickListener {
+@SuppressWarnings("ALL")
+public class sundays extends Fragment implements View.OnClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -271,22 +261,59 @@ public class sundays extends Fragment implements View.OnClickListener {
         cameraCapture.show();
 
     }
-
-
-    private void customCameraDialog() {
+    Camera camera;
+    FrameLayout frameLayout;
+    private void customCameraDialog(){
         customCamera.setContentView(R.layout.custom_camera);
-        TextView btn = (TextView) customCamera.findViewById(R.id.captBtn);
+        Button btn = (Button) customCamera.findViewById(R.id.captBtn);
+        Button btnClose = (Button) customCamera.findViewById(R.id.closeBtn);
+
+        frameLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
+
+        camera = Camera.open();
+        cameraCallback cam = new cameraCallback(getContext(),camera);
+        frameLayout.addView(cam);
+
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // capture image
+                captureImage();
                 // after pic capture go to confirm dialog
-                //detectTextFromImage();
-                showConfirmDialog("123456789");
+            }
+        });
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("DEBUG","DISMISSED");
                 customCamera.dismiss();
             }
         });
         customCamera.show();
     }
+
+    public void captureImage(){
+        if(camera != null){
+            camera.takePicture(null, null, new Camera.PictureCallback() {
+
+                @Override
+                public void onPictureTaken(byte[] data, Camera camera) {
+                    try {
+                        // convert byte array into bitmap
+                        Log.d("DEBUG",data.toString());
+                        imageBitmap = BitmapFactory.decodeByteArray(data, 0,
+                                data.length);
+                        detectTextFromImage();
+                        customCamera.dismiss();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+    }
+    }
+
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -314,8 +341,7 @@ public class sundays extends Fragment implements View.OnClickListener {
             for(FirebaseVisionText.Block block: firebaseVisionText.getBlocks()){
                 String text = block.getText();
                 showConfirmDialog(text);
-                String number  = text.replaceAll("[^0-9]{7}", "");
-                Log.d("DEBUG",number);
+                Log.d("DEBUG",text);
 
                 // find pathern in text
 
@@ -351,8 +377,8 @@ public class sundays extends Fragment implements View.OnClickListener {
 
                     if(value.matches("")){
 
-                        dispatchTakePictureIntent();
-                        //customCameraDialog();
+                        //dispatchTakePictureIntent();
+                        customCameraDialog();
                         // open camera
                         // confirm dialog
                         // send request from dialog
