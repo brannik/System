@@ -281,7 +281,8 @@ public class sundays extends Fragment implements View.OnClickListener{
         Button btnClose = (Button) customCamera.findViewById(R.id.closeBtn);
 
         frameLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
-
+        FrameLayout dummy = (FrameLayout) customCamera.findViewById(R.id.dummy);
+        dummy.bringToFront();
         camera = Camera.open();
         cameraCallback cam = new cameraCallback(getContext(),camera);
         frameLayout.addView(cam);
@@ -329,6 +330,9 @@ public class sundays extends Fragment implements View.OnClickListener{
                 rotatedBitmap = getCroppedBitmap(rotatedBitmap);
                 ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
                 image.setImageBitmap(rotatedBitmap);
+                imageBitmap = rotatedBitmap;
+                detectTextFromImage();
+                customCamera.dismiss();
             }
         };
         camera.takePicture(null, null, mPictureCallback);
@@ -349,7 +353,12 @@ public class sundays extends Fragment implements View.OnClickListener{
         canvas.drawARGB(0, 0, 0, 0);
         paint.setColor(color);
         //canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        canvas.drawRect(-100, 0, 50, 150, paint);
+        // fix sizes and position and crop image then fix text recognision function
+        Integer top = (bitmap.getHeight()/2) + 7;
+        Integer bottom = (bitmap.getHeight()/2) + -7;
+        Integer left = (bitmap.getWidth()/2) + -50;
+        Integer right = (bitmap.getWidth()/2) + 50;
+        canvas.drawRect(left, top, right, bottom, paint);
         paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
         canvas.drawBitmap(bitmap, rect, rect, paint);
         //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
