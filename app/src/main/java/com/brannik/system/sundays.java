@@ -8,6 +8,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -289,8 +290,11 @@ public class sundays extends Fragment implements View.OnClickListener{
 
         frameLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
 
-        View dummy = customCamera.findViewById(R.id.dummy);
-        dummy.bringToFront();
+        Overlay overl = new Overlay(getContext());
+        FrameLayout overlay = (FrameLayout) customCamera.findViewById(R.id.overlay);
+        overlay.addView(overl);
+
+
         camera = Camera.open();
         cameraCallback cam = new cameraCallback(getContext(),camera);
         frameLayout.addView(cam);
@@ -329,12 +333,15 @@ public class sundays extends Fragment implements View.OnClickListener{
                 Matrix matrix = new Matrix();
 
                 matrix.postRotate(90);
-
-
                 Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
-                image.setImageBitmap(rotatedBitmap);
-                //detectTextFromImage();
-                //customCamera.dismiss();
+
+
+
+                imageBitmap = getCroppedBitmap(rotatedBitmap);
+                image.setImageBitmap(imageBitmap);
+                // crop image and process it
+                detectTextFromImage();
+                customCamera.dismiss();
 
             }
         };
@@ -343,12 +350,29 @@ public class sundays extends Fragment implements View.OnClickListener{
 
     }
 
-    private Bitmap crop(Bitmap image){
-        int totalCropWidth = 100;
-        int cropingSize = totalCropWidth / 2;
-        Bitmap croppedBitmap = Bitmap.createBitmap(image, (image.getWidth()/2)-100 ,10,image.getWidth()-100 , image.getHeight()-10);
-        return croppedBitmap;
+    public Bitmap getCroppedBitmap(Bitmap bitmap) {
+        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
+                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        // canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
+
+        canvas.drawRect((bitmap.getWidth()/2)-100,(bitmap.getHeight()/2)-10,(bitmap.getWidth()/2)+40,(bitmap.getHeight()/2)+10,paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, rect, rect, paint);
+        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
+        //return _bmp;
+        return output;
     }
+
+
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {

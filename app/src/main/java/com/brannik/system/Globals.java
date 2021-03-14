@@ -1,6 +1,8 @@
 package com.brannik.system;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -21,6 +23,8 @@ public class Globals extends AppCompatActivity {
     public static String FTPPassword = "11235813aA@";
     public static Integer FTPPort = 14147;
     public static String FTPFile = "app-debug.apk";
+
+
 
     //public static String DownloadURL = "http://192.168.0.105/app/app-debug.apk";
     public static String[] RANKS;

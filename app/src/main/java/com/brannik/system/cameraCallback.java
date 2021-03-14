@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.hardware.Camera;
 import android.media.tv.TvContract;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.View;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -21,6 +25,7 @@ import java.util.List;
 public class cameraCallback extends SurfaceView implements SurfaceHolder.Callback {
     Camera camera;
     SurfaceHolder holder;
+    Paint paint = new Paint();
     public static boolean previewing = false;
 
     public cameraCallback(Context context,Camera camera) {
@@ -68,8 +73,9 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
             e.printStackTrace();
         }
 
-    }
 
+
+    }
 
     @Override
     public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
