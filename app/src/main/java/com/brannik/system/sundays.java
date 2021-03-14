@@ -2,7 +2,9 @@ package com.brannik.system;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -12,19 +14,24 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
 import android.media.ThumbnailUtils;
 import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -281,7 +288,8 @@ public class sundays extends Fragment implements View.OnClickListener{
         Button btnClose = (Button) customCamera.findViewById(R.id.closeBtn);
 
         frameLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
-        FrameLayout dummy = (FrameLayout) customCamera.findViewById(R.id.dummy);
+
+        View dummy = customCamera.findViewById(R.id.dummy);
         dummy.bringToFront();
         camera = Camera.open();
         cameraCallback cam = new cameraCallback(getContext(),camera);
@@ -312,27 +320,22 @@ public class sundays extends Fragment implements View.OnClickListener{
         Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+
                 Log.d("DEBUG",data.toString());
                 BitmapFactory.Options options = new BitmapFactory.Options();
                 options.inMutable = true;
                 imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-                //detectTextFromImage();
-
-
+                ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
                 Matrix matrix = new Matrix();
 
                 matrix.postRotate(90);
 
-                Bitmap scaledBitmap = Bitmap.createScaledBitmap(imageBitmap, imageBitmap.getWidth(), imageBitmap.getHeight(), true);
 
-                Bitmap rotatedBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
-
-                rotatedBitmap = getCroppedBitmap(rotatedBitmap);
-                ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
+                Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
                 image.setImageBitmap(rotatedBitmap);
-                imageBitmap = rotatedBitmap;
-                detectTextFromImage();
-                customCamera.dismiss();
+                //detectTextFromImage();
+                //customCamera.dismiss();
+
             }
         };
         camera.takePicture(null, null, mPictureCallback);
@@ -340,32 +343,12 @@ public class sundays extends Fragment implements View.OnClickListener{
 
     }
 
-    public Bitmap getCroppedBitmap(Bitmap bitmap) {
-        Bitmap output = Bitmap.createBitmap(bitmap.getWidth(),
-                bitmap.getHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(output);
-
-        final int color = 0xff424242;
-        final Paint paint = new Paint();
-        final Rect rect = new Rect(0, 0, bitmap.getWidth(), bitmap.getHeight());
-
-        paint.setAntiAlias(true);
-        canvas.drawARGB(0, 0, 0, 0);
-        paint.setColor(color);
-        //canvas.drawRoundRect(rectF, roundPx, roundPx, paint);
-        // fix sizes and position and crop image then fix text recognision function
-        Integer top = (bitmap.getHeight()/2) + 7;
-        Integer bottom = (bitmap.getHeight()/2) + -7;
-        Integer left = (bitmap.getWidth()/2) + -50;
-        Integer right = (bitmap.getWidth()/2) + 50;
-        canvas.drawRect(left, top, right, bottom, paint);
-        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
-        canvas.drawBitmap(bitmap, rect, rect, paint);
-        //Bitmap _bmp = Bitmap.createScaledBitmap(output, 60, 60, false);
-        //return _bmp;
-        return output;
+    private Bitmap crop(Bitmap image){
+        int totalCropWidth = 100;
+        int cropingSize = totalCropWidth / 2;
+        Bitmap croppedBitmap = Bitmap.createBitmap(image, (image.getWidth()/2)-100 ,10,image.getWidth()-100 , image.getHeight()-10);
+        return croppedBitmap;
     }
-
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         try {

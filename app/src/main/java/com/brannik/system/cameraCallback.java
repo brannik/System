@@ -5,8 +5,12 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.hardware.Camera;
+import android.media.tv.TvContract;
+import android.view.Display;
+import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
@@ -79,4 +83,6 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
         camera = null;
         previewing = false;
     }
+
+
 }
