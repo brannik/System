@@ -63,7 +63,10 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
         params.setFocusMode("continuous-picture");
 
         //@@@@@@@@@
-        
+        if (params.getSupportedFocusModes().contains(
+                Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+        }
         
         camera.setParameters(params);
         try {
