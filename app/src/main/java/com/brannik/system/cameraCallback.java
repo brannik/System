@@ -9,17 +9,24 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
 import android.media.tv.TvContract;
+import android.os.Debug;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
+import com.google.android.gms.vision.Frame;
+
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @SuppressWarnings("ALL")
 public class cameraCallback extends SurfaceView implements SurfaceHolder.Callback {
@@ -39,6 +46,15 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
 
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
+
+
+
+
+    }
+
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+        try{
         Camera.Parameters params = camera.getParameters();
         // orientation
         if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
@@ -50,10 +66,10 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
             camera.setDisplayOrientation(0);
             params.setRotation(0);
         }
-        
+
         //@@@@@@@@@@@@@
         List<Camera.Size> sizes = params.getSupportedPictureSizes();
-        
+
         Camera.Size mSize = null;
         for (Camera.Size size : sizes) {
             mSize = size;
@@ -67,22 +83,23 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
                 Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
             params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
         }
-        
-        camera.setParameters(params);
-        try {
-            camera.setPreviewDisplay(holder);
-            camera.startPreview();
-        } catch (IOException e) {
-            e.printStackTrace();
+
+        if (camera.getParameters().getFocusMode().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+        }
+        if (camera.getParameters().getFlashMode().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+            params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
         }
 
 
+        camera.setParameters(params);
 
-    }
 
-    @Override
-    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
-
+            camera.setPreviewDisplay(holder);
+            camera.startPreview();
+        } catch (IOException e) {
+            Log.d("DEBUG",e.toString());
+        }
     }
 
     @Override
@@ -92,6 +109,7 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
         camera = null;
         previewing = false;
     }
+
 
 
 }

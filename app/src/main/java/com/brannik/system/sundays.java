@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
@@ -22,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.util.Log;
@@ -63,6 +66,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
 import static java.lang.Integer.parseInt;
@@ -266,7 +272,7 @@ public class sundays extends Fragment implements View.OnClickListener{
         TextView docNumber = (TextView) cameraCapture.findViewById(R.id.editNumber);
         docNumber.setText(msg);
         Button btnDone = (Button) cameraCapture.findViewById(R.id.btnDone);
-
+        btnDone.setEnabled(false);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -283,6 +289,12 @@ public class sundays extends Fragment implements View.OnClickListener{
     FrameLayout frameLayout;
     public static boolean previewing = false;
 
+
+    private Bitmap bitmap;
+    @BindView(R.id.imageView)
+    ImageView resPhoto;
+
+
     private void customCameraDialog(){
         customCamera.setContentView(R.layout.custom_camera);
         Button btn = (Button) customCamera.findViewById(R.id.captBtn);
@@ -290,15 +302,23 @@ public class sundays extends Fragment implements View.OnClickListener{
 
         frameLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
 
-        Overlay overl = new Overlay(getContext());
+        //Overlay overl = new Overlay(getContext());
         FrameLayout overlay = (FrameLayout) customCamera.findViewById(R.id.overlay);
-        overlay.addView(overl);
+        //overlay.addView(overl);
+        overlay.bringToFront();
+        ViewCompat.setTranslationZ(overlay, 1);
 
 
         camera = Camera.open();
         cameraCallback cam = new cameraCallback(getContext(),camera);
         frameLayout.addView(cam);
 
+        resPhoto = (ImageView) customCamera.findViewById(R.id.imageView);
+
+        ButterKnife.bind(this, customCamera);
+        if (bitmap != null) {
+            resPhoto.setImageBitmap(bitmap);
+        }
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -330,6 +350,7 @@ public class sundays extends Fragment implements View.OnClickListener{
         Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
+                /*
 
                 Log.d("DEBUG",data.toString());
                 BitmapFactory.Options options = new BitmapFactory.Options();
@@ -348,6 +369,60 @@ public class sundays extends Fragment implements View.OnClickListener{
                 // crop image and process it
                 detectTextFromImage();
                 //customCamera.dismiss();
+                */
+                Bitmap bitmapPicture
+                        = BitmapFactory.decodeByteArray(data, 0, data.length);
+
+                Bitmap croppedBitmap = null;
+
+
+                    //rotate bitmap, because camera sensor usually in landscape mode
+                    Matrix matrix = new Matrix();
+                    matrix.postRotate(90);
+                    Bitmap rotatedBitmap = Bitmap.createBitmap(bitmapPicture, 0, 0,
+                            bitmapPicture.getWidth(), bitmapPicture.getHeight(), matrix, true);
+                    //save file
+                    FrameLayout previewLayout = (FrameLayout) customCamera.findViewById(R.id.surfaceView);
+                    FrameLayout borderCamera = (FrameLayout) customCamera.findViewById(R.id.overlay);
+
+                    //calculate aspect ratio
+                    float koefX = (float) rotatedBitmap.getWidth() / (float) previewLayout.getWidth();
+                    float koefY = (float) rotatedBitmap.getHeight() / (float) previewLayout.getHeight();
+                    //Log.d("DEBUG",koefX + " - " + koefY);
+                    //get viewfinder border size and position on the screen
+                    int x1 = borderCamera.getLeft();
+                    int y1 = borderCamera.getTop();
+
+                    int x2 = borderCamera.getWidth();
+                    int y2 = borderCamera.getHeight();
+
+                    //Log.d("DEBUG",x1 + " - " + x2 + " | " + y1 + " - " + y2);
+
+                    //calculate position and size for cropping
+                    int cropStartX = Math.round(x1 * koefX);
+                    int cropStartY = Math.round(y1 * koefY);
+
+                    int cropWidthX = Math.round(x2 * koefX);
+                    int cropHeightY = Math.round(y2 * koefY);
+
+                    //check limits and make crop
+                    if (cropStartX + cropWidthX <= rotatedBitmap.getWidth() &&
+                            cropStartY + cropHeightY <= rotatedBitmap.getHeight()) {
+                        croppedBitmap = Bitmap.createBitmap(rotatedBitmap, cropStartX,
+                                cropStartY, cropWidthX, cropHeightY);
+                    } else {
+                        croppedBitmap = null;
+                    }
+
+                    //save result
+                    if (croppedBitmap != null) {
+                        ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
+                        imageBitmap = croppedBitmap;
+
+                        changeBitmapContrastBrightness(imageBitmap,5,90);
+                        image.setImageBitmap(imageBitmap);
+                        detectTextFromImage();
+                    }
 
             }
         };
@@ -356,6 +431,33 @@ public class sundays extends Fragment implements View.OnClickListener{
 
     }
 
+    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness)
+    {
+        /**
+         *
+         * @param bmp input bitmap
+         * @param contrast 0..10 1 is default
+         * @param brightness -255..255 0 is default
+         * @return new bitmap
+         */
+        ColorMatrix cm = new ColorMatrix(new float[]
+                {
+                        contrast, 0, 0, 0, brightness,
+                        0, contrast, 0, 0, brightness,
+                        0, 0, contrast, 0, brightness,
+                        0, 0, 0, 1, 0
+                });
+
+        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
+
+        Canvas canvas = new Canvas(ret);
+
+        Paint paint = new Paint();
+        paint.setColorFilter(new ColorMatrixColorFilter(cm));
+        canvas.drawBitmap(bmp, 0, 0, paint);
+
+        return ret;
+    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
