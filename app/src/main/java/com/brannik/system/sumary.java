@@ -1,6 +1,7 @@
 package com.brannik.system;
 
 import android.Manifest;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -79,6 +80,8 @@ public class sumary extends Fragment implements View.OnClickListener {
 
     }
 
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -150,6 +153,15 @@ public class sumary extends Fragment implements View.OnClickListener {
 
 
         Button updateBtn = (Button) inf.findViewById(R.id.btnUpdateApp);
+
+        updateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
         TextView updNotify = (TextView) inf.findViewById(R.id.txtUpdateNotify);
 
         updateBtn.setOnClickListener(this);
@@ -217,12 +229,14 @@ public class sumary extends Fragment implements View.OnClickListener {
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnUpdateApp:
                 Log.d("DEBUG","start updating app");
-
+                Button updBtn = (Button) v.findViewById(R.id.btnUpdateApp);
+                updBtn.setEnabled(false);
                 new updaterFTP().execute();
                 break;
         }

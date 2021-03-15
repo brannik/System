@@ -18,15 +18,6 @@ public class Globals extends AppCompatActivity {
     public static String URLADMIN = "http://app-api.redirectme.net/admin/admin.php";
     //public static String URL = "http://192.168.0.105/api.php";
 
-    public static String FTPDownloadURL = "http://app-api.redirectme.net/app-debug.apk";
-    public static String FTPUserName = "download_acc";
-    public static String FTPPassword = "11235813aA@";
-    public static Integer FTPPort = 14147;
-    public static String FTPFile = "app-debug.apk";
-
-
-
-    //public static String DownloadURL = "http://192.168.0.105/app/app-debug.apk";
     public static String[] RANKS;
     public static String[] SKLAD;
     public static int newVersion;

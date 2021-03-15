@@ -2,6 +2,7 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">app-api.redirectme.net</domain>
+        <domain includeSubdomains="true">ftp.app-api.redirectme.net</domain>
         <domain includeSubdomains="true">192.168.0.105</domain>
         <domain includeSubdomains="true">192.168.0.101</domain>
         <domain includeSubdomains="true">192.168.0.100</domain>

@@ -65,11 +65,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void startUpdate(){
 
-        wait(5000);
-        Toast.makeText(appContext,"Отидете в папка DOWNLOADS на вашия телефон и инсталирайте update.apk!!!",Toast.LENGTH_LONG).show();
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
