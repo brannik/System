@@ -293,8 +293,7 @@ public class sundays extends Fragment implements View.OnClickListener{
 
 
     private Bitmap bitmap;
-    @BindView(R.id.imageView)
-    ImageView resPhoto;
+
 
 
     private void customCameraDialog(){
@@ -315,12 +314,7 @@ public class sundays extends Fragment implements View.OnClickListener{
         cameraCallback cam = new cameraCallback(getContext(),camera);
         frameLayout.addView(cam);
 
-        resPhoto = (ImageView) customCamera.findViewById(R.id.imageView);
-
         ButterKnife.bind(this, customCamera);
-        if (bitmap != null) {
-            resPhoto.setImageBitmap(bitmap);
-        }
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -419,11 +413,8 @@ public class sundays extends Fragment implements View.OnClickListener{
 
                     //save result
                     if (croppedBitmap != null) {
-                        ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
+                        changeBitmapContrastBrightness(croppedBitmap,5,90);
                         imageBitmap = croppedBitmap;
-
-                        changeBitmapContrastBrightness(imageBitmap,5,90);
-                        image.setImageBitmap(imageBitmap);
                         detectTextFromImage();
                         camera.release();
                     }

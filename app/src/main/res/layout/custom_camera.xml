@@ -12,21 +12,11 @@
         android:orientation="vertical"
         tools:context="com.javacodegeeks.androidsurfaceviewexample.AndroidSurfaceviewExample">
 
-
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:layout_gravity="center"
-            android:elevation="0dp" />
-
-
         <FrameLayout
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="500dp"
+            android:layout_height="620dp"
             android:layout_gravity="center"
-            android:background="#4B000000"
             android:elevation="2dp"
             android:visibility="visible">
         <FrameLayout
@@ -53,7 +43,7 @@
                 android:id="@+id/captBtn"
                 android:layout_width="130dp"
                 android:layout_height="80dp"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Снимай"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
@@ -62,7 +52,7 @@
                 android:id="@+id/closeBtn"
                 android:layout_width="130dp"
                 android:layout_height="80dp"
-                android:layout_margin="20dp"
+                android:layout_margin="10dp"
                 android:gravity="center"
                 android:text="Затвори"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
