@@ -47,52 +47,53 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
     @Override
     public void surfaceCreated(@NonNull SurfaceHolder holder) {
 
-
-
-
-    }
-
-    @Override
-    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
         try{
-        Camera.Parameters params = camera.getParameters();
-        // orientation
-        if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
-            params.set("orientations","portrait");
-            camera.setDisplayOrientation(90);
-            params.setRotation(90);
-        }else{
-            params.set("orientation","landscape");
-            camera.setDisplayOrientation(0);
-            params.setRotation(0);
-        }
+            Camera.Parameters params = camera.getParameters();
+            // orientation
+            if(this.getResources().getConfiguration().orientation != Configuration.ORIENTATION_LANDSCAPE){
+                params.set("orientations","portrait");
+                camera.setDisplayOrientation(90);
+                params.setRotation(90);
+            }else{
+                params.set("orientation","landscape");
+                camera.setDisplayOrientation(0);
+                params.setRotation(0);
+            }
 
-        //@@@@@@@@@@@@@
-        List<Camera.Size> sizes = params.getSupportedPictureSizes();
+            //@@@@@@@@@@@@@
+            List<Camera.Size> sizes = params.getSupportedPictureSizes();
 
-        Camera.Size mSize = null;
-        for (Camera.Size size : sizes) {
-            mSize = size;
-        }
+            int max = 0;
+            int index = 0;
 
-        params.setPictureSize(mSize.width, mSize.height);
-        params.setFocusMode("continuous-picture");
+            for (int i = 0; i < sizes.size(); i++){
+                Camera.Size s = sizes.get(i);
+                int size = s.height * s.width;
+                if (size > max) {
+                    index = i;
+                    max = size;
+                }
+            }
+            Log.d("DEBUG", "W:"+sizes.get(index).width + " - H:" + sizes.get(index).height);
 
-        //@@@@@@@@@
-        if (params.getSupportedFocusModes().contains(
-                Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
-            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
-        }
+            params.setPictureSize(sizes.get(index).width, sizes.get(index).height);
+            params.setFocusMode("continuous-picture");
 
-        if (camera.getParameters().getFocusMode().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
-            params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
-        }
-        if (camera.getParameters().getFlashMode().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
-            params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
-        }
+            //@@@@@@@@@
+            if (params.getSupportedFocusModes().contains(
+                    Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO)) {
+                params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_VIDEO);
+            }
+
+            if (camera.getParameters().getFocusMode().contains(Camera.Parameters.FOCUS_MODE_AUTO)) {
+                params.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+            }
+            if (camera.getParameters().getFlashMode().contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                params.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+            }
 
 
-        camera.setParameters(params);
+            camera.setParameters(params);
 
 
             camera.setPreviewDisplay(holder);
@@ -100,6 +101,13 @@ public class cameraCallback extends SurfaceView implements SurfaceHolder.Callbac
         } catch (IOException e) {
             Log.d("DEBUG",e.toString());
         }
+
+
+    }
+
+    @Override
+    public void surfaceChanged(@NonNull SurfaceHolder holder, int format, int width, int height) {
+
     }
 
     @Override

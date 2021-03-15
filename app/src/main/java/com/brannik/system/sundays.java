@@ -66,6 +66,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -272,7 +274,7 @@ public class sundays extends Fragment implements View.OnClickListener{
         TextView docNumber = (TextView) cameraCapture.findViewById(R.id.editNumber);
         docNumber.setText(msg);
         Button btnDone = (Button) cameraCapture.findViewById(R.id.btnDone);
-        btnDone.setEnabled(false);
+        //btnDone.setEnabled(false);
         btnDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -339,6 +341,7 @@ public class sundays extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 Log.d("DEBUG","DISMISSED");
                 customCamera.dismiss();
+                camera.release();
             }
         });
         customCamera.show();
@@ -422,6 +425,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                         changeBitmapContrastBrightness(imageBitmap,5,90);
                         image.setImageBitmap(imageBitmap);
                         detectTextFromImage();
+                        camera.release();
                     }
 
             }
@@ -485,9 +489,15 @@ public class sundays extends Fragment implements View.OnClickListener{
         }else{
             for(FirebaseVisionText.Block block: firebaseVisionText.getBlocks()){
                 String text = block.getText();
-                showConfirmDialog(text);
-                Log.d("DEBUG",text);
-                customCamera.dismiss();
+                // cut the text
+                String numericOutput;
+                Pattern pattern = Pattern.compile("[0-9]{7}");
+                Matcher matcher = pattern.matcher(text);
+                if(matcher.find()) {
+                    showConfirmDialog(text.substring(matcher.start(),matcher.end()));
+                    Log.d("DEBUG", text.substring(matcher.start(),matcher.end()));
+                    customCamera.dismiss();
+                }
                 // find pathern in text
 
             }
