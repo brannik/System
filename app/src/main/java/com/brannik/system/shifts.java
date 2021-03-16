@@ -74,25 +74,58 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         customCalendar = inf.findViewById(R.id.custom_calendar);
 
         HashMap<Object, Property> descHashMap = new HashMap<>();
+
+
         Property defaultProperty = new Property();
         defaultProperty.layoutResource = R.layout.calendar_deff;
         defaultProperty.dateTextViewResource = R.id.text_view;
         descHashMap.put("default",defaultProperty);
 
-        Property currentProperty = new Property();
-        currentProperty.layoutResource = R.layout.current_view;
-        currentProperty.dateTextViewResource = R.id.text_view;
-        descHashMap.put("current",currentProperty);
+        Property dnes = new Property();
+        dnes.layoutResource = R.layout.calendar_dnes;
+        dnes.dateTextViewResource = R.id.text_view;
+        descHashMap.put("dnes",dnes);
 
-        Property presentProperty = new Property();
-        presentProperty.layoutResource = R.layout.present_view;
-        presentProperty.dateTextViewResource = R.id.text_view;
-        descHashMap.put("present",presentProperty);
+        Property pochivka = new Property();
+        pochivka.layoutResource = R.layout.calendar_pochivka;
+        pochivka.dateTextViewResource = R.id.text_view;
+        descHashMap.put("pochivka",pochivka);
 
-        Property absentProperty = new Property();
-        absentProperty.layoutResource = R.layout.absent_view;
-        absentProperty.dateTextViewResource = R.id.text_view;
-        descHashMap.put("absent",absentProperty);
+        Property vtora = new Property();
+        vtora.layoutResource = R.layout.calendar_vtora_smqna;
+        vtora.dateTextViewResource = R.id.text_view;
+        descHashMap.put("vtora",vtora);
+
+        Property nedelq = new Property();
+        nedelq.layoutResource = R.layout.calendar_nedelq;
+        nedelq.dateTextViewResource = R.id.text_view;
+        descHashMap.put("nedelq",nedelq);
+
+        Property dnesPochivka = new Property();
+        dnesPochivka.layoutResource = R.layout.calendar_dnes_pochivka;
+        dnesPochivka.dateTextViewResource = R.id.text_view;
+        descHashMap.put("dnesPochivka",dnesPochivka);
+
+        Property dnesVtora = new Property();
+        dnesVtora.layoutResource = R.layout.calendar_vtora_dnes;
+        dnesVtora.dateTextViewResource = R.id.text_view;
+        descHashMap.put("dnesVtora",dnesVtora);
+
+        Property dnesNedelq = new Property();
+        dnesNedelq.layoutResource = R.layout.calendar_dnes_nedelq;
+        dnesNedelq.dateTextViewResource = R.id.text_view;
+        descHashMap.put("dnesNedelq",dnesNedelq);
+
+        Property zaeto = new Property();
+        zaeto.layoutResource = R.layout.calendar_zaeto;
+        zaeto.dateTextViewResource = R.id.text_view;
+        descHashMap.put("zaeto",zaeto);
+
+        Property dnesZaeto = new Property();
+        dnesZaeto.layoutResource = R.layout.calendar_dnes_zaeto;
+        dnesZaeto.dateTextViewResource = R.id.text_view;
+        descHashMap.put("dnesZaeto",dnesZaeto);
+
 
         customCalendar.setMapDescToProp(descHashMap);
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.PREVIOUS, this);
@@ -102,13 +135,16 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
         Calendar calendar = Calendar.getInstance();
 
-        dateHashMap.put(calendar.get(Calendar.DAY_OF_MONTH),"current");
+        dateHashMap.put(calendar.get(Calendar.DAY_OF_MONTH),"dnes");
         // get info for current month and populate it
-        dateHashMap.put(1,"present");
-        dateHashMap.put(2,"absent");
-        dateHashMap.put(3,"present");
-        dateHashMap.put(4,"absent");
-        dateHashMap.put(20,"present");
+        dateHashMap.put(1,"dnesVtora");
+        dateHashMap.put(2,"dnesNedelq");
+        dateHashMap.put(3,"dnesPochivka");
+        dateHashMap.put(4,"nedelq");
+        dateHashMap.put(5,"vtora");
+        dateHashMap.put(6,"pochivka");
+        dateHashMap.put(7,"zaeto");
+        dateHashMap.put(8,"dnesZaeto");
 
         customCalendar.setDate(calendar,dateHashMap);
 
@@ -134,13 +170,13 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 arr[0] = new HashMap<>();
                 // get info for this month and populate it
                 arr[0].put(3,"unavailable");
-                arr[0].put(14,"absent");
+                arr[0].put(14,"vtora");
                 arr[1] = null;
                 break;
             case Calendar.MARCH:
                 // get info for this month and populate it
                 arr[0] = new HashMap<>();
-                arr[0].put(13,"present");
+                arr[0].put(13,"pochivka");
                 break;
         }
         return arr;

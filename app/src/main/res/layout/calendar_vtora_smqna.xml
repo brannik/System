@@ -14,9 +14,21 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:textColor="@color/white"
             android:id="@+id/text_view"
             android:padding="5dp"
             android:gravity="top"/>
+        <TextView
+            android:background="@android:color/holo_orange_dark"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:textColor="@color/white"
+            android:layout_gravity="bottom"
+            android:text="ВТОРА"
+            android:textSize="10dp"
+            android:gravity="center"
+            android:paddingHorizontal="7dp"
+            android:paddingVertical="3dp"/>
 
     </androidx.cardview.widget.CardView>
 
