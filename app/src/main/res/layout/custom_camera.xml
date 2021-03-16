@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="650dp">
 
     <LinearLayout
         android:id="@+id/container"
@@ -15,7 +15,7 @@
         <FrameLayout
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="620dp"
+            android:layout_height="540dp"
             android:layout_gravity="center"
             android:elevation="2dp"
             android:visibility="visible">

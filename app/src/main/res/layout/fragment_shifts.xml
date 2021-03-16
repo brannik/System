@@ -5,11 +5,19 @@
     android:layout_height="match_parent"
     tools:context=".shifts">
 
-    <!-- TODO: Update blank fragment layout -->
 
-    <CalendarView
-        android:id="@+id/calendarView"
+    <LinearLayout
+        android:id="@+id/buttonsContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+        <com.applandeo.materialcalendarview.CalendarView
+            android:id="@+id/calendarView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 
 </FrameLayout>
