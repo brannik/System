@@ -24,6 +24,7 @@ android {
         }
     }
     compileOptions {
+
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -47,8 +48,7 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
 
     implementation 'com.jakewharton:butterknife:8.8.1'
-    //annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    implementation 'com.applandeo:material-calendar-view:1.7.0'
 
+    implementation 'org.naishadhparmar.zcustomcalendar:zcustomcalendar:1.0.1'
 }
 apply plugin: 'com.google.gms.google-services'
