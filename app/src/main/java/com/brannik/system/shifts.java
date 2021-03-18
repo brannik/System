@@ -1,11 +1,14 @@
 package com.brannik.system;
 
+import android.app.Dialog;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import org.naishadhparmar.zcustomcalendar.CustomCalendar;
 import org.naishadhparmar.zcustomcalendar.OnDateSelectedListener;
@@ -22,7 +25,7 @@ import java.util.Map;
  * Use the {@link shifts#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class shifts extends Fragment implements OnNavigationButtonClickedListener{
+public class shifts extends Fragment implements OnNavigationButtonClickedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +37,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     private String mParam2;
 
     CustomCalendar customCalendar;
-
+    Dialog dateActions;
     public shifts() {
         // Required empty public constructor
     }
@@ -74,7 +77,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         customCalendar = inf.findViewById(R.id.custom_calendar);
 
         HashMap<Object, Property> descHashMap = new HashMap<>();
-
+        dateActions = new Dialog(this.getContext());
 
         Property defaultProperty = new Property();
         defaultProperty.layoutResource = R.layout.calendar_deff;
@@ -127,35 +130,24 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         descHashMap.put("dnesZaeto",dnesZaeto);
 
 
+
         customCalendar.setMapDescToProp(descHashMap);
+
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.PREVIOUS, this);
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.NEXT, this);
 
         HashMap<Integer,Object> dateHashMap = new HashMap<>();
 
         Calendar calendar = Calendar.getInstance();
-
-        dateHashMap.put(calendar.get(Calendar.DAY_OF_MONTH),"dnes");
-        // get info for current month and populate it
-        dateHashMap.put(1,"dnesVtora");
-        dateHashMap.put(2,"dnesNedelq");
-        dateHashMap.put(3,"dnesPochivka");
-        dateHashMap.put(4,"nedelq");
-        dateHashMap.put(5,"vtora");
-        dateHashMap.put(6,"pochivka");
-        dateHashMap.put(7,"zaeto");
-        dateHashMap.put(8,"dnesZaeto");
-
+        // call voley and process requests
+        dateHashMap.put(2,"dnes");
+        dateHashMap.put(14,"zaeto");
+        //prepareCalendar();
         customCalendar.setDate(calendar,dateHashMap);
-
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
-                String sDate = selectedDate.get(Calendar.DAY_OF_MONTH)
-                        + "/" + (selectedDate.get(Calendar.MONTH) + 1)
-                        + "/" + selectedDate.get(Calendar.YEAR);
-                Toast.makeText(inf.getContext(),"DATE " + sDate,Toast.LENGTH_SHORT).show();
-                // dialog to make actions for that date !!!!
+                dateActions(selectedDate.get(Calendar.YEAR),selectedDate.get(Calendar.MONTH) + 1,selectedDate.get(Calendar.DAY_OF_MONTH));
             }
         });
 
@@ -181,4 +173,12 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         }
         return arr;
     }
+    private void dateActions(int year,int month,int day){
+        dateActions.setContentView(R.layout.date_actions);
+        TextView textHeader = (TextView) dateActions.findViewById(R.id.current_date_header);
+        
+        textHeader.setText(year + " - " + month + " - " + day);
+        dateActions.show();
+    }
+
 }

@@ -720,8 +720,6 @@ public class sundays extends Fragment implements View.OnClickListener{
             public void onErrorResponse(VolleyError error) {
                 Log.d("DEBUG", "VOLLEY ERROR -> " + error);
             }
-
-
         });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

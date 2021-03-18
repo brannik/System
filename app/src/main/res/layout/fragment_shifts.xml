@@ -12,6 +12,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/custom_calendar"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:day_of_week_start_from="monday"
+        app:day_of_week_length="2"/>
 
 </FrameLayout>

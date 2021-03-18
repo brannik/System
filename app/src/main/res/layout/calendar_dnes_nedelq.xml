@@ -31,7 +31,7 @@
         <TextView
             android:background="@android:color/holo_blue_dark"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="17dp"
             android:textColor="@color/white"
             android:layout_gravity="center"
             android:text="ДНЕС"
