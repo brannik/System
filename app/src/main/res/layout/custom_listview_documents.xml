@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="2dp"
-        android:gravity="left">
+        android:gravity="center">
 
 
     <LinearLayout
@@ -80,6 +80,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:id="@+id/hiddenList"
             android:visibility="gone">
             <TextView
