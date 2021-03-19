@@ -29,8 +29,10 @@
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
             app:tabPaddingEnd="2dp"
+            app:tabSelectedTextColor="@color/yellow"
+            app:tabRippleColor="@color/yellow"
             app:tabPaddingStart="2dp"
-            app:tabTextAppearance="@style/TextAppearance.AppCompat.Display1" />
+            app:tabTextAppearance="@style/TextAppearance.AppCompat.Small" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager
