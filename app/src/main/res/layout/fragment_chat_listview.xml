@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    android:padding="5dp">
+        <TextView
+            android:id="@+id/txtMyMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:visibility="gone"
+            android:gravity="left"
+            android:autoSizeTextType="uniform"
+            />
+    <TextView
+        android:id="@+id/txtOtherMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:gravity="right"
+        android:visibility="gone"
+        android:autoSizeTextType="uniform"
+        />
+</RelativeLayout>
