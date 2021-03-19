@@ -168,6 +168,8 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
+                // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+                // proveri dali e nedelq ili ne i promeni prozoreca !!!!!
                 dateActions(selectedDate.get(Calendar.YEAR),selectedDate.get(Calendar.MONTH) + 1,selectedDate.get(Calendar.DAY_OF_MONTH));
             }
         });
@@ -197,6 +199,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     private void dateActions(int year,int month,int day){
         dateActions.setContentView(R.layout.date_actions);
         TextView textHeader = (TextView) dateActions.findViewById(R.id.current_date_header);
+
         // implement buttons and actions
         textHeader.setText(year + " - " + month + " - " + day);
         dateActions.show();
