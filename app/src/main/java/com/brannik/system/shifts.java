@@ -5,19 +5,38 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.naishadhparmar.zcustomcalendar.CustomCalendar;
 import org.naishadhparmar.zcustomcalendar.OnDateSelectedListener;
 import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
 import org.naishadhparmar.zcustomcalendar.Property;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static java.lang.Boolean.valueOf;
+import static java.lang.Integer.parseInt;
 
 
 /**
@@ -38,6 +57,9 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     CustomCalendar customCalendar;
     Dialog dateActions;
+    HashMap<Integer,Object> dateHashMap = new HashMap<>();
+
+    Globals globals = new Globals(MainActivity.getAppContext());
     public shifts() {
         // Required empty public constructor
     }
@@ -131,19 +153,20 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
 
 
-        customCalendar.setMapDescToProp(descHashMap);
+
 
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.PREVIOUS, this);
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.NEXT, this);
 
-        HashMap<Integer,Object> dateHashMap = new HashMap<>();
+        customCalendar.setMapDescToProp(descHashMap);
 
         Calendar calendar = Calendar.getInstance();
         // call voley and process requests
-        dateHashMap.put(2,"dnes");
-        dateHashMap.put(14,"zaeto");
-        //prepareCalendar();
-        customCalendar.setDate(calendar,dateHashMap);
+
+        buildCalendar();
+
+
+
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
@@ -179,6 +202,112 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         
         textHeader.setText(year + " - " + month + " - " + day);
         dateActions.show();
+    }
+
+
+    public void buildCalendar(){
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH)+1;
+        int sklad = globals.getSklad();
+        int accId = globals.getAccId();
+        final Boolean[] check = {false};
+        final int[] dummyDay = {0};
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
+        String date = dateFormat.format(calendar.getTime());
+
+        String url = Globals.URL + "?request=get_calendar&year=" + year + "&month=" + month + "&sklad=" + sklad;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            int daysCount = calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String day = data.getString("NUMBER");
+                                String type = data.getString("TYPE");
+                                String owner = data.getString("USER");
+
+
+                                switch(parseInt(type)){
+                                    case FLAGS.DATE_TYPE_S_SHIFT:
+                                        if(parseInt(date) == parseInt(day)){
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"dnesVtora");
+                                                check[0] = true;
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"dnesZaeto");
+                                            }
+                                        }else{
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"vtora");
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"zaeto");
+                                            }
+                                        }
+
+                                        break;
+                                    case FLAGS.DATE_TYPE_SUNDAY:
+                                        if(parseInt(date) == parseInt(day)){
+                                            check[0] = true;
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"dnesNedelq");
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"dnesZaeto");
+                                            }
+                                        }else{
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"nedelq");
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"zaeto");
+                                            }
+                                        }
+                                        break;
+                                    case FLAGS.DATE_TYPE_REST:
+                                        if(parseInt(date) == parseInt(day)){
+                                            check[0] = true;
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"dnesPochivka");
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"dnesZaeto");
+                                            }
+                                        }else{
+                                            if(parseInt(owner) == accId){
+                                                dateHashMap.put(parseInt(day),"pochivka");
+                                            }else{
+                                                dateHashMap.put(parseInt(day),"zaeto");
+                                            }
+                                        }
+                                        break;
+                                }
+                                Log.d("DEBUG"," [DATA] " + day + " | " + type + " | " + owner);
+                            }
+                            if(check[0] == false){
+                                dateHashMap.put(parseInt(date),"dnes");
+                            }
+                            customCalendar.setDate(calendar,dateHashMap);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        //Log.d("DEBUG"," -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+
+
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(2000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
     }
 
 }
