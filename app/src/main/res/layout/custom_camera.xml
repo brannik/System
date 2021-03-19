@@ -2,22 +2,36 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="650dp"
+    android:layout_width="wrap_content"
+    android:layout_height="550dp"
+    android:background="@drawable/window_border"
     app:layout_constrainedHeight="true"
     app:layout_constrainedWidth="true">
 
     <LinearLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constrainedHeight="true"
+        app:layout_constrainedWidth="true"
         android:orientation="vertical"
-        tools:context="com.javacodegeeks.androidsurfaceviewexample.AndroidSurfaceviewExample">
+        tools:context="com.javacodegeeks.androidsurfaceviewexample.AndroidSurfaceviewExample"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="@android:color/holo_blue_light"
+            android:text="Камера"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:layout_marginBottom="40dp"
+            android:autoSizeTextType="uniform"/>
 
         <FrameLayout
             android:id="@+id/surfaceView"
             android:layout_width="match_parent"
-            android:layout_height="540dp"
+            android:layout_height="380dp"
             android:layout_gravity="center"
             android:elevation="2dp"
             android:visibility="visible">

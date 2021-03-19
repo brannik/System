@@ -2,10 +2,12 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:layout_margin="10dp"
+
+    android:padding="10dp"
+    android:background="@drawable/window_border"
     app:layout_constrainedHeight="true"
     app:layout_constrainedWidth="true">
 
@@ -15,44 +17,67 @@
         android:gravity="center"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
-
         <TextView
             android:id="@+id/current_date_header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
+            android:background="@android:color/holo_blue_light"
             android:gravity="center"
-            android:textSize="20dp"
-            tools:ignore="MissingConstraints" />
-
-        <TextView
+            android:textColor="@color/white"
+            android:paddingHorizontal="20dp"
+            android:autoSizeTextType="uniform"/>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Na tazi data vtora smqna e: - @@@@@@@@@@@@@@@@@" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:autoSizeTextType="uniform"
+                android:layout_marginHorizontal="10dp"
+                android:text="На тази дата втора смяна е:" />
+            <Button
+                android:id="@+id/btnOne"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Заяви" />
+        </LinearLayout>
 
-        <Button
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="zaqvi" />
-
-        <TextView
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:autoSizeTextType="uniform"
+                android:layout_marginHorizontal="10dp"
+                android:text="На тази дата почивка е: " />
+            <Button
+                android:id="@+id/btnTwo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Заяви" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Na tazi data nedelq e: @@@@@@@@@@@@@@@@@@@@" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="zaqvi" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Na tazi data pochivka e: @@@@@@@@@@@@@@@@@@@@" />
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="zaqvi" />
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:autoSizeTextType="uniform"
+                android:layout_marginHorizontal="10dp"
+                android:text="На тази дата неделя е:" />
+            <Button
+                android:id="@+id/btnThree"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Заяви" />
+        </LinearLayout>
     </LinearLayout>
 
 

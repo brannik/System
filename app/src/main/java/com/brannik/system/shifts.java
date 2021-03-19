@@ -1,6 +1,7 @@
 package com.brannik.system;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -30,6 +31,8 @@ import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
 import org.naishadhparmar.zcustomcalendar.Property;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -151,10 +154,6 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         dnesZaeto.dateTextViewResource = R.id.text_view;
         descHashMap.put("dnesZaeto",dnesZaeto);
 
-
-
-
-
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.PREVIOUS, this);
         customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.NEXT, this);
 
@@ -164,8 +163,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         // call voley and process requests
 
         buildCalendar();
-
-
+        buildRequestNotifications(inf);
 
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
@@ -202,6 +200,16 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         // implement buttons and actions
         textHeader.setText(year + " - " + month + " - " + day);
         dateActions.show();
+    }
+
+
+    private ArrayList<String> array = new ArrayList<>();
+
+    private void buildRequestNotifications(View view){
+        ListView listV = (ListView) view.findViewById(R.id.listRequests);
+        // get your requests and add them to listview
+        ArrayList<String> list = new ArrayList<String>(Arrays.asList("Заявка 1 - заявка за размяна на втора смяна от Пешо Фанелата за дата 22.03.2021,Заявка 2,Заявка 3,Заявка 4,Заявка 5,Заявка 6".split(",")));
+        listV.setAdapter(new MyCustomAdapter(list, view.getContext()) );
     }
 
     public void doActions(){

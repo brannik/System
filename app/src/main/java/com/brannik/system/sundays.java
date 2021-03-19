@@ -167,12 +167,13 @@ public class sundays extends Fragment implements View.OnClickListener{
         return inf;
     }
 
-    public void sendItems() {
+    public void sendItems(View view,Integer type) {
         ListView listView = getView().findViewById(R.id.listDocuments);
         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
                 android.R.layout.simple_list_item_1,
                 array);
-        listView.setAdapter(arrayAdapter);
+        listView.setAdapter(new MyCustomAdapterDocuments(array, view.getContext(),type) );
+        //listView.setAdapter(arrayAdapter);
     }
 
     public void showMessage(String msg) {
@@ -207,7 +208,7 @@ public class sundays extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 String date = valueOf(txtDate.getText());
                 String year = valueOf(txtYear.getText());
-                SendRequest("LIST_ALL", parseInt(date), parseInt(year));
+                SendRequest("LIST_ALL", parseInt(date), parseInt(year),v);
                 datePicker.dismiss();
             }
         });
@@ -253,7 +254,7 @@ public class sundays extends Fragment implements View.OnClickListener{
             @Override
             public void onClick(View v) {
                 if (i < documentsCount) {
-                    SendRequest("CHECK_DOCUMENT", parseInt(documents[i][1]), 0);
+                    SendRequest("CHECK_DOCUMENT", parseInt(documents[i][1]), 0,v);
                     i = i + 1;
                     if (i < documentsCount - 1) {
                         text.setText("No -> " + documents[i][0]);
@@ -280,7 +281,7 @@ public class sundays extends Fragment implements View.OnClickListener{
             public void onClick(View v) {
                 String txt = docNumber.getText().toString();
                 Integer finalData = parseInt(txt);
-                SendRequest("NEW_DOC", finalData, 0);
+                SendRequest("NEW_DOC", finalData, 0,v);
                 cameraCapture.dismiss();
             }
         });
@@ -530,7 +531,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                         // send request from dialog
                     }else {
                         finalValue= parseInt(value);
-                        SendRequest("NEW_DOC", finalValue,0);
+                        SendRequest("NEW_DOC", finalValue,0,v);
                         textBox.setText("");
                     }
                     //Log.d("DEBUG","ADD NEW DOCUMENT");
@@ -540,7 +541,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                         showMessage("Текстовото поле не може да е празно !!!");
                     }else {
                         finalValue = parseInt(value);
-                        SendRequest("DELETE_DOC", finalValue,0);
+                        SendRequest("DELETE_DOC", finalValue,0,v);
                         textBox.setText("");
                     }
                     //Log.d("DEBUG","DELETE DOCUMENT");
@@ -550,7 +551,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                         showMessage("Текстовото поле не може да е празно !!!");
                     }else {
                         finalValue = parseInt(value);
-                        SendRequest("FIND_DOC", finalValue,0);
+                        SendRequest("FIND_DOC", finalValue,0,v);
                         textBox.setText("");
                     }
                     break;
@@ -559,7 +560,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                     textBox.setText("");
                     break;
                 case R.id.btnDocumentEnter:
-                    SendRequest("GET_ALL_ENTER_MODE",0,0);
+                    SendRequest("GET_ALL_ENTER_MODE",0,0,v);
                     textBox.setText("");
                     break;
             }
@@ -568,7 +569,7 @@ public class sundays extends Fragment implements View.OnClickListener{
 
 
     public int requestType = 0;
-    private void SendRequest(String type,int data,int dataTwo){
+    private void SendRequest(String type,int data,int dataTwo,View view){
         // send volley request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
 
@@ -637,10 +638,10 @@ public class sundays extends Fragment implements View.OnClickListener{
                                     String docSklad = data.getString("SKLAD");
                                     String docStatus = data.getString("STATUS");
                                     String docDate = data.getString("DATE");
-                                    String finalText = ">>  " + docNumber + " <На> " + docOwner + " <Склад> " + docSklad + " <Дата> " + docDate + " <Статус> " + docStatus;
+                                    String finalText =  docNumber + "##" + docOwner + "##" + docSklad + "##" + docDate + "##" + docStatus;
                                     array.add(finalText);
                                 }
-                                sendItems();
+                                sendItems(view,1);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -655,19 +656,19 @@ public class sundays extends Fragment implements View.OnClickListener{
                                         String nonEnteredDocs = data.getString("NON_ENTERED");
                                         String enteredDocs = data.getString("ENTERED");
                                         String totalDocs = data.getString("TOTAL");
-                                        String finalText = "НЕ Отразени " + nonEnteredDocs + "         Отразени " + enteredDocs + "       Всички " + totalDocs;
+                                        String finalText = nonEnteredDocs + "##" + enteredDocs + "##" + totalDocs;
                                         array.add(finalText);
                                     }else{
                                         JSONObject data = jsonArray.getJSONObject(i);
                                         String docNumber = data.getString("DOC_NUMBER");
                                         String docDate = data.getString("DOC_DATE");
                                         String docStatus = data.getString("DOC_STATUS");
-                                        String finalText = ">>   " + docNumber + "       |  " + docDate + "    |     " + docStatus;
+                                        String finalText = docNumber + "##" + docDate + "##" + docStatus;
                                         array.add(finalText);
                                     }
 
                                 }
-                                sendItems();
+                                sendItems(view,2);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

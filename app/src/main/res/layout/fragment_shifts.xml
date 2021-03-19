@@ -8,14 +8,29 @@
     app:layout_constrainedHeight="true"
     app:layout_constrainedWidth="true">
 
-
-    <org.naishadhparmar.zcustomcalendar.CustomCalendar
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/custom_calendar"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:day_of_week_start_from="monday"
-        app:day_of_week_length="2"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <org.naishadhparmar.zcustomcalendar.CustomCalendar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/custom_calendar"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:day_of_week_start_from="monday"
+            app:day_of_week_length="2">
+        </org.naishadhparmar.zcustomcalendar.CustomCalendar>
+
+        <ListView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/listRequests"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+        </LinearLayout>
+
+
 
 </FrameLayout>

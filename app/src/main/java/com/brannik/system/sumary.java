@@ -176,14 +176,14 @@ public class sumary extends Fragment implements View.OnClickListener {
 
 
         // call function to prepare list
-        prepareList();
+        prepareList(inf);
 
 
 
         return inf;
     }
 
-    private void prepareList(){
+    private void prepareList(View view){
         // send volley request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int ID = GLOBE.getAccId();
@@ -206,7 +206,9 @@ public class sumary extends Fragment implements View.OnClickListener {
                             ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
                                     android.R.layout.simple_list_item_1,
                                     array);
-                            listView.setAdapter(arrayAdapter);
+
+                            listView.setAdapter(new MyCustomAdapterNotifications(array, view.getContext()) );
+                            //listView.setAdapter(arrayAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
