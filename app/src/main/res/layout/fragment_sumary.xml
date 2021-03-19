@@ -4,7 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".sumary">
+    tools:context=".sumary"
+    app:layout_constrainedHeight="true"
+    app:layout_constrainedWidth="true"
+    android:padding="20dp">
 
     <!-- TODO: Update blank fragment layout -->
     <LinearLayout
@@ -15,7 +18,7 @@
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="80dp" />
+            android:layout_height="30dp" />
 
         <LinearLayout
             android:layout_width="match_parent"

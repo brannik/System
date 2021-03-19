@@ -4,12 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Register">
+    tools:context=".Register"
+    app:layout_constrainedHeight="true"
+    app:layout_constrainedWidth="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:padding="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,9 +21,10 @@
 
             <TextView
                 android:id="@+id/labelFname"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:autoSizeTextType="uniform"
                 android:text="@string/labelFName"
                 android:textSize="25sp" />
 
@@ -29,6 +33,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:ems="10"
                 android:inputType="textPersonName" />
         </LinearLayout>
@@ -40,9 +46,11 @@
 
             <TextView
                 android:id="@+id/labelSname"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
+                android:autoSizeTextType="uniform"
                 android:text="@string/labelSName"
                 android:textSize="25sp" />
 
@@ -50,6 +58,8 @@
                 android:id="@+id/txtSName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="textPersonName" />
@@ -62,9 +72,11 @@
 
             <TextView
                 android:id="@+id/txtUsrName"
-                android:layout_width="70dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+
+                android:autoSizeTextType="uniform"
                 android:text="@string/labelUName"
                 android:textSize="23sp" />
 
@@ -72,6 +84,8 @@
                 android:id="@+id/txtEditUsrName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
                 android:layout_weight="1"
                 android:ems="10"
                 android:inputType="text" />

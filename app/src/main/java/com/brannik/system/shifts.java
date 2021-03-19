@@ -199,11 +199,18 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     private void dateActions(int year,int month,int day){
         dateActions.setContentView(R.layout.date_actions);
         TextView textHeader = (TextView) dateActions.findViewById(R.id.current_date_header);
-        
+        // implement buttons and actions
         textHeader.setText(year + " - " + month + " - " + day);
         dateActions.show();
     }
 
+    public void doActions(){
+        
+    }
+
+    public void builldMonth(int year,int month){
+        // for previous and next buttons
+    }
 
     public void buildCalendar(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());

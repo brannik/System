@@ -7,11 +7,16 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 public class updaterFTP extends AsyncTask<String,String,String>{
     Globals global = new Globals(MainActivity.getAppContext());
     Boolean status = false;
+
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
@@ -42,8 +47,10 @@ public class updaterFTP extends AsyncTask<String,String,String>{
     protected void onPostExecute(String file_url) {
         // dismiss the dialog after the file was downloaded
         global.setVersion(Globals.newVersion);
+
         Toast.makeText(MainActivity.getAppContext(),"Актуализацията завърши.Отворете папка DOWNLOADS и инсталирайте app-update.apk",Toast.LENGTH_LONG).show();
     }
+
 
 
 
