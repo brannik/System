@@ -207,9 +207,56 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     private void buildRequestNotifications(View view){
         ListView listV = (ListView) view.findViewById(R.id.listRequests);
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        int id = globals.getAccId();
+        int sklad = globals.getSklad();
+        String url = Globals.URL + "?request=get_requests&acc_id=" + id + "&sklad=" + sklad;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        array.clear();
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            Log.d("DEBUG","DEBUG->" + response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String user = data.getString("NOT_SENDER");
+                                int type = data.getInt("NOT_TYPE");
+                                String date = data.getString("NOT_DATE");
+                                int dateId = data.getInt("NOT_DATE_ID");
+                                int senderId = data.getInt("NOT_SENDER_ID");
+                                int notId = data.getInt("NOT_ID");
+
+                                String text = type + "##" + user + "##" + date + "##" + dateId + "##" + senderId + "##" + notId;
+                                // format with separators ##
+                                array.add(text);
+                            }
+                            listV.setAdapter(new MyCustomAdapter(array, view.getContext()) );
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
+
+                        Log.d("DEBUG"," -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+
+
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+
         // get your requests and add them to listview
-        ArrayList<String> list = new ArrayList<String>(Arrays.asList("Заявка 1 - заявка за размяна на втора смяна от Пешо Фанелата за дата 22.03.2021,Заявка 2,Заявка 3,Заявка 4,Заявка 5,Заявка 6".split(",")));
-        listV.setAdapter(new MyCustomAdapter(list, view.getContext()) );
+
     }
 
     public void doActions(){
