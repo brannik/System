@@ -61,7 +61,7 @@ public class MyCustomAdapterDocuments extends BaseAdapter implements ListAdapter
         LinearLayout hidden = (LinearLayout) view.findViewById(R.id.hiddenList);
         if(type == 2){
             if(position == 0){
-                labelDate.setText("НЕ ОСТРАЗЕНИ: ");
+                labelDate.setText("НЕ ОТРАЗЕНИ: ");
                 labelNumber.setText("ОТРАЗЕНИ: ");
                 labelStatus.setText("ВСИЧКИ: ");
                 ArrayList<String> listS = new ArrayList<String>(Arrays.asList(list.get(position).split("##")));

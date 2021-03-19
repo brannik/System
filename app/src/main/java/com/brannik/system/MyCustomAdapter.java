@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -55,14 +56,14 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(v.getContext(),"(ТЕСТ)Приехте заявка с ИД: " + position,Toast.LENGTH_SHORT).show();
             }
         });
 
         decline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Toast.makeText(v.getContext(),"(ТЕСТ)Отказахте заявка с ИД: " + position,Toast.LENGTH_SHORT).show();
             }
         });
 
