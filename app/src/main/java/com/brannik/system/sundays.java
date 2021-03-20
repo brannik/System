@@ -567,9 +567,22 @@ public class sundays extends Fragment implements View.OnClickListener{
 
     }
 
-
+    private Boolean validateData(int data){
+        Boolean check=null;
+        if(data != 0 ) {
+            int length = (int) (Math.log10(data) + 1);
+            if (length == 7) {
+                check = true;
+            } else {
+                check = false;
+            }
+        }
+        return check;
+    }
     public int requestType = 0;
     private void SendRequest(String type,int data,int dataTwo,View view){
+
+        // validate data
         // send volley request
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
 
@@ -578,12 +591,22 @@ public class sundays extends Fragment implements View.OnClickListener{
         String url;
         switch(type){
             case "NEW_DOC":
-                url = Globals.URL + "?request=add_new_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
-                requestType = 1;
+                if(validateData(data)){
+                    url = Globals.URL + "?request=add_new_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                    requestType = 1;
+                }else{
+                    url = "";
+                    showMessage("Въведения номер не е валиден !!!");
+                }
                 break;
             case "DELETE_DOC":
-                url = Globals.URL + "?request=delete_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
-                requestType = 2;
+                if(validateData(data)){
+                    url = Globals.URL + "?request=delete_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                    requestType = 2;
+                }else{
+                    url = "";
+                    showMessage("Въведения номер не е валиден !!!");
+                }
                 break;
             case "FIND_DOC":
                 url = Globals.URL + "?request=find_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;

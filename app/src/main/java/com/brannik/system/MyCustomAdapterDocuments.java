@@ -65,8 +65,8 @@ public class MyCustomAdapterDocuments extends BaseAdapter implements ListAdapter
                 labelNumber.setText("ОТРАЗЕНИ: ");
                 labelStatus.setText("ВСИЧКИ: ");
                 ArrayList<String> listS = new ArrayList<String>(Arrays.asList(list.get(position).split("##")));
-                txtDocNumber.setText(listS.get(0));
-                txtDocDate.setText(listS.get(1));
+                txtDocNumber.setText(listS.get(1));
+                txtDocDate.setText(listS.get(0));
                 txtDocStatus.setText(listS.get(2));
             }else{
                 labelDate.setText("Дата: ");

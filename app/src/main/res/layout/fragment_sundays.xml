@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".sundays"
-    app:layout_constrainedHeight="true"
-    app:layout_constrainedWidth="true">
+    android:padding="15sp">
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/RowOne"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_alignParentTop="true"
+        android:layout_height="wrap_content">
 
         <EditText
             android:id="@+id/editDocumentNumber"
@@ -20,40 +21,83 @@
             android:ems="10"
             android:hint="Въведете номер на бележка"
             android:inputType="number" />
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/RowTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RowOne">
 
         <Button
             android:id="@+id/btnNewDocument"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnNewDocument" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/RowThree"
+        android:layout_below="@+id/RowTwo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnDelete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnDelDocument" />
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:id="@+id/RowFour"
+        android:layout_below="@+id/RowThree"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnFindDocument"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnFindDocument" />
+    </FrameLayout>
 
-        <Button
-            android:id="@+id/btnListDocuments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnListDocument" />
+    <FrameLayout
+        android:id="@+id/RowFive"
+        android:layout_below="@+id/RowFour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <Button
             android:id="@+id/btnDocumentEnter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btnDocumentEnter" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/RowSix"
+        android:layout_below="@+id/RowFive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/btnListDocuments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/btnListDocument" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:layout_below="@+id/RowSix"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
 
         <ListView
             android:id="@+id/listDocuments"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </LinearLayout>
-</FrameLayout>
+    </FrameLayout>
+
+</RelativeLayout>

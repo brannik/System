@@ -26,6 +26,7 @@
             android:layout_height="21dp"
             android:textColor="@color/white"
             android:layout_gravity="bottom"
+            android:textSize="5sp"
             android:text="ДНЕС"
             android:gravity="center"
             android:paddingHorizontal="7dp"
