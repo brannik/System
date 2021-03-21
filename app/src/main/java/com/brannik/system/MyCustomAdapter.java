@@ -1,6 +1,9 @@
 package com.brannik.system;
 
+import android.app.Dialog;
+import android.app.FragmentManager;
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +13,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -33,7 +38,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
     Globals globals = new Globals(MainActivity.getAppContext());
-
+    Dialog messageDialog;
     public MyCustomAdapter(ArrayList<String> list, Context context) {
         this.list = list;
         this.context = context;
@@ -55,6 +60,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     }
 
     public String message = null;
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -96,8 +102,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 int not_id = parseInt(currData.get(5));
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
-                String msg = "Приехте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
-                Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
                 doRequest(type,dateId,sender,not_id,nameS,message,dateStr);
             }
         });
@@ -113,12 +119,34 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
                 String msg = "Отказахте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
-                Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
                 doRequest(type,dateId,sender,not_id,nameS,message,dateStr);
             }
         });
-
+        messageDialog = new Dialog(view.getContext());
         return view;
+    }
+
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.message_popup);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+
+            }
+
+            @Override
+            protected void finalize() throws Throwable {
+                super.finalize();
+
+            }
+        });
+        messageDialog.show();
+
     }
 
     private void doRequest(int type,int dateId,int sender,int notifyId,String names,String message,String dateString){
@@ -139,6 +167,26 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                     @Override
                     public void onResponse(String response) {
                         Log.d("DEBUG","DEBUG->" + response);
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String RESPONSE = data.getString("RESULT");
+                                if(parseInt(RESPONSE) == 1){
+                                    String msg = "Приехте заявка !!!";
+                                    showMessage(msg);
+                                }else if(parseInt(RESPONSE) == 0){
+                                    String msg = "Отказахте заявка !!!";
+                                    showMessage(msg);
+                                }else{
+                                    showMessage("SQL Грешка");
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override

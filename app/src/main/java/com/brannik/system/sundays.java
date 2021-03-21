@@ -61,9 +61,12 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextDetector;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -569,16 +572,62 @@ public class sundays extends Fragment implements View.OnClickListener{
 
     private Boolean validateData(int data){
         Boolean check=null;
+        int[] minMax = getMaxMin();
+        int min = minMax[0] - 1000;
+        int max = minMax[1] + 1000;
         if(data != 0 ) {
             int length = (int) (Math.log10(data) + 1);
             if (length == 7) {
-                check = true;
+                if(data > max){
+                    check = false;
+                }else if(data < min){
+                    check = false;
+                }else{
+                    check = true;
+                }
             } else {
                 check = false;
             }
         }
         return check;
     }
+
+    public static int[] getMaxMin(){
+        final int[] MIN_MAX = {0,0};
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        String url = Globals.URL + "?request=get_min_max";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String min = data.getString("MIN");
+                                String max = data.getString("MAX");
+                                MIN_MAX[0] = parseInt(min);
+                                MIN_MAX[1] = parseInt(max);
+                                //Log.d("DEBUG","COUNTER_>" + response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+        return new int[]{MIN_MAX[0],MIN_MAX[1]};
+    }
+
     public int requestType = 0;
     private void SendRequest(String type,int data,int dataTwo,View view){
 

@@ -1,9 +1,13 @@
 package com.brannik.system;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -11,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -21,6 +26,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.internal.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,10 +37,13 @@ import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
 import org.naishadhparmar.zcustomcalendar.Property;
 
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -61,8 +70,10 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     CustomCalendar customCalendar;
     Dialog dateActions;
     HashMap<Integer,Object> dateHashMap = new HashMap<>();
+    Dialog messageDialog;
 
     Globals globals = new Globals(MainActivity.getAppContext());
+
     public shifts() {
         // Required empty public constructor
     }
@@ -103,6 +114,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
         HashMap<Object, Property> descHashMap = new HashMap<>();
         dateActions = new Dialog(this.getContext());
+        messageDialog = new Dialog(this.getContext());
 
         Property defaultProperty = new Property();
         defaultProperty.layoutResource = R.layout.calendar_deff;
@@ -176,6 +188,8 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         return inf;
     }
 
+
+
     @Override
     public Map<Integer, Object>[] onNavigationButtonClicked(int whichButton, Calendar newMonth) {
         Map<Integer,Object>[] arr = new Map[2];
@@ -195,19 +209,175 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         }
         return arr;
     }
+
+    private ArrayList<ArrayList<String>> arrSecondShift = new ArrayList<>();
+    private ArrayList<ArrayList<String>> arrSunday = new ArrayList<>();
+    private ArrayList<ArrayList<String>> arrRest = new ArrayList<>();
+
+    Boolean freeSecondShift = false;
+    Boolean secondShiftMine = false;
+    Boolean freeSunday = false;
+    Boolean sundayMine = false;
+    Boolean freeRest = false;
+    Boolean restMine = false;
+    int reqType = 0;
+    // 1 - zaqvka za svobodna nedelq
+    // 2 - zaqvka za zaeta nedelq
+    // 3 - zaqvka za svoboden pochiven den
+    // 4 - zaqvka za zaet pochiven den
+    // 5 - zaqvka za svobodna 2-ra smqna
+    // 6 - zaqvka za zaeta vtora smqna
+    private void checkDate(int year,int month,int day,int acc,int sklad){
+        // voley da nameri datata
+
+    }
+
     private void dateActions(int year,int month,int day){
         dateActions.setContentView(R.layout.date_actions);
         TextView textHeader = (TextView) dateActions.findViewById(R.id.current_date_header);
+        TextView secondShLabel = (TextView) dateActions.findViewById(R.id.dateTextSecondSh);
+        Button btnSecondShift = (Button) dateActions.findViewById(R.id.btnSecondShift);
+        TextView restLabel = (TextView) dateActions.findViewById(R.id.dateTextRest);
+        Button btnRest = (Button) dateActions.findViewById(R.id.btnRest);
+        TextView sundayLabel = (TextView) dateActions.findViewById(R.id.dateTextSunday);
+        Button btnSunday = (Button) dateActions.findViewById(R.id.btnSunday);
+
         // @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
         // proveri dali e nedelq ili ne i promeni prozoreca !!!!!
         // MONTH -1 !!!!
-        // implement buttons and actions
-        textHeader.setText(year + " - " + month + " - " + day);
+        // proveri tazi data dali e svobodna ili ne
+        int sklad = globals.getSklad();
+        int acc_id = globals.getAccId();
+        checkDate(year,month,day,acc_id,sklad);
 
+        String text = year + "/" + month + "/" + day;
+        textHeader.setText(text);
+        Calendar cal = Calendar.getInstance();
+        int tmp = month-1;
+        cal.set(year,tmp,day);
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if(dayOfWeek == Calendar.SUNDAY){
+            // nedelq e
+            secondShLabel.setText("На тази дата е неделя и няма 2-ра смяна.");
+            btnSecondShift.setEnabled(false);
+            if(freeSunday){ // ako nedelqta e svobodna
+                sundayLabel.setText("Неделята е свободна.");
+                btnSunday.setEnabled(true);
+                reqType = 1;
+            }else{
+                if(sundayMine){
+                    sundayLabel.setText("На тази дата ти си наработа.");
+                    btnSunday.setEnabled(false);
+                }else {
+                    sundayLabel.setText("Неделята е заето от <@@@>");
+                    btnSunday.setText("Искам смяна");
+                    btnSunday.setEnabled(true);
+                    reqType = 2;
+                }
+            }
+        }else if(dayOfWeek == Calendar.SATURDAY){
+            secondShLabel.setText("На тази дата е събота и няма 2-ра смяна.");
+            btnSecondShift.setEnabled(false);
+            sundayLabel.setText("В събота не е неделя :)");
+            btnSunday.setEnabled(false);
+            if(freeRest){ // ako nikoi ne pochiva
+                restLabel.setText("Днес никой не почива.");
+                btnRest.setEnabled(true);
+                reqType = 3;
+            }else{
+                if(restMine){
+                    restLabel.setText("На тази дата ти пичиваш.");
+                    btnRest.setEnabled(false);
+                }else {
+                    restLabel.setText("Днес почива <@@@>");
+                    btnRest.setText("Изкам смяна");
+                    btnRest.setEnabled(true);
+                    reqType = 4;
+                }
+            }
+        }else{
+            sundayLabel.setText("Не може да си неделя когато не е неделя :)");
+            btnSunday.setEnabled(false);
+            if(freeRest){ // ako nikoi ne pochiva
+                restLabel.setText("Днес никой не почива.");
+                btnRest.setEnabled(true);
+                reqType = 3;
+            }else{
+                if(restMine){
+                    restLabel.setText("На тази дата ти пичиваш.");
+                    btnRest.setEnabled(false);
+                }else {
+                    restLabel.setText("Днес почива <@@@>");
+                    btnRest.setText("Изкам смяна");
+                    btnRest.setEnabled(true);
+                    reqType = 4;
+                }
+            }
 
+            if(freeSecondShift){
+                secondShLabel.setText("Днес няма втора смяна.");
+                btnSecondShift.setEnabled(true);
+                reqType = 5;
+            }else{
+                if(secondShiftMine){
+                    secondShLabel.setText("Днес ти си втора смяна.");
+                    btnSecondShift.setEnabled(false);
+                }else {
+                    secondShLabel.setText("Днес втора смяна е <@@@>");
+                    btnSecondShift.setText("Искам смяна");
+                    btnSecondShift.setEnabled(true);
+                    reqType = 6;
+                }
+            }
+        }
+
+        btnRest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                dateActions.dismiss();
+            }
+        });
+
+        btnSecondShift.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                dateActions.dismiss();
+            }
+        });
+
+        btnSunday.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                dateActions.dismiss();
+            }
+        });
         dateActions.show();
     }
 
+    private String sendDateRequest(int type,int acc_id,int sklad,int year,int month,int day, @Nullable String data){
+        String mess = "test message";
+        // izprashane na zaqvkata za data
+
+        return mess;
+    }
+
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.message_popup);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+            }
+        });
+        messageDialog.show();
+
+    }
 
     private ArrayList<String> array = new ArrayList<>();
 
@@ -246,7 +416,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
 
 
-                        Log.d("DEBUG"," -> " + response);
+                        //Log.d("DEBUG"," -> " + response);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -352,7 +522,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                                         }
                                         break;
                                 }
-                                Log.d("DEBUG"," [DATA] " + day + " | " + type + " | " + owner);
+                                //Log.d("DEBUG"," [DATA] " + day + " | " + type + " | " + owner);
                             }
                             if(check[0] == false){
                                 dateHashMap.put(parseInt(date),"dnes");

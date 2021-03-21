@@ -19,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -48,7 +50,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -118,7 +123,9 @@ public class sumary extends Fragment implements View.OnClickListener {
     }
 
 
-
+    TextView docCount;
+    FrameLayout warningFrame;
+    TextView warningText;
 
     @SuppressWarnings("rawtypes")
     @Override
@@ -174,6 +181,12 @@ public class sumary extends Fragment implements View.OnClickListener {
             updNotify.setText("Инсталирана е последната версия " + GLOBE.getCurrVersion());
         }
 
+        Calendar calendar = Calendar.getInstance();
+        int id = GLOBE.getAccId();
+        int skladd = GLOBE.getSklad();
+        int month = calendar.get(Calendar.MONTH);
+        month+=1;
+        checks(id,skladd,month,inf);
 
         // call function to prepare list
         prepareList(inf);
@@ -181,6 +194,55 @@ public class sumary extends Fragment implements View.OnClickListener {
 
 
         return inf;
+    }
+
+    private void checks(int acc_id,int sklad,int month,View view){
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        String url = Globals.URL + "?request=get_doc_count&month=" + month + "&acc_id=" + acc_id + "&sklad=" + sklad;
+        docCount = (TextView) view.findViewById(R.id.txtCount);
+        warningFrame = (FrameLayout) view.findViewById(R.id.LineEight);
+        warningFrame.setVisibility(View.INVISIBLE);
+        warningText = (TextView) view.findViewById(R.id.txtWarning);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String total = data.getString("COUNT_TOTAL");
+                                String unchecked = data.getString("COUNT_UNCHECKED");
+                                Calendar calend = Calendar.getInstance();
+                                int lastDay = calend.getLeastMaximum(Calendar.DAY_OF_MONTH);
+                                int today = calend.get(Calendar.DAY_OF_MONTH);
+                                int t = lastDay - today;
+                                if(t <= 6){
+                                    if(parseInt(unchecked) > 0) {
+                                        warningFrame.setVisibility(View.VISIBLE);
+                                        String msg = "Внимание имате " + unchecked + " неотразени бележки и " + t + " дни до края на месеца !!!";
+                                        warningText.setVisibility(View.VISIBLE);
+                                        warningText.setText(msg);
+                                    }
+                                }
+                                docCount.setText(total);
+                                //Log.d("DEBUG","COUNTER_>" + response);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
     }
 
     private void prepareList(View view){
@@ -225,7 +287,7 @@ public class sumary extends Fragment implements View.OnClickListener {
 
 
         });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
