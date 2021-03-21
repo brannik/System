@@ -88,7 +88,6 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     Boolean restMine = false;
     int reqType = 0;
 
-
     public shifts() {
         // Required empty public constructor
     }
@@ -197,7 +196,8 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 int year = selectedDate.get(Calendar.YEAR);
                 int month = selectedDate.get(Calendar.MONTH);
                 int day = selectedDate.get(Calendar.DAY_OF_MONTH);
-                checkDate(year,month+1,day);
+                month = month + 1;
+                checkDate(year,month,day);
             }
         });
 
@@ -356,6 +356,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         Calendar cal = Calendar.getInstance();
         int tmp = month-1;
         cal.set(year,tmp,day);
+        reqType = 0;
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
         if(dayOfWeek == Calendar.SUNDAY){
             // nedelq e
@@ -389,11 +390,11 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             if(freeRest){ // ako nikoi ne pochiva
                 restLabel.setText("Днес никой не почива.");
                 btnRest.setEnabled(true);
-                reqType = 3;
+                reqType = 1;
             }else{
                 if(restMine){
                     restLabel.setBackgroundColor(Color.RED);
-                    restLabel.setText("На тази дата ти пичиваш.");
+                    restLabel.setText("На тази дата ти почиваш.");
                     btnRest.setEnabled(false);
                 }else {
                     ArrayList<String> fragRest = new ArrayList<String>(Arrays.asList(arrRest.get(0).split("##")));
@@ -401,16 +402,16 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                     restLabel.setText(finalText);
                     btnRest.setText("Искам смяна");
                     btnRest.setEnabled(true);
-                    reqType = 4;
+                    reqType = 2;
                 }
             }
-        }else{
+        }else {
             sundayLabel.setText("Не може да си неделя когато не е неделя :)");
             btnSunday.setEnabled(false);
             if(freeRest){ // ako nikoi ne pochiva
                 restLabel.setText("Днес никой не почива.");
                 btnRest.setEnabled(true);
-                reqType = 3;
+                reqType = 1;
             }else{
                 if(restMine){
                     restLabel.setBackgroundColor(Color.RED);
@@ -422,14 +423,14 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                     restLabel.setText(finalText);
                     btnRest.setText("Искам смяна");
                     btnRest.setEnabled(true);
-                    reqType = 4;
+                    reqType = 2;
                 }
             }
 
             if(freeSecondShift){
                 secondShLabel.setText("Днес няма втора смяна.");
                 btnSecondShift.setEnabled(true);
-                reqType = 5;
+                reqType = 1;
             }else{
                 if(secondShiftMine){
                     secondShLabel.setBackgroundColor(Color.RED);
@@ -441,7 +442,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                     secondShLabel.setText(finalText);
                     btnSecondShift.setText("Искам смяна");
                     btnSecondShift.setEnabled(true);
-                    reqType = 6;
+                    reqType = 2;
                 }
             }
         }
@@ -449,7 +450,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         btnRest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                sendDateRequest(reqType,3,acc_id,sklad,year,month,day,arrRest);
                 dateActions.dismiss();
             }
         });
@@ -457,7 +458,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         btnSecondShift.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                sendDateRequest(reqType,1,acc_id,sklad,year,month,day,arrSecondShift);
                 dateActions.dismiss();
             }
         });
@@ -465,15 +466,14 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         btnSunday.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showMessage(sendDateRequest(reqType,acc_id,sklad,year,month,day,null));
+                sendDateRequest(reqType,2,acc_id,sklad,year,month,day,arrSunday);
                 dateActions.dismiss();
             }
         });
         dateActions.show();
     }
 
-    private String sendDateRequest(int type,int acc_id,int sklad,int year,int month,int day, @Nullable String data){
-        String mess = "test message";
+    private void sendDateRequest(int type,int dateType,int my_acc_id,int sklad,int year,int month,int day, @Nullable ArrayList<String> data){
         // izprashane na zaqvkata za data
         // 1 - zaqvka za svobodna nedelq
         // 2 - zaqvka za zaeta nedelq
@@ -481,15 +481,75 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         // 4 - zaqvka za zaet pochiven den
         // 5 - zaqvka za svobodna 2-ra smqna
         // 6 - zaqvka za zaeta vtora smqna
+        // data contains date information if exsist
 
         // db types
         // 1 vtora
         // 2 nedelq
         // 3 pochivka
 
+        final String[] mess = {null};
+        String date_id = "";
+        String date_text = "";
+        String  date_owner_id = "";
+        String my_names = globals.getNames();
 
-        return mess;
+        if(!data.isEmpty()){
+            ArrayList<String> frag = new ArrayList<String>(Arrays.asList(data.get(0).split("##")));
+            date_id = frag.get(0);
+            date_text = frag.get(2);
+            date_owner_id = frag.get(3);
+        }
+
+
+        String url = null;
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        url = Globals.URL + "?request=request_date&req_type=" + type + "&date_type=" + dateType +"&my_acc=" + my_acc_id + "&sklad=" + sklad + "&year=" + year + "&month=" + month + "&day=" + day + "&old_date_id=" + date_id + "&old_date_text=" + date_text + "&old_date_owner=" + date_owner_id + "&my_names=" + my_names;
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String status = data.getString("REQ_STATE");
+                                String date_txt = data.getString("REQ_DATE");
+                                if(parseInt(status) == 1){
+                                    mess[0] = "Заявката ви за дата " + date_txt + " беше успешно извършена.";
+                                }else{
+                                    mess[0] = "Грешка !!! " + date_txt;
+                                }
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        showMessage(mess[0]);
+                        //Log.d("DEBUG"," -> " + response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+
+
+        });
+
+
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+
+
     }
+
+
 
     public void showMessage(String msg) {
         messageDialog.setContentView(R.layout.message_popup);
@@ -559,7 +619,6 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
 
-        // get your requests and add them to listview
 
     }
 

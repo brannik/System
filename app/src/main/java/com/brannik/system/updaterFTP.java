@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,12 @@ import androidx.fragment.app.Fragment;
 public class updaterFTP extends AsyncTask<String,String,String>{
     Globals global = new Globals(MainActivity.getAppContext());
     Boolean status = false;
+    Dialog messageDialog;
+    View v;
+    public updaterFTP(View v) {
+        this.v = v;
+        messageDialog = new Dialog(v.getContext());
+    }
 
     @Override
     protected void onPreExecute() {
@@ -47,11 +54,26 @@ public class updaterFTP extends AsyncTask<String,String,String>{
     protected void onPostExecute(String file_url) {
         // dismiss the dialog after the file was downloaded
         global.setVersion(Globals.newVersion);
-
-        Toast.makeText(MainActivity.getAppContext(),"Актуализацията завърши.Отворете папка DOWNLOADS и инсталирайте app-update.apk",Toast.LENGTH_LONG).show();
+        int newVersion = Globals.newVersion;
+        String msg = "Актуализацията завърши.Отворете папка DOWNLOADS и инсталирайте app-update-V" + newVersion +".apk";
+        showMessage(msg);
     }
 
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.message_popup);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+                System.exit(0);
+            }
+        });
+        messageDialog.show();
 
+    }
 
 
 }

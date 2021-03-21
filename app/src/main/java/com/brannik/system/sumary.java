@@ -300,7 +300,7 @@ public class sumary extends Fragment implements View.OnClickListener {
                 Log.d("DEBUG","start updating app");
                 Button updBtn = (Button) v.findViewById(R.id.btnUpdateApp);
                 updBtn.setEnabled(false);
-                new updaterFTP().execute();
+                new updaterFTP(v).execute();
                 break;
         }
     }
