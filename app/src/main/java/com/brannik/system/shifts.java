@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -47,6 +48,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import static java.lang.Boolean.parseBoolean;
 import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
 
@@ -73,6 +75,19 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     Dialog messageDialog;
 
     Globals globals = new Globals(MainActivity.getAppContext());
+
+    private ArrayList<String> arrSecondShift = new ArrayList<>();
+    private ArrayList<String> arrSunday = new ArrayList<>();
+    private ArrayList<String> arrRest = new ArrayList<>();
+
+    Boolean freeSecondShift = false;
+    Boolean secondShiftMine = false;
+    Boolean freeSunday = false;
+    Boolean sundayMine = false;
+    Boolean freeRest = false;
+    Boolean restMine = false;
+    int reqType = 0;
+
 
     public shifts() {
         // Required empty public constructor
@@ -171,17 +186,18 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
         customCalendar.setMapDescToProp(descHashMap);
 
-        Calendar calendar = Calendar.getInstance();
-        // call voley and process requests
-
         buildCalendar();
         buildRequestNotifications(inf);
+
+
 
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
-
-                dateActions(selectedDate.get(Calendar.YEAR),selectedDate.get(Calendar.MONTH) + 1,selectedDate.get(Calendar.DAY_OF_MONTH));
+                int year = selectedDate.get(Calendar.YEAR);
+                int month = selectedDate.get(Calendar.MONTH);
+                int day = selectedDate.get(Calendar.DAY_OF_MONTH);
+                checkDate(year,month+1,day);
             }
         });
 
@@ -210,27 +226,69 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         return arr;
     }
 
-    private ArrayList<ArrayList<String>> arrSecondShift = new ArrayList<>();
-    private ArrayList<ArrayList<String>> arrSunday = new ArrayList<>();
-    private ArrayList<ArrayList<String>> arrRest = new ArrayList<>();
 
-    Boolean freeSecondShift = false;
-    Boolean secondShiftMine = false;
-    Boolean freeSunday = false;
-    Boolean sundayMine = false;
-    Boolean freeRest = false;
-    Boolean restMine = false;
-    int reqType = 0;
-    // 1 - zaqvka za svobodna nedelq
-    // 2 - zaqvka za zaeta nedelq
-    // 3 - zaqvka za svoboden pochiven den
-    // 4 - zaqvka za zaet pochiven den
-    // 5 - zaqvka za svobodna 2-ra smqna
-    // 6 - zaqvka za zaeta vtora smqna
-    private void checkDate(int year,int month,int day,int acc,int sklad){
+
+    private void checkDate(int year,int month,int day){
         // voley da nameri datata
 
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        int id = globals.getAccId();
+        int sklad = globals.getSklad();
+        String url = Globals.URL + "?request=check_date&year=" + year + "&month=" + month + "&day=" + day + "&acc_id=" + id + "&sklad=" + sklad;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            arrSunday.clear();
+                            arrRest.clear();
+                            arrSecondShift.clear();
+                            JSONArray jsonArray = new JSONArray(response);
+                            //Log.d("DEBUG","DEBUG->" + response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String date_id = data.getString("DATE_ID");
+                                String date_text = data.getString("DATE");
+                                String date_type = data.getString("DATE_TYPE");
+                                String date_owner_name = data.getString("DATE_OWNER_NAMES");
+                                String date_owner_id = data.getString("DATE_OWNER_ID");
+
+
+                                String text = date_id + "##" + date_type + "##" + date_text + "##" + date_owner_id + "##" + date_owner_name;
+                                Log.d("DEBUG",text);
+                                switch(parseInt(date_type)){
+                                    case 1:
+                                        arrSecondShift.add(text);
+                                        break;
+                                    case 2:
+                                        arrSunday.add(text);
+                                        break;
+                                    case 3:
+                                        arrRest.add(text);
+                                        break;
+                                }
+                            }
+                           // filterDates();
+                            dateActions(year,month,day);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+
     }
+
 
     private void dateActions(int year,int month,int day){
         dateActions.setContentView(R.layout.date_actions);
@@ -248,7 +306,50 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         // proveri tazi data dali e svobodna ili ne
         int sklad = globals.getSklad();
         int acc_id = globals.getAccId();
-        checkDate(year,month,day,acc_id,sklad);
+
+
+
+
+
+        if(!arrSecondShift.isEmpty()){
+            ArrayList<String> fragShift = new ArrayList<String>(Arrays.asList(arrSecondShift.get(0).split("##")));
+            freeSecondShift = false;
+            //Log.d("DEBUG", "sec size => " + arrSecondShift.size());
+            if(parseInt(fragShift.get(3)) == acc_id){
+                secondShiftMine = true;
+            }else{
+                secondShiftMine = false;
+            }
+        }else{
+            freeSecondShift = true;
+        }
+
+        if(!arrRest.isEmpty()){
+            //Log.d("DEBUG", "rest size => " + arrRest.size());
+            ArrayList<String> fragRest = new ArrayList<String>(Arrays.asList(arrRest.get(0).split("##")));
+
+            freeRest= false;
+            if(parseInt(fragRest.get(3)) == acc_id){
+                restMine = true;
+            }else{
+                restMine = false;
+            }
+        }else{
+            freeRest = true;
+        }
+
+        if(!arrSunday.isEmpty()){
+            Log.d("DEBUG", "sun size => " + arrSunday.size());
+            ArrayList<String> fragSunday = new ArrayList<String>(Arrays.asList(arrSunday.get(0).split("##")));
+            freeSunday = false;
+            if(parseInt(fragSunday.get(3)) == acc_id){
+                sundayMine = true;
+            }else{
+                sundayMine = false;
+            }
+        }else{
+            freeSunday = true;
+        }
 
         String text = year + "/" + month + "/" + day;
         textHeader.setText(text);
@@ -260,16 +361,21 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             // nedelq e
             secondShLabel.setText("На тази дата е неделя и няма 2-ра смяна.");
             btnSecondShift.setEnabled(false);
+            restLabel.setText("Нормалните хора почиват :)");
+            btnRest.setEnabled(false);
             if(freeSunday){ // ako nedelqta e svobodna
                 sundayLabel.setText("Неделята е свободна.");
                 btnSunday.setEnabled(true);
                 reqType = 1;
             }else{
                 if(sundayMine){
+                    sundayLabel.setBackgroundColor(Color.RED);
                     sundayLabel.setText("На тази дата ти си наработа.");
                     btnSunday.setEnabled(false);
                 }else {
-                    sundayLabel.setText("Неделята е заето от <@@@>");
+                    ArrayList<String> fragSunday = new ArrayList<String>(Arrays.asList(arrSunday.get(0).split("##")));
+                    String finalText = "Неделята е заета от " + fragSunday.get(4);
+                    sundayLabel.setText(finalText);
                     btnSunday.setText("Искам смяна");
                     btnSunday.setEnabled(true);
                     reqType = 2;
@@ -286,11 +392,14 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 reqType = 3;
             }else{
                 if(restMine){
+                    restLabel.setBackgroundColor(Color.RED);
                     restLabel.setText("На тази дата ти пичиваш.");
                     btnRest.setEnabled(false);
                 }else {
-                    restLabel.setText("Днес почива <@@@>");
-                    btnRest.setText("Изкам смяна");
+                    ArrayList<String> fragRest = new ArrayList<String>(Arrays.asList(arrRest.get(0).split("##")));
+                    String finalText = "Днес почива " + fragRest.get(4);
+                    restLabel.setText(finalText);
+                    btnRest.setText("Искам смяна");
                     btnRest.setEnabled(true);
                     reqType = 4;
                 }
@@ -304,11 +413,14 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 reqType = 3;
             }else{
                 if(restMine){
+                    restLabel.setBackgroundColor(Color.RED);
                     restLabel.setText("На тази дата ти пичиваш.");
                     btnRest.setEnabled(false);
                 }else {
-                    restLabel.setText("Днес почива <@@@>");
-                    btnRest.setText("Изкам смяна");
+                    ArrayList<String> fragRest = new ArrayList<String>(Arrays.asList(arrRest.get(0).split("##")));
+                    String finalText = "Днес почива " + fragRest.get(4);
+                    restLabel.setText(finalText);
+                    btnRest.setText("Искам смяна");
                     btnRest.setEnabled(true);
                     reqType = 4;
                 }
@@ -320,10 +432,13 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                 reqType = 5;
             }else{
                 if(secondShiftMine){
+                    secondShLabel.setBackgroundColor(Color.RED);
                     secondShLabel.setText("Днес ти си втора смяна.");
                     btnSecondShift.setEnabled(false);
                 }else {
-                    secondShLabel.setText("Днес втора смяна е <@@@>");
+                    ArrayList<String> fragShift = new ArrayList<String>(Arrays.asList(arrSecondShift.get(0).split("##")));
+                    String finalText = "Днес втора смяна е " + fragShift.get(4);
+                    secondShLabel.setText(finalText);
                     btnSecondShift.setText("Искам смяна");
                     btnSecondShift.setEnabled(true);
                     reqType = 6;
@@ -360,6 +475,18 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     private String sendDateRequest(int type,int acc_id,int sklad,int year,int month,int day, @Nullable String data){
         String mess = "test message";
         // izprashane na zaqvkata za data
+        // 1 - zaqvka za svobodna nedelq
+        // 2 - zaqvka za zaeta nedelq
+        // 3 - zaqvka za svoboden pochiven den
+        // 4 - zaqvka za zaet pochiven den
+        // 5 - zaqvka za svobodna 2-ra smqna
+        // 6 - zaqvka za zaeta vtora smqna
+
+        // db types
+        // 1 vtora
+        // 2 nedelq
+        // 3 pochivka
+
 
         return mess;
     }
@@ -372,6 +499,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                buildCalendar();
                 messageDialog.dismiss();
             }
         });
@@ -381,7 +509,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     private ArrayList<String> array = new ArrayList<>();
 
-    private void buildRequestNotifications(View view){
+    public void buildRequestNotifications(View view){
         ListView listV = (ListView) view.findViewById(R.id.listRequests);
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int id = globals.getAccId();
@@ -395,7 +523,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                         array.clear();
                         try {
                             JSONArray jsonArray = new JSONArray(response);
-                            Log.d("DEBUG","DEBUG->" + response);
+                            //Log.d("DEBUG","DEBUG->" + response);
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String user = data.getString("NOT_SENDER");
@@ -409,7 +537,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                                 // format with separators ##
                                 array.add(text);
                             }
-                            listV.setAdapter(new MyCustomAdapter(array, view.getContext()) );
+                            listV.setAdapter(new MyCustomAdapter(array, view.getContext(),view ));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -435,13 +563,6 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     }
 
-    public void doActions(){
-        
-    }
-
-    public void builldMonth(int year,int month){
-        // for previous and next buttons
-    }
 
     public void buildCalendar(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());

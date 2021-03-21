@@ -37,11 +37,13 @@ import static java.lang.Integer.parseInt;
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private Context context;
+    private View view;
     Globals globals = new Globals(MainActivity.getAppContext());
     Dialog messageDialog;
-    public MyCustomAdapter(ArrayList<String> list, Context context) {
+    public MyCustomAdapter(ArrayList<String> list, Context context,View view) {
         this.list = list;
         this.context = context;
+        this.view = view;
     }
 
     @Override
@@ -102,7 +104,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 int not_id = parseInt(currData.get(5));
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
-
+                String msg = "Приехте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
+                showMessage(msg);
                 //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
                 doRequest(type,dateId,sender,not_id,nameS,message,dateStr);
             }
@@ -119,6 +122,7 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
                 String msg = "Отказахте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
+                showMessage(msg);
                 //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
                 doRequest(type,dateId,sender,not_id,nameS,message,dateStr);
             }
@@ -135,8 +139,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                 new shifts().buildRequestNotifications(view);
                 messageDialog.dismiss();
-
             }
 
             @Override
@@ -173,11 +177,11 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String RESPONSE = data.getString("RESULT");
                                 if(parseInt(RESPONSE) == 1){
-                                    String msg = "Приехте заявка !!!";
-                                    showMessage(msg);
+                                    //String msg = "Приехте заявка !!!";
+                                    //showMessage(msg);
                                 }else if(parseInt(RESPONSE) == 0){
-                                    String msg = "Отказахте заявка !!!";
-                                    showMessage(msg);
+                                    //String msg = "Отказахте заявка !!!";
+                                    //showMessage(msg);
                                 }else{
                                     showMessage("SQL Грешка");
                                 }
