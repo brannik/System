@@ -215,7 +215,7 @@ public class sumary extends Fragment implements View.OnClickListener {
                                 String total = data.getString("COUNT_TOTAL");
                                 String unchecked = data.getString("COUNT_UNCHECKED");
                                 Calendar calend = Calendar.getInstance();
-                                int lastDay = calend.getLeastMaximum(Calendar.DAY_OF_MONTH);
+                                int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
                                 int today = calend.get(Calendar.DAY_OF_MONTH);
                                 int t = lastDay - today;
                                 if(t <= 6){

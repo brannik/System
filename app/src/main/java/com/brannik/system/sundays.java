@@ -2,45 +2,28 @@ package com.brannik.system;
 
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.ColorMatrix;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.PixelFormat;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffXfermode;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
 import android.hardware.Camera;
-import android.media.ThumbnailUtils;
-import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 import android.provider.MediaStore;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
-import android.view.Surface;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -53,7 +36,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.vision.CameraSource;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
@@ -62,17 +44,18 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_OK;
@@ -349,6 +332,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     public void takeAPicture(){
 
         Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
                 /*
@@ -420,7 +404,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                         changeBitmapContrastBrightness(croppedBitmap,5,90);
                         imageBitmap = croppedBitmap;
                         detectTextFromImage();
-                        camera.release();
+                        //camera.release();
                     }
 
             }
@@ -571,61 +555,26 @@ public class sundays extends Fragment implements View.OnClickListener{
     }
 
     private Boolean validateData(int data){
-        Boolean check=null;
-        int[] minMax = getMaxMin();
-        int min = minMax[0] - 1000;
-        int max = minMax[1] + 1000;
+        Boolean check = false;
         if(data != 0 ) {
             int length = (int) (Math.log10(data) + 1);
+            //Log.d("DEBUG","LENGTH ->" + length);
             if (length == 7) {
-                if(data > max){
-                    check = false;
-                }else if(data < min){
-                    check = false;
-                }else{
-                    check = true;
-                }
+                check = true;
             } else {
                 check = false;
             }
+        }else{
+            check = false;
         }
+
         return check;
     }
 
     public static int[] getMaxMin(){
-        final int[] MIN_MAX = {0,0};
-        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        String url = Globals.URL + "?request=get_min_max";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        JSONArray jsonArray = null;
-                        try {
-                            jsonArray = new JSONArray(response);
-                            for(int i=0;i<jsonArray.length();i++){
-                                JSONObject data = jsonArray.getJSONObject(i);
-                                String min = data.getString("MIN");
-                                String max = data.getString("MAX");
-                                MIN_MAX[0] = parseInt(min);
-                                MIN_MAX[1] = parseInt(max);
-                                //Log.d("DEBUG","COUNTER_>" + response);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
-            }
-        });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
-                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        queue.add(stringRequest);
-        return new int[]{MIN_MAX[0],MIN_MAX[1]};
+        int[] values = new int[2];
+
+        return values;
     }
 
     public int requestType = 0;
@@ -791,7 +740,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+                Log.d("DEBUG", "VOLLEY ERROR -> ACTIONS -> " + error);
             }
         });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,

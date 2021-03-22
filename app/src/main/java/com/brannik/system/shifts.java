@@ -201,6 +201,9 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             }
         });
 
+        customCalendar.setNavigationButtonEnabled(CustomCalendar.NEXT,false);
+        customCalendar.setNavigationButtonEnabled(CustomCalendar.PREVIOUS,false);
+
         return inf;
     }
 

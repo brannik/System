@@ -21,6 +21,9 @@ public class Globals extends AppCompatActivity {
     public static String[] RANKS;
     public static String[] SKLAD;
     public static int newVersion;
+    public static int MIN = 0;
+    public static int MAX = 0;
+    public int check = 0;
 
     public Globals(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
