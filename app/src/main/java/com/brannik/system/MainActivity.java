@@ -103,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setAdapter(sectionsPagerAdapter);
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
+
+            tabs.setTabMode(TabLayout.MODE_SCROLLABLE);
+
             int count = tabs.getTabCount();
 
             int[] ICONS = new int[]{
