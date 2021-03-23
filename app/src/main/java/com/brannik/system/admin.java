@@ -64,14 +64,7 @@ public class admin extends Fragment {
                              Bundle savedInstanceState) {
         View inf = inflater.inflate(R.layout.fragment_admin, container, false);
         // Inflate the layout for this fragment
-        WebView web = (WebView) inf.findViewById(R.id.webView);
-        URL url = null;
-        try {
-            url = new URL(GLOBE.URLADMIN + "?user=" + GLOBE.getUsername() + "&acc_id=" + GLOBE.getAccId());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        web.loadUrl(String.valueOf(url));
+
         return inf;
     }
 }

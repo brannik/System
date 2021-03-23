@@ -25,6 +25,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RequiresPermission;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -43,12 +44,16 @@ public class MainActivity extends AppCompatActivity {
     public static Context getAppContext(){return appContext;}
     public static Intent i;
 
+    @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
 
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+
+
 
         appContext = getApplicationContext();
         //verifyStoragePermissions(MainActivity.this);
@@ -83,6 +88,20 @@ public class MainActivity extends AppCompatActivity {
             viewPager.setAdapter(sectionsPagerAdapter);
             TabLayout tabs = findViewById(R.id.tabs);
             tabs.setupWithViewPager(viewPager);
+            int count = tabs.getTabCount();
+
+            int[] ICONS = new int[]{
+                    R.drawable.icon_home,
+                    R.drawable.icon_grafik,
+                    R.drawable.icon_documents,
+                    R.drawable.icon_extra,
+                    R.drawable.icon_profile,
+                    R.drawable.icon_admin
+            };
+            for(int i=0;i<count;i++){
+                tabs.getTabAt(i).setIcon(ICONS[i]);
+            }
+
             //addNotification();
 
 

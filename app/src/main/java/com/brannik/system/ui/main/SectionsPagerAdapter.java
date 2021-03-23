@@ -1,6 +1,8 @@
 package com.brannik.system.ui.main;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
@@ -13,13 +15,11 @@ import com.brannik.system.Globals;
 import com.brannik.system.MainActivity;
 import com.brannik.system.R;
 import com.brannik.system.admin;
-import com.brannik.system.chat;
 import com.brannik.system.extra;
 import com.brannik.system.myAccount;
 import com.brannik.system.shifts;
 import com.brannik.system.sumary;
 import com.brannik.system.sundays;
-
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
@@ -33,8 +33,8 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
             R.string.tab_text_3,
             R.string.tab_text_4,
             R.string.tab_text_5,
-            R.string.tab_text_6,
-            R.string.tab_text_7};
+            R.string.tab_text_7,
+        };
 
     @DrawableRes
     private static final int[] TAB_ICONS = new int[]{
@@ -69,15 +69,11 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = myAccount.newInstance(GLOBE.getDevId(),"ACC");
                 break;
             case 5:
-                fragment = chat.newInstance(GLOBE.getUsername(),GLOBE.userRank());
-                break;
-            case 6:
                 fragment = admin.newInstance(GLOBE.getDevId(),"admin");
                 break;
         }
         return fragment;
     }
-
 
     @Nullable
     @Override
@@ -88,9 +84,9 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         if(GLOBE.userRank() < 2){
-            return 6;
+            return 5;
         }else{
-            return 7;
+            return 6;
         }
 
     }
