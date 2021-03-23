@@ -4,9 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15sp"
+    android:padding="15sp"
+    android:background="@drawable/simple_border"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".sundays"
-    android:padding="15sp">
+    >
 
     <FrameLayout
         android:id="@+id/RowOne"

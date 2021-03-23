@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 
 @SuppressWarnings("ALL")
 public class LoginRequest extends AsyncTask<String,String,String> {
@@ -26,7 +27,8 @@ public class LoginRequest extends AsyncTask<String,String,String> {
         try {
             // Enter URL address where your php file resides
             String id = Globals.getDevId();
-            url = new URL(GLOBE.URL + "?request=login&dev_id=" + id);
+            int month = Calendar.getInstance().get(Calendar.MONTH);
+            url = new URL(GLOBE.URL + "?request=login&dev_id=" + id + "&month=" + month);
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block
@@ -73,7 +75,7 @@ public class LoginRequest extends AsyncTask<String,String,String> {
 
                     if(action.equals("login")){
                         String username,fname,sname;
-                        int rank,userId,notiMsg,notiRequest,active,sklad;
+                        int rank,userId,notiMsg,notiRequest,active,sklad,documents,notifications;
 
                         JSONObject sys  = reader2.getJSONObject("account");
                         username = sys.getString("username");
@@ -86,9 +88,12 @@ public class LoginRequest extends AsyncTask<String,String,String> {
                         notiRequest = sys.getInt("noti_req");
                         active = sys.getInt("active");
                         sklad = sys.getInt("sklad");
+                        documents = sys.getInt("neotrazeni");
+                        notifications = sys.getInt("izvestiq");
 
                         GLOBE.setUserExs(1);
-                        GLOBE.setCredintials(userId,username,fname,sname,rank,notiMsg,notiRequest,active,sklad);
+                        GLOBE.setUnchecked(documents);
+                        GLOBE.setCredintials(userId,username,fname,sname,rank,notiMsg,notiRequest,active,sklad,documents,notifications);
 
                     }else{
                         GLOBE.setUserExs(0);

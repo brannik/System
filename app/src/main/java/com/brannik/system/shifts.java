@@ -587,6 +587,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                         try {
                             JSONArray jsonArray = new JSONArray(response);
                             //Log.d("DEBUG","DEBUG->" + response);
+                            globals.setNotCount(jsonArray.length());
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String user = data.getString("NOT_SENDER");

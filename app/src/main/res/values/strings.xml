@@ -4,8 +4,7 @@
     <string name="tab_text_2">График</string>
     <string name="tab_text_3">Бележки</string>
     <string name="tab_text_4">Извънредни</string>
-    <string name="tab_text_5">Профил</string>
-    <string name="tab_text_6">Чат</string>
+    <string name="tab_text_5">Настройки</string>
     <string name="tab_text_7">АДМИН</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

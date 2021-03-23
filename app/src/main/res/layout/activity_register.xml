@@ -5,6 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="15sp"
+    android:padding="15sp"
+    android:background="@drawable/simple_border"
     tools:context=".Register"
     app:layout_constrainedHeight="true"
     app:layout_constrainedWidth="true">

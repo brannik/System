@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_margin="15sp"
+    android:padding="15sp"
+    android:background="@drawable/simple_border"
+    tools:context=".settings"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+        <LinearLayout
+            android:layout_marginTop="25sp"
+            android:layout_width="match_parent"
+            android:id="@+id/TopFrame"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Настройка за известията"
+                android:textSize="15sp"
+                android:gravity="center"
+                />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchNotifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:text="Разреши"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:tooltipText="Да се изпращат ли известия докато приложението е затворено?"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/TopFrame"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Автоматична аларма"
+                android:textSize="15sp"
+                android:gravity="center"
+                />
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/switchAlarm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:text="Разреши"
+                android:layout_gravity="center"
+                android:textSize="20sp"
+                android:tooltipText="Да разреша ли на приложението да създава аларми? Ако да, колко по-рано от съоветното работно време?"
+                />
+            <TimePicker
+                android:id="@+id/txtEditFirstTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:timePickerMode="clock"
+                android:visibility="invisible"
+                />
+            <TimePicker
+                android:id="@+id/txtEditSecondTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:timePickerMode="clock"
+                android:visibility="invisible"
+                />
+        </LinearLayout>
+
+
+</RelativeLayout>

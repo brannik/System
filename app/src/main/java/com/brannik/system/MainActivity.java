@@ -8,11 +8,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.ColorFilter;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -35,9 +40,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.brannik.system.ui.main.SectionsPagerAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import static android.Manifest.permission_group.CAMERA;
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity {
     public static Context appContext;
@@ -46,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
-
+    public int unchecked = 0;
 
 
     @Override
@@ -80,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
+        int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
+        int today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        int t = lastDay - today;
+
         int check = GLOBE.userExsi();
         if(check == 1){
             // display data
@@ -95,11 +110,37 @@ public class MainActivity extends AppCompatActivity {
                     R.drawable.icon_grafik,
                     R.drawable.icon_documents,
                     R.drawable.icon_extra,
-                    R.drawable.icon_profile,
+                    R.drawable.icon_settings,
                     R.drawable.icon_admin
             };
+            int unchecked = GLOBE.getUnchecked();
+            int notifications = GLOBE.getNotCount();
             for(int i=0;i<count;i++){
                 tabs.getTabAt(i).setIcon(ICONS[i]);
+                if(i == 0) {
+                    if(t <= 6){
+                        if(unchecked > 0) {
+                            tabs.getTabAt(i).getOrCreateBadge().setMaxCharacterCount(2);
+                            tabs.getTabAt(i).getOrCreateBadge().setNumber(1);
+                            tabs.getTabAt(i).getOrCreateBadge().setBackgroundColor(Color.RED);
+                        }
+                    }
+                }
+                if(i == 2){
+                        if(unchecked > 0) {
+                            tabs.getTabAt(i).getOrCreateBadge().setMaxCharacterCount(4);
+                            tabs.getTabAt(i).getOrCreateBadge().setNumber(unchecked);
+                            tabs.getTabAt(i).getOrCreateBadge().setBackgroundColor(Color.RED);
+                        }
+                }
+                if(i==1){
+                    if(notifications > 0) {
+                        tabs.getTabAt(i).getOrCreateBadge().setMaxCharacterCount(2);
+                        tabs.getTabAt(i).getOrCreateBadge().setNumber(notifications);
+                        tabs.getTabAt(i).getOrCreateBadge().setBackgroundColor(Color.RED);
+                    }
+                }
+
             }
 
             //addNotification();
@@ -246,4 +287,6 @@ public class MainActivity extends AppCompatActivity {
             Thread.currentThread().interrupt();
         }
     }
+
+
 }

@@ -1,7 +1,6 @@
 package com.brannik.system.ui.main;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 
 
 import androidx.annotation.DrawableRes;
@@ -16,7 +15,7 @@ import com.brannik.system.MainActivity;
 import com.brannik.system.R;
 import com.brannik.system.admin;
 import com.brannik.system.extra;
-import com.brannik.system.myAccount;
+import com.brannik.system.settings;
 import com.brannik.system.shifts;
 import com.brannik.system.sumary;
 import com.brannik.system.sundays;
@@ -66,7 +65,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
                 fragment = extra.newInstance(GLOBE.getDevId(),"extra");
                 break;
             case 4:
-                fragment = myAccount.newInstance(GLOBE.getDevId(),"ACC");
+                fragment = settings.newInstance(GLOBE.getDevId(),"ACC");
                 break;
             case 5:
                 fragment = admin.newInstance(GLOBE.getDevId(),"admin");

@@ -21,9 +21,7 @@ public class Globals extends AppCompatActivity {
     public static String[] RANKS;
     public static String[] SKLAD;
     public static int newVersion;
-    public static int MIN = 0;
-    public static int MAX = 0;
-    public int check = 0;
+
 
     public Globals(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
@@ -64,6 +62,12 @@ public class Globals extends AppCompatActivity {
     public int getSklad(){
         return sharedPreferences.getInt("sklad",0);
     }
+    public int getUnchecked(){
+        return sharedPreferences.getInt("neotrazeni",0);
+    }
+    public int getNotCount(){
+        return sharedPreferences.getInt("izvestiq",0);
+    }
     public String getNames(){
         String temp="";
         temp += sharedPreferences.getString("f_name","");
@@ -90,7 +94,19 @@ public class Globals extends AppCompatActivity {
         editor.apply();
     }
 
-    public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active,int sklad){
+    public void setUnchecked(int count){
+        editor = sharedPreferences.edit();
+        editor.putInt("neotrazeni",count);
+        editor.apply();
+    }
+
+    public void setNotCount(int count){
+        editor = sharedPreferences.edit();
+        editor.putInt("izvestiq",count);
+        editor.apply();
+    }
+
+    public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active,int sklad,int unchecked,int notCount){
         editor = sharedPreferences.edit();
         editor.putString("username",usrName);
         editor.putString("f_name",fName);
@@ -101,6 +117,8 @@ public class Globals extends AppCompatActivity {
         editor.putInt("notify_req",notifyReq);
         editor.putInt("active",active);
         editor.putInt("sklad",sklad);
+        editor.putInt("neotrazeni",unchecked);
+        editor.putInt("izvestiq",notCount);
         editor.apply();
 
     }

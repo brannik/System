@@ -335,26 +335,6 @@ public class sundays extends Fragment implements View.OnClickListener{
 
             @Override
             public void onPictureTaken(byte[] data, Camera camera) {
-                /*
-
-                Log.d("DEBUG",data.toString());
-                BitmapFactory.Options options = new BitmapFactory.Options();
-                options.inMutable = true;
-                imageBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-                ImageView image = (ImageView) customCamera.findViewById(R.id.imageView);
-                Matrix matrix = new Matrix();
-
-                matrix.postRotate(90);
-                Bitmap rotatedBitmap = Bitmap.createBitmap(imageBitmap, 0, 0, imageBitmap.getWidth(), imageBitmap.getHeight(), matrix, true);
-
-
-
-                imageBitmap = rotatedBitmap;
-                image.setImageBitmap(imageBitmap);
-                // crop image and process it
-                detectTextFromImage();
-                //customCamera.dismiss();
-                */
                 Bitmap bitmapPicture
                         = BitmapFactory.decodeByteArray(data, 0, data.length);
 
@@ -725,6 +705,8 @@ public class sundays extends Fragment implements View.OnClickListener{
                                     String result = data.getString("RESPONSE");
                                     if (result.matches("DONE")) {
                                         Toast.makeText(MainActivity.getAppContext(), "Бележката е отразена", Toast.LENGTH_SHORT).show();
+                                        int count = GLOBE.getUnchecked();
+                                        GLOBE.setUnchecked(count-1);
                                     } else {
                                         Toast.makeText(MainActivity.getAppContext(), "Бележката НЕ е отразена", Toast.LENGTH_SHORT).show();
                                     }

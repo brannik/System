@@ -104,6 +104,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 int not_id = parseInt(currData.get(5));
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
+                int notCount = globals.getNotCount();
+                globals.setNotCount(notCount - 1);
                 String msg = "Приехте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
                 showMessage(msg);
                 //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
@@ -121,6 +123,8 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
                 int not_id = parseInt(currData.get(5));
                 String nameS = currData.get(1);
                 String dateStr = currData.get(2);
+                int notCount = globals.getNotCount();
+                globals.setNotCount(notCount - 1);
                 String msg = "Отказахте заявка от потребител " + currData.get(1) + " за дата " + currData.get(2);
                 showMessage(msg);
                 //Toast.makeText(v.getContext(),msg,Toast.LENGTH_SHORT).show();
