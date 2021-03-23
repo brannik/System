@@ -13,13 +13,14 @@
             android:id="@+id/TopFrame"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:background="@drawable/simple_border"
             android:orientation="vertical"
             android:gravity="center">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Настройка за известията"
-                android:textSize="15sp"
+                android:textSize="25sp"
                 android:gravity="center"
                 />
             <androidx.appcompat.widget.SwitchCompat
@@ -37,15 +38,18 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/simple_border"
+            android:id="@+id/SecondFrame"
             android:layout_below="@+id/TopFrame"
             android:orientation="vertical"
+            android:layout_marginVertical="5sp"
             android:gravity="center">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Автоматична аларма"
-                android:textSize="15sp"
+                android:textSize="25sp"
                 android:gravity="center"
                 />
             <androidx.appcompat.widget.SwitchCompat
@@ -59,25 +63,54 @@
                 android:textSize="20sp"
                 android:tooltipText="Да разреша ли на приложението да създава аларми? Ако да, колко по-рано от съоветното работно време?"
                 />
-            <TimePicker
+
+            <EditText
                 android:id="@+id/txtEditFirstTime"
+                style="@style/Widget.AppCompat.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:timePickerMode="clock"
-                android:visibility="invisible"
-                />
-            <TimePicker
+                android:hint="Час за аларма при първа смяна"
+                android:inputType="time"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="20sp" />
+
+            <EditText
                 android:id="@+id/txtEditSecondTime"
+                style="@style/Widget.AppCompat.EditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:timePickerMode="clock"
-                android:visibility="invisible"
-                />
+                android:hint="Час за аларма при втора смяна"
+                android:inputType="time"
+                android:selectAllOnFocus="true"
+                android:singleLine="true"
+                android:textSize="20sp" />
         </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5sp"
+        android:layout_below="@+id/SecondFrame"
+        android:background="@drawable/simple_border"
+        android:orientation="vertical">
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10sp"
+            android:textSize="15sp"
+            android:text="Запамети"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10sp"
+            android:textSize="15sp"
+            android:text="Върни старите"/>
+    </LinearLayout>
 
 
 </RelativeLayout>

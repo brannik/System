@@ -10,9 +10,18 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,77 +46,49 @@ public class notifyRequest extends AsyncTask<String,String,String> {
 
     @Override
     protected String doInBackground(String... strings) {
-        try {
-            // Enter URL address where your php file resides
-            int id = GLOBE.getAccId();
-            url = new URL(GLOBE.URL + "?request=notify&acc_id=" + id );
 
-        } catch (MalformedURLException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return e.toString();
-        }
-        try {
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        int id = GLOBE.getAccId();
+        String url = GLOBE.URL + "?request=notify&acc_id=" + id;
 
-            // Setup HttpURLConnection class to send and receive data from php
-            conn = (HttpURLConnection) url.openConnection();
-            conn.setReadTimeout(1000);
-            conn.setConnectTimeout(1000);
-            conn.setRequestMethod("GET");
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            //Log.d("DEBUG","DEBUG->" + response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                int action  = data.getInt("count");
+                                if(action > 0){
+                                    String title = "Внимание !!!";
+                                    String text = "Имате " + action + " нови известия.";
+                                    showNotification(appContext,title,text,notificationIntent);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
 
-            // setDoOutput to true as we recieve data from json file
-            conn.setDoOutput(true);
 
-        } catch (IOException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
-            return e1.toString();
-        }
 
-        try {
-
-            int response_code = conn.getResponseCode();
-
-            // Check if successful connection made
-            if (response_code == HttpURLConnection.HTTP_OK) {
-
-                // Read data sent from server
-                InputStream input = conn.getInputStream();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(input));
-                StringBuilder result = new StringBuilder();
-                String line;
-
-                while ((line = reader.readLine()) != null) {
-                    result.append(line);
-                }
-
-                try {
-                    JSONObject reader2 = new JSONObject(String.valueOf(result));
-                    int action  = reader2.getInt("count");
-                    if(action > 0){
-                        String title = "График на смените";
-                        String text = "Имате " + action + " нови известия.";
-                        showNotification(appContext,title,text,notificationIntent);
+                        //Log.d("DEBUG"," -> " + response);
                     }
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-                // Pass data to onPostExecute method
-                return (result.toString());
-
-            } else {
-
-                return ("unsuccessful");
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
             }
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            return e.toString();
-        } finally {
-            conn.disconnect();
-        }
 
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+
+        return ("success");
 
     }
 
@@ -135,7 +116,7 @@ public class notifyRequest extends AsyncTask<String,String,String> {
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setDefaults(Notification.DEFAULT_SOUND);
+                .setDefaults(Notification.DEFAULT_ALL);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(intent);
