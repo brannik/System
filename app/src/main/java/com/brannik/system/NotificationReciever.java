@@ -11,16 +11,12 @@ import com.google.firebase.messaging.RemoteMessage;
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
 public class NotificationReciever extends FirebaseMessagingService {
+
+    // da se polzva za live chat
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         String TAG = "DEBUG";
-        // ...
-
-        // TODO(developer): Handle FCM messages here.
-        // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
         Log.d(TAG, "From: " + remoteMessage.getFrom());
-
-        // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
             Log.d(TAG, "Message data payload: " + remoteMessage.getData());
 
@@ -31,15 +27,9 @@ public class NotificationReciever extends FirebaseMessagingService {
                 // Handle message within 10 seconds
                 //handleNow();
             }
-
         }
-
-        // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
         }
-
-        // Also if you intend on generating your own notifications as a result of a received FCM
-        // message, here is where that should be initiated. See sendNotification method below.
     }
 }

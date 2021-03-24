@@ -11,6 +11,9 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,16 +23,28 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.brannik.system.ui.main.SectionsPagerAdapter;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.Manifest.permission_group.CAMERA;
+import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity{
     public static Context appContext;
@@ -47,9 +62,41 @@ public class MainActivity extends AppCompatActivity{
                 String updatedToken = instanceIdResult.getToken();
                 Log.e("DEBUG","NEW TOKEN "+ updatedToken);
                 globe.StoreToken(updatedToken);
-
+                int accid = globe.getAccId();
+                sendToken(accid,updatedToken);
             }
         });
+    }
+
+    private void sendToken(int accid,String token){
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        String url = Globals.URL + "?request=update_token&acc_id=" + accid + "&token=" + token;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        JSONArray jsonArray = null;
+                        try {
+                            jsonArray = new JSONArray(response);
+                            for(int i=0;i<jsonArray.length();i++){
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String total = data.getString("RESPONSE");
+                                Log.d("DEBUG","ERROR >>>" + total);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
     }
 
     @Override
