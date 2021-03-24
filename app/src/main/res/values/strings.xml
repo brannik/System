@@ -27,6 +27,8 @@
     <string name="btnDocumentEnter">Режим отразяване</string>
     <string name="btnDelDocument">Изтриване на бележка</string>
     <string name="documents">Бележки</string>
+    <string name="default_notification_channel_id">my_app_channel</string>
+    <string name="fcm_message">Внимание</string>
 
     <!-- CALENDAR -->
 

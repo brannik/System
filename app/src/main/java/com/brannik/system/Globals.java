@@ -104,6 +104,16 @@ public class Globals extends AppCompatActivity {
         editor.apply();
     }
 
+    public void StoreToken(String tocken){
+        editor = sharedPreferences.edit();
+        editor.putString("TOKEN",tocken);
+        editor.apply();
+    }
+
+    public String getToken(){
+        return sharedPreferences.getString("TOKEN",null);
+    }
+
 
     public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active,int sklad,int unchecked,int notCount){
         editor = sharedPreferences.edit();

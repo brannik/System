@@ -21,7 +21,10 @@ import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.brannik.system.ui.main.SectionsPagerAdapter;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -37,20 +40,26 @@ public class MainActivity extends AppCompatActivity{
     @SuppressLint("HardwareIds")
     public int unchecked = 0;
 
+    private void generateTocken(Globals globe){
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String updatedToken = instanceIdResult.getToken();
+                Log.e("DEBUG","NEW TOKEN "+ updatedToken);
+                globe.StoreToken(updatedToken);
+
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-
-
 
         appContext = getApplicationContext();
         //verifyStoragePermissions(MainActivity.this);
         Globals GLOBE = new Globals(appContext);
         new LoginRequest().execute();
         new UpdateApp().execute();
-
-        startService(new Intent(this, Notifications.class));
 
 
 
@@ -77,6 +86,8 @@ public class MainActivity extends AppCompatActivity{
 
         int check = GLOBE.userExsi();
         if(check == 1){
+            generateTocken(GLOBE);
+
             // display data
             SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
             ViewPager viewPager = findViewById(R.id.view_pager);
