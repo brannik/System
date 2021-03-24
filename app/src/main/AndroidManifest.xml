@@ -29,17 +29,13 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:theme="@style/Theme.System">
 
+
         <activity
             android:name=".Register"
             android:networkSecurityConfig="@xml/network_security_config"
             android:label="Регистрация">
 
         </activity>
-
-        <service
-            android:name=".reciever"
-            android:enabled="true"
-            android:exported="false" />
 
         <activity
             android:name=".MainActivity"
