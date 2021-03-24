@@ -2,58 +2,44 @@ package com.brannik.system;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
+
 import android.app.AlertDialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.ColorFilter;
-import android.net.Uri;
+
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
+
+import android.os.IBinder;
 import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
+
 import android.widget.Toast;
 
-import com.android.volley.DefaultRetryPolicy;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.tabs.TabLayout;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import androidx.annotation.RequiresPermission;
+
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.multidex.MultiDex;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.brannik.system.ui.main.SectionsPagerAdapter;
-import com.google.firebase.messaging.FirebaseMessaging;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
 import static android.Manifest.permission_group.CAMERA;
-import static java.lang.Integer.parseInt;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity{
     public static Context appContext;
     public static Context getAppContext(){return appContext;}
     public static Intent i;
@@ -75,22 +61,25 @@ public class MainActivity extends AppCompatActivity {
         new LoginRequest().execute();
         new UpdateApp().execute();
 
+        startService(new Intent(this, Notifications.class));
+
+
+
         wait(1000);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[] {Manifest.permission.CAMERA,
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.ACCESS_NOTIFICATION_POLICY,
-                        Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
-                        Manifest.permission.INTERNET,
-                        Manifest.permission_group.PHONE,
-                        Manifest.permission.FOREGROUND_SERVICE
-                }, 1);
-            }
+        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {Manifest.permission.CAMERA,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.ACCESS_NOTIFICATION_POLICY,
+                    Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
+                    Manifest.permission.INTERNET,
+                    Manifest.permission_group.PHONE,
+                    Manifest.permission.WAKE_LOCK,
+                    Manifest.permission.FOREGROUND_SERVICE
+            }, 1);
         }
 
         int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);

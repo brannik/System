@@ -117,9 +117,6 @@ public class sumary extends Fragment implements View.OnClickListener {
             mParam3 = getArguments().getString(ARG_PARAM3);
             mParam4 = getArguments().getString(ARG_PARAM4);
         }
-
-
-
     }
 
 
@@ -274,18 +271,13 @@ public class sumary extends Fragment implements View.OnClickListener {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
-                        Log.d("DEBUG"," -> " + response);
+                        //Log.d("DEBUG"," -> " + response);
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("DEBUG", "VOLLEY ERROR -> " + error);
             }
-
-
         });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

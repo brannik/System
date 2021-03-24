@@ -1,17 +1,20 @@
 package com.brannik.system;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Icon;
 import android.media.RingtoneManager;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.IBinder;
+import android.provider.Settings;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,29 +30,40 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-@SuppressWarnings("ALL")
-public class notifyRequest extends AsyncTask<String,String,String> {
-    HttpURLConnection conn;
-    URL url = null;
+public class Notifications extends Service {
     Context appContext = MainActivity.getAppContext();
     Intent notificationIntent = new Intent(appContext, MainActivity.class);
 
+    @SuppressLint("StaticFieldLeak")
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
-    @Override
-    protected String doInBackground(String... strings) {
 
+    public Notifications() {
+    }
+
+    @Override
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
+        Log.d("DEBUG","SERVICE RUNNING");
+        sendRequest();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d("DEBUG","SERVICE STOPED");
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        // TODO: Return the communication channel to the service.
+        throw new UnsupportedOperationException("Not yet implemented");
+    }
+
+    private void sendRequest(){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int id = GLOBE.getAccId();
-        String url = GLOBE.URL + "?request=notify&acc_id=" + id;
+        String url = Globals.URL + "?request=notify&acc_id=" + id;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -61,19 +75,20 @@ public class notifyRequest extends AsyncTask<String,String,String> {
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 int action  = data.getInt("count");
-                                if(action > 0){
-                                    String title = "Внимание !!!";
-                                    String text = "Имате " + action + " нови известия.";
-                                    showNotification(appContext,title,text,notificationIntent);
-                                }
+                                GLOBE.setNotificationsCount(action);
+
                             }
+
+                            int count = GLOBE.getNotificationsCount();
+                            String title = "Внимание !!!";
+                            String text = "Имате " + count + " нови известия.";
+                            showNotification(appContext,title,text,notificationIntent);
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
                         //Log.d("DEBUG"," -> " + response);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -83,18 +98,10 @@ public class notifyRequest extends AsyncTask<String,String,String> {
 
 
         });
-        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(1000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         queue.add(stringRequest);
-
-        return ("success");
-
-    }
-
-    // this method will interact with UI, display result sent from doInBackground method
-    @Override
-    protected void onPostExecute(String result) {
 
     }
 
@@ -104,6 +111,7 @@ public class notifyRequest extends AsyncTask<String,String,String> {
         int notificationId = 1;
         String channelId = "channel-01";
         String channelName = "Channel Name";
+        long[] patern = {0,100,200,500,200,100,0};
         int importance = NotificationManager.IMPORTANCE_HIGH;
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -112,11 +120,15 @@ public class notifyRequest extends AsyncTask<String,String,String> {
             notificationManager.createNotificationChannel(mChannel);
         }
 
+        Uri uri= Settings.System.DEFAULT_NOTIFICATION_URI;
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, channelId)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notification_icon,1)
+                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL)
+                .setContentText("Some content")
+                .setVibrate(patern)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setDefaults(Notification.DEFAULT_ALL);
+                .setSound(uri);
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         stackBuilder.addNextIntent(intent);
@@ -125,11 +137,8 @@ public class notifyRequest extends AsyncTask<String,String,String> {
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
         mBuilder.setContentIntent(resultPendingIntent);
-
         notificationManager.notify(notificationId, mBuilder.build());
 
 
     }
-
 }
-
