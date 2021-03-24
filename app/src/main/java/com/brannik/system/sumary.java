@@ -1,18 +1,6 @@
 package com.brannik.system;
 
-import android.Manifest;
-import android.app.Dialog;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-
-import android.os.Environment;
-import android.util.JsonReader;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +10,8 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -32,26 +21,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Iterator;
 
 import static java.lang.Integer.parseInt;
 
@@ -76,7 +51,7 @@ public class sumary extends Fragment implements View.OnClickListener {
     private String mParam3;
     private String mParam4;
 
-    private ArrayList<String> array = new ArrayList<>();
+    private final ArrayList<String> array = new ArrayList<>();
     Globals GLOBE = new Globals(MainActivity.getAppContext());
 
     public sumary() {
@@ -107,7 +82,7 @@ public class sumary extends Fragment implements View.OnClickListener {
         return fragment;
     }
 
-    @SuppressWarnings("rawtypes")
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -124,7 +99,6 @@ public class sumary extends Fragment implements View.OnClickListener {
     FrameLayout warningFrame;
     TextView warningText;
 
-    @SuppressWarnings("rawtypes")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

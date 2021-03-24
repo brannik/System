@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -13,7 +12,7 @@ import java.util.ArrayList;
 
 public class MyCustomAdapterNotifications extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
-    private Context context;
+    private final Context context;
 
     public MyCustomAdapterNotifications(ArrayList<String> list, Context context) {
         this.list = list;

@@ -1,16 +1,11 @@
 package com.brannik.system;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.

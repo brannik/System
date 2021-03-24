@@ -1,24 +1,18 @@
 package com.brannik.system;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -27,7 +21,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.internal.Constants;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,18 +31,12 @@ import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
 import org.naishadhparmar.zcustomcalendar.Property;
 
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import static java.lang.Boolean.parseBoolean;
-import static java.lang.Boolean.valueOf;
 import static java.lang.Integer.parseInt;
 
 
@@ -76,9 +63,9 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     Globals globals = new Globals(MainActivity.getAppContext());
 
-    private ArrayList<String> arrSecondShift = new ArrayList<>();
-    private ArrayList<String> arrSunday = new ArrayList<>();
-    private ArrayList<String> arrRest = new ArrayList<>();
+    private final ArrayList<String> arrSecondShift = new ArrayList<>();
+    private final ArrayList<String> arrSunday = new ArrayList<>();
+    private final ArrayList<String> arrRest = new ArrayList<>();
 
     Boolean freeSecondShift = false;
     Boolean secondShiftMine = false;
@@ -318,11 +305,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             ArrayList<String> fragShift = new ArrayList<String>(Arrays.asList(arrSecondShift.get(0).split("##")));
             freeSecondShift = false;
             //Log.d("DEBUG", "sec size => " + arrSecondShift.size());
-            if(parseInt(fragShift.get(3)) == acc_id){
-                secondShiftMine = true;
-            }else{
-                secondShiftMine = false;
-            }
+            secondShiftMine = parseInt(fragShift.get(3)) == acc_id;
         }else{
             freeSecondShift = true;
         }
@@ -332,11 +315,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             ArrayList<String> fragRest = new ArrayList<String>(Arrays.asList(arrRest.get(0).split("##")));
 
             freeRest= false;
-            if(parseInt(fragRest.get(3)) == acc_id){
-                restMine = true;
-            }else{
-                restMine = false;
-            }
+            restMine = parseInt(fragRest.get(3)) == acc_id;
         }else{
             freeRest = true;
         }
@@ -345,11 +324,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
             Log.d("DEBUG", "sun size => " + arrSunday.size());
             ArrayList<String> fragSunday = new ArrayList<String>(Arrays.asList(arrSunday.get(0).split("##")));
             freeSunday = false;
-            if(parseInt(fragSunday.get(3)) == acc_id){
-                sundayMine = true;
-            }else{
-                sundayMine = false;
-            }
+            sundayMine = parseInt(fragSunday.get(3)) == acc_id;
         }else{
             freeSunday = true;
         }
@@ -570,7 +545,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
     }
 
-    private ArrayList<String> array = new ArrayList<>();
+    private final ArrayList<String> array = new ArrayList<>();
 
     public void buildRequestNotifications(View view){
         ListView listV = (ListView) view.findViewById(R.id.listRequests);

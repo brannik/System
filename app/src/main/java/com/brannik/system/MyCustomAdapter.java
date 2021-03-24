@@ -1,9 +1,7 @@
 package com.brannik.system;
 
 import android.app.Dialog;
-import android.app.FragmentManager;
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.fragment.app.FragmentTransaction;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -30,14 +25,13 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
 public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
-    private Context context;
-    private View view;
+    private final Context context;
+    private final View view;
     Globals globals = new Globals(MainActivity.getAppContext());
     Dialog messageDialog;
     public MyCustomAdapter(ArrayList<String> list, Context context,View view) {

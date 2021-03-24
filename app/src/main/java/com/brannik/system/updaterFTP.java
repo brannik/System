@@ -1,5 +1,5 @@
 package com.brannik.system;
-import android.app.Activity;
+
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.content.Context;
@@ -10,9 +10,6 @@ import android.os.Environment;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.fragment.app.Fragment;
 
 public class updaterFTP extends AsyncTask<String,String,String>{
     Globals global = new Globals(MainActivity.getAppContext());

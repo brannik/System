@@ -1,13 +1,11 @@
 package com.brannik.system;
+
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Canvas;
-import android.graphics.Rect;
 import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 public class Globals extends AppCompatActivity {

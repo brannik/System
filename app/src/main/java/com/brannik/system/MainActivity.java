@@ -2,37 +2,26 @@ package com.brannik.system;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-
 import android.app.AlertDialog;
-import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-
 import android.os.Build;
 import android.os.Bundle;
-
-import android.os.IBinder;
 import android.util.Log;
-
 import android.widget.Toast;
 
-
-import com.google.android.material.tabs.TabLayout;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.brannik.system.ui.main.SectionsPagerAdapter;
-
+import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -149,7 +138,7 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
-    private String[] neededPermissions = new String[]{CAMERA};
+    private final String[] neededPermissions = new String[]{CAMERA};
     private boolean checkPermission() {
 
         ArrayList<String> permissionsNotGranted = new ArrayList<>();

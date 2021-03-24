@@ -14,8 +14,8 @@ import java.util.Arrays;
 
 public class MyCustomAdapterDocuments extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
-    private Context context;
-    private Integer type;
+    private final Context context;
+    private final Integer type;
 
     public MyCustomAdapterDocuments(ArrayList<String> list, Context context,Integer type) {
         this.list = list;

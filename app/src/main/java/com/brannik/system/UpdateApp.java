@@ -1,20 +1,8 @@
 package com.brannik.system;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Context;
-import android.content.Intent;
-import android.media.RingtoneManager;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.core.app.NotificationCompat;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 

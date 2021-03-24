@@ -3,7 +3,6 @@ package com.brannik.system;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -32,7 +31,7 @@ public class RegisterRequest extends AsyncTask<String,String,String> {
             String f_name=Register.getFName();
             String s_name=Register.getSName();
             String username = Register.getUserName();
-            url = new URL(GLOBE.URL + "?request=register&dev_id=" + id + "&f_name=" + f_name + "&s_name=" + s_name + "&username=" + username);
+            url = new URL(Globals.URL + "?request=register&dev_id=" + id + "&f_name=" + f_name + "&s_name=" + s_name + "&username=" + username);
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block

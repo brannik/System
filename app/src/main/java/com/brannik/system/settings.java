@@ -2,10 +2,6 @@ package com.brannik.system;
 
 import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import java.sql.Time;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.

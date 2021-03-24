@@ -51,6 +51,8 @@
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
                 android:value="ocr" />
         </activity>
+
+        <service android:name=".Notifications" />
     </application>
 
 </manifest>

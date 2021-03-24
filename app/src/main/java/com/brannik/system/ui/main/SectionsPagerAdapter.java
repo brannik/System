@@ -2,7 +2,6 @@ package com.brannik.system.ui.main;
 
 import android.content.Context;
 
-
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
@@ -53,22 +52,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment=null;
         switch(position){
             case 0:
-                fragment = sumary.newInstance(GLOBE.getDevId(),"username","names","rank");
+                fragment = sumary.newInstance(Globals.getDevId(),"username","names","rank");
                 break;
             case 1:
-                fragment = shifts.newInstance(GLOBE.getDevId(),"shifts");
+                fragment = shifts.newInstance(Globals.getDevId(),"shifts");
                 break;
             case 2:
-                fragment = sundays.newInstance(GLOBE.getDevId(),"sundays");
+                fragment = sundays.newInstance(Globals.getDevId(),"sundays");
                 break;
             case 3:
-                fragment = extra.newInstance(GLOBE.getDevId(),"extra");
+                fragment = extra.newInstance(Globals.getDevId(),"extra");
                 break;
             case 4:
-                fragment = settings.newInstance(GLOBE.getDevId(),"ACC");
+                fragment = settings.newInstance(Globals.getDevId(),"ACC");
                 break;
             case 5:
-                fragment = admin.newInstance(GLOBE.getDevId(),"admin");
+                fragment = admin.newInstance(Globals.getDevId(),"admin");
                 break;
         }
         return fragment;

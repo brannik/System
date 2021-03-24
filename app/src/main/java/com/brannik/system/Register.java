@@ -1,13 +1,12 @@
 package com.brannik.system;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class Register extends AppCompatActivity {
     Button btnRegister;
@@ -54,7 +53,7 @@ public class Register extends AppCompatActivity {
         errors.setText(text);
     }
 
-    private View.OnClickListener listener = new View.OnClickListener() {
+    private final View.OnClickListener listener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             switch(v.getId()){

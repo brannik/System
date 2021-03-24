@@ -2,31 +2,16 @@ package com.brannik.system;
 
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.hardware.Camera;
-import android.media.tv.TvContract;
-import android.os.Debug;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
-import android.view.Surface;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 
-import com.google.android.gms.vision.Frame;
-
 import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 @SuppressWarnings("ALL")
 public class cameraCallback extends SurfaceView implements SurfaceHolder.Callback {

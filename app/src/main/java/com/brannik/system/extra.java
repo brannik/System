@@ -1,16 +1,11 @@
 package com.brannik.system;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CalendarView;
 
-import java.util.Date;
+import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
