@@ -106,14 +106,6 @@ public class Globals extends AppCompatActivity {
         editor.apply();
     }
 
-    public void setNotificationsCount(int count){
-        editor = sharedPreferences.edit();
-        editor.putInt("NOT_COUNT",count);
-        editor.apply();
-    }
-    public int getNotificationsCount(){
-        return sharedPreferences.getInt("NOT_COUNT",0);
-    }
 
     public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active,int sklad,int unchecked,int notCount){
         editor = sharedPreferences.edit();
