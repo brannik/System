@@ -61,6 +61,12 @@ public class updaterFTP extends AsyncTask<String,String,String>{
         TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
         text.setText(msg);
         Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        TextView verInfo = (TextView) messageDialog.findViewById(R.id.textVersionInfo);
+        String versionInfo = global.getCurrVersionInfo();
+        if(!versionInfo.equals("none")){
+            verInfo.setVisibility(View.VISIBLE);
+            verInfo.setText(versionInfo);
+        }
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

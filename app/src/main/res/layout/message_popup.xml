@@ -24,11 +24,22 @@
             android:paddingHorizontal="20dp"
             android:layout_marginBottom="40dp"
             android:autoSizeTextType="uniform"/>
+        <TextView
+            android:id="@+id/textVersionInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:padding="15sp"
+            android:textColor="@color/yellow"
+            android:background="#BD2323"
+            android:visibility="invisible"/>
 
         <TextView
             android:id="@+id/txtMessage"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="20sp"
             android:layout_width="match_parent"
             android:layout_height="190dp"
             android:text="TextView" />

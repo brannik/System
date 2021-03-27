@@ -71,11 +71,13 @@ public class UpdateApp extends AsyncTask<String,String,String> {
                 try {
                     JSONObject reader2 = new JSONObject(String.valueOf(result));
                     int action  = reader2.getInt("last_version");
-
+                    String infoText = reader2.getString("info");
+                    GLOBE.setVersionInfo(infoText);
                     int appVersion = GLOBE.getCurrVersion();
                     if(action != appVersion){
                         GLOBE.setNeedUpdate(1);
                         GLOBE.newVersion = action;
+
                     }else{
                         GLOBE.setNeedUpdate(0);
                     }

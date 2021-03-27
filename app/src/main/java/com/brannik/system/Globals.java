@@ -84,12 +84,21 @@ public class Globals extends AppCompatActivity {
         return sharedPreferences.getInt("version",0);
     }
 
+    public String getCurrVersionInfo(){
+        return sharedPreferences.getString("version_info","none");
+    }
 
     // setters
     public void setVersion(int ver){
         editor = sharedPreferences.edit();
         editor.putInt("version",ver);
         editor.apply();
+    }
+
+    public void setVersionInfo(String info){
+            editor = sharedPreferences.edit();
+            editor.putString("version_info",info);
+            editor.apply();
     }
 
     public void setUnchecked(int count){
