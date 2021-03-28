@@ -1,24 +1,18 @@
 package com.brannik.system;
 
+import android.app.Dialog;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,7 +21,7 @@ import java.util.List;
  */
 public class admin extends Fragment {
     Globals GLOBE = new Globals(MainActivity.getAppContext());
-    AdminGetAccounts admin = new AdminGetAccounts();
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -76,32 +70,17 @@ public class admin extends Fragment {
                              Bundle savedInstanceState) {
         View inf = inflater.inflate(R.layout.fragment_admin, container, false);
 
-        Spinner rank = (Spinner) inf.findViewById(R.id.spinnerAccRank);
-        ArrayAdapter<String> rankAdapter = new ArrayAdapter<String>(inf.getContext(), android.R.layout.simple_spinner_dropdown_item,admin.getRankNames());
-        rank.setAdapter(rankAdapter);
+        ADMIN_VAR admin = new ADMIN_VAR();
 
 
-        Spinner sklad = (Spinner) inf.findViewById(R.id.spinnerAccSklad);
-        ArrayAdapter<String> skladAdapter = new ArrayAdapter<String>(inf.getContext(), android.R.layout.simple_spinner_dropdown_item,admin.getSkladNames());
-        sklad.setAdapter(skladAdapter);
+        Spinner spinnerAcc = (Spinner) inf.findViewById(R.id.spinnerAccManagement);
+        //admin.populateAccountSpinner(spinner,inf,null); // this -> ADMIN_VAR
 
-        String[] test = admin.getAccounts();
+        admin.buildAccAdminSection(inf,spinnerAcc,null);
 
-        Spinner spinner=(Spinner) inf.findViewById(R.id.spinnerAccManagement);
-        spinner.setAdapter(new ArrayAdapter<String>(inf.getContext(), android.R.layout.simple_spinner_dropdown_item,test));
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-            public void onItemSelected(AdapterView<?> arg0, View arg1,
-                                       int arg2, long arg3) {
-                Toast.makeText(inf.getContext(),"Selected " + test[arg2],Toast.LENGTH_SHORT).show();
-
-            }
-
-            public void onNothingSelected(AdapterView<?> arg0) {
-
-            }
-        });
         return inf;
     }
+
+
 
 }
