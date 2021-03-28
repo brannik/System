@@ -7,7 +7,7 @@
         android:padding="5sp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-
+        <!-- Account settings section BEGIN -->
         <LinearLayout
             android:id="@+id/TopContainer"
             android:orientation="vertical"
@@ -21,76 +21,138 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="5sp"
                 android:gravity="center"
                 android:text="Настойки на потребители"
                 android:textSize="25sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border"
+                android:padding="10sp"
+                android:layout_marginVertical="5sp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <Button
+                    android:id="@+id/btnAdminAccountLoad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Зареди"
+                    android:layout_marginRight="20sp"
+                    android:textSize="15sp"/>
+                <Spinner
+                    android:id="@+id/spinnerAccManagement"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="20sp"
+                    android:minWidth="200sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:paddingVertical="10sp"
+                android:layout_marginVertical="5sp"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="40sp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginHorizontal="5sp"
+                    android:text="Име"
+                    android:textSize="15sp"/>
+                <EditText
+                    android:id="@+id/adminUserSettingsName"
+                    android:layout_width="wrap_content"
+                    android:minWidth="130sp"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:layout_width="70sp"
+                    android:layout_marginHorizontal="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Презиме"
+                    android:textSize="15sp"/>
+                <EditText
+                    android:id="@+id/adminUserSettingsSName"
+                    android:layout_width="wrap_content"
+                    android:minWidth="130sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Потребител"
-                android:textSize="15sp"/>
-            <Spinner
-                android:id="@+id/spinnerAccManagement"
-                android:layout_width="match_parent"
-                android:paddingVertical="15sp"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Име"
-                android:textSize="15sp"/>
-            <EditText
-                android:id="@+id/adminUserSettingsName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Презиме"
-                android:textSize="15sp"/>
-            <EditText
-                android:id="@+id/adminUserSettingsSName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
+                android:gravity="center"
+                android:paddingTop="5sp"
+                android:layout_gravity="center"
                 android:text="Акаунт"
                 android:textSize="15sp"/>
             <EditText
                 android:id="@+id/adminUserSettingsUsername"
                 android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
                 android:layout_height="wrap_content"/>
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Ранк"
-                android:textSize="15sp"/>
-            <Spinner
-                android:id="@+id/spinnerAccRank"
-                android:layout_width="match_parent"
-                android:layout_marginVertical="20sp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
-            <TextView
+                android:layout_marginVertical="5sp"
+                android:background="@drawable/simple_border"
+                android:padding="10sp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="Ранк"
+                    android:layout_marginRight="20sp"
+                    android:textSize="15sp"/>
+                <Spinner
+                    android:id="@+id/spinnerAccRank"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="20sp"
+                    android:minWidth="200sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="left"
-                android:text="Склад"
-                android:textSize="15sp"/>
-            <Spinner
-                android:id="@+id/spinnerAccSklad"
-                android:layout_width="match_parent"
-                android:layout_marginVertical="20sp"
-                android:gravity="center"
-                android:layout_gravity="center"
-                android:layout_height="wrap_content"/>
+                android:background="@drawable/simple_border"
+                android:layout_marginVertical="5sp"
+                android:padding="10sp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="60sp"
+                    android:gravity="center"
+                    android:layout_gravity="center"
+                    android:text="Склад"
+                    android:layout_marginRight="20sp"
+                    android:textSize="15sp"/>
+                <Spinner
+                    android:id="@+id/spinnerAccSklad"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="20sp"
+                    android:minWidth="200sp"
+                    android:layout_height="wrap_content"/>
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -112,7 +174,8 @@
             </LinearLayout>
 
         </LinearLayout>
-
+        <!-- Account settings section END -->
+        <!-- Document settings section BEGIN -->
         <LinearLayout
             android:id="@+id/MiddleContainer"
             android:layout_below="@+id/TopContainer"
@@ -287,7 +350,8 @@
             </LinearLayout>
 
         </LinearLayout>
-
+        <!-- Document settings section END-->
+        <!-- Dates settings section BEGIN -->
         <LinearLayout
             android:id="@+id/MiddleTwoContainer"
             android:layout_below="@+id/MiddleContainer"
@@ -678,7 +742,8 @@
 
 
         </LinearLayout>
-
+        <!-- Dates settings section END -->
+        <!-- Extra settings section BEGIN-->
         <LinearLayout
             android:id="@+id/MiddleTreeContainer"
             android:layout_below="@+id/MiddleTwoContainer"
@@ -807,7 +872,8 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-
+        <!-- Extra settings section END-->
+        <!-- Empty section BEGIN -->
         <LinearLayout
             android:layout_below="@+id/MiddleTreeContainer"
             android:orientation="vertical"
@@ -826,5 +892,6 @@
                 android:text="Other admin stuff"
                 android:textSize="25sp"/>
         </LinearLayout>
+        <!-- Empty section END -->
     </RelativeLayout>
 </ScrollView>

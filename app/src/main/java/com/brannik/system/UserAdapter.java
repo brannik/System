@@ -67,7 +67,8 @@ public class UserAdapter {
 
     @Override
     public String toString() {
-        return username;
+        String Names = name + " " + s_name;
+        return Names;
     }
 
 }

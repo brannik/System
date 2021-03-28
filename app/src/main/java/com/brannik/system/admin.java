@@ -71,12 +71,26 @@ public class admin extends Fragment {
         View inf = inflater.inflate(R.layout.fragment_admin, container, false);
 
         ADMIN_VAR admin = new ADMIN_VAR();
-
-
         Spinner spinnerAcc = (Spinner) inf.findViewById(R.id.spinnerAccManagement);
+
+        String[] ranks =  {"Зареди потребителите"};
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>
+                (inf.getContext(), android.R.layout.simple_spinner_item,
+                        ranks); //selected item will look like a spinner set from XML
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout
+                .simple_spinner_dropdown_item);
+        spinnerAcc.setAdapter(spinnerArrayAdapter);
+        Button btnLoad = (Button) inf.findViewById(R.id.btnAdminAccountLoad);
+        btnLoad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                admin.buildAccAdminSection(inf,spinnerAcc,null);
+            }
+        });
+
         //admin.populateAccountSpinner(spinner,inf,null); // this -> ADMIN_VAR
 
-        admin.buildAccAdminSection(inf,spinnerAcc,null);
+
 
         return inf;
     }

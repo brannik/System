@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="ranks">
-        <item>Гост</item>
-        <item>Потребител</item>
-        <item>Администратор</item>
+        <item> Зареди потребители</item>
     </string-array>
-    <string-array name="sklad">
-        <item>Няма</item>
-        <item>Първи</item>
-        <item>Втори</item>
-        <item>Мострена</item>
-        <item>Четвърти</item>
-        <item>Победа</item>
-        <item>Клетки</item>
-    </string-array>
+
 
 </resources>
