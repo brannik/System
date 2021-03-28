@@ -7,10 +7,29 @@
     android:background="@drawable/simple_border"
     tools:context=".settings"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/UpdateFrame"
+        android:background="@drawable/simple_border"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="update v"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="update btn"/>
+    </LinearLayout>
+
         <LinearLayout
-            android:layout_marginTop="25sp"
+            android:layout_marginVertical="5sp"
             android:layout_width="match_parent"
             android:id="@+id/TopFrame"
+            android:layout_below="@+id/UpdateFrame"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:background="@drawable/simple_border"
@@ -68,13 +87,18 @@
                 android:id="@+id/txtEditFirstTime"
                 style="@style/Widget.AppCompat.EditText"
                 android:layout_width="match_parent"
+                android:background="@drawable/simple_border"
+                android:layout_marginVertical="5sp"
+                android:paddingVertical="5sp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:hint="Час за аларма при първа смяна"
+                android:layout_marginHorizontal="20sp"
                 android:inputType="time"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
+                android:enabled="false"
                 android:textSize="20sp" />
 
             <EditText
@@ -84,10 +108,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
+                android:layout_marginHorizontal="20sp"
                 android:hint="Час за аларма при втора смяна"
                 android:inputType="time"
+                android:enabled="false"
+                android:background="@drawable/simple_border"
+                android:layout_marginVertical="15sp"
+                android:paddingVertical="5sp"
                 android:selectAllOnFocus="true"
                 android:singleLine="true"
+
                 android:textSize="20sp" />
         </LinearLayout>
 
@@ -95,19 +125,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5sp"
+        android:gravity="center"
         android:layout_below="@+id/SecondFrame"
         android:background="@drawable/simple_border"
-        android:orientation="vertical">
+        android:paddingVertical="10sp"
+        android:orientation="horizontal">
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/btnSaveSettings"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10sp"
+            android:layout_marginHorizontal="5sp"
             android:textSize="15sp"
             android:text="Запамети"/>
         <Button
-            android:layout_width="match_parent"
+            android:id="@+id/btnResetSettings"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10sp"
+            android:layout_marginHorizontal="5sp"
             android:textSize="15sp"
             android:text="Върни старите"/>
     </LinearLayout>

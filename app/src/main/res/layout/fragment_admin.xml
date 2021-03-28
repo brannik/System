@@ -1,99 +1,93 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="15sp"
-    android:padding="15sp"
-    android:background="@drawable/simple_border"
-    tools:context=".admin">
-    <LinearLayout
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:background="@drawable/simple_border"
+        android:padding="5sp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Настройки на потребители"
-            />
+        android:layout_height="wrap_content">
+
         <LinearLayout
+            android:id="@+id/TopContainer"
+            android:orientation="vertical"
+            android:background="@drawable/simple_border"
+            android:gravity="center"
+            android:padding="20sp"
+            android:layout_alignParentTop="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-         <TextView
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:text="Potrebitel"/>
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Настойки на потребители"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Потребител"
+                android:textSize="15sp"/>
             <Spinner
+                android:id="@+id/spinnerAccManagement"
+                android:layout_width="match_parent"
+                android:paddingVertical="15sp"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="left"
+                android:text="Име"
+                android:textSize="15sp"/>
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Rank"/>
-            <Spinner
+                android:gravity="left"
+                android:text="Презиме"
+                android:textSize="15sp"/>
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Sklad"/>
-            <Spinner
+                android:gravity="left"
+                android:text="Акаунт"
+                android:textSize="15sp"/>
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Danni"/>
-            <LinearLayout
+                android:gravity="left"
+                android:text="Ранк"
+                android:textSize="15sp"/>
+            <Spinner
+                android:id="@+id/spinnerAccRank"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="20sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="ime"/>
-                <EditText
-                    android:layout_width="200sp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
+                android:gravity="left"
+                android:text="Склад"
+                android:textSize="15sp"/>
+            <Spinner
+                android:id="@+id/spinnerAccSklad"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Prezime"/>
-                <EditText
-                    android:layout_width="200sp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Prqkor"/>
-                <EditText
-                    android:layout_width="200sp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="DEV ID"/>
-                <EditText
-                    android:layout_width="200sp"
-                    android:layout_height="wrap_content"/>
-            </LinearLayout>
+                android:layout_marginVertical="20sp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -103,18 +97,729 @@
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Zapazi"/>
+                    android:layout_margin="10sp"
+                    android:text="Премахни"/>
                 <Button
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Otkaz"/>
+                    android:layout_margin="10sp"
+                    android:text="Запази"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/MiddleContainer"
+            android:layout_below="@+id/TopContainer"
+            android:orientation="vertical"
+            android:background="@drawable/simple_border"
+            android:gravity="center"
+            android:padding="20sp"
+            android:layout_marginVertical="10sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Промяна на бележка"
+                android:textSize="25sp"/>
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:hint="Въведете номер"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Търси"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Номер:"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="No 1234567"
+                android:textSize="25sp"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="5sp"
+                android:layout_margin="5sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Първи склад:"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15sp"
+                    android:padding="10sp"
+                    android:text="Отразена"
+                    android:checked="true"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="5sp"
+                android:layout_margin="5sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Втори склад:"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15sp"
+                    android:padding="10sp"
+                    android:text="НЕ Отразена"
+                    android:checked="false"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="5sp"
+                android:layout_margin="5sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Мострена:"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15sp"
+                    android:padding="10sp"
+                    android:text="Отразена"
+                    android:checked="true"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="5sp"
+                android:layout_margin="5sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Четвърти склад:"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15sp"
+                    android:padding="10sp"
+                    android:text="НЕ Отразена"
+                    android:checked="false"/>
+            </FrameLayout>
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="5sp"
+                android:layout_margin="5sp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    android:text="Победа:"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <androidx.appcompat.widget.SwitchCompat
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="15sp"
+                    android:padding="10sp"
+                    android:text="Отразена"
+                    android:checked="true"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:text="Премахни"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10sp"
+                    android:text="Запази"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/MiddleTwoContainer"
+            android:layout_below="@+id/MiddleContainer"
+            android:orientation="vertical"
+            android:background="@drawable/simple_border"
+            android:gravity="center"
+            android:layout_marginVertical="5sp"
+            android:padding="20sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Управление на дати"
+                android:textSize="25sp"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Избери дата"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:text="22/03/2021"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За първи сплад"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За втори сплад"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За мострена"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200sp"
+                    android:scrollbars="vertical"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200sp"
+                    android:scrollbars="vertical"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="200sp"
+                    android:scrollbars="vertical"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За четвърти сплад"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За победа"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="10sp"
+                android:padding="10sp"
+                android:background="@drawable/simple_border_inner"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:text="За клетки"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Втора смяна"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Неделя"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:paddingTop="5sp"
+                    android:layout_height="wrap_content"
+                    android:text="Почивка"/>
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="20sp"
+                        android:text="Запази"
+                        android:textSize="15sp"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Запази"
+                        android:layout_marginHorizontal="20sp"
+                        android:textSize="15sp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/MiddleTreeContainer"
+            android:layout_below="@+id/MiddleTwoContainer"
+            android:orientation="vertical"
+            android:background="@drawable/simple_border"
+            android:gravity="center"
+            android:layout_marginVertical="5sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Управление на извънредни"
+                android:textSize="25sp"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Избери потребител"/>
+            <Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:text="от"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:text="Избери"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:text="до"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10sp"
+                    android:text="Избери"/>
+            </LinearLayout>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Търси"
+                android:textSize="15sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="10sp"
+                android:layout_margin="10sp"
+                android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Часове"
+                android:textSize="15sp"/>
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="250sp"
+                android:scrollbars="vertical"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10sp"
+                        android:text="Промени"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10sp"
+                        android:text="Премахни"/>
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/simple_border_inner"
+                android:padding="10sp"
+                android:layout_margin="10sp"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Дни"
+                    android:textSize="15sp"/>
+                <ListView
+                    android:layout_width="match_parent"
+                    android:layout_height="250sp"
+                    android:scrollbars="vertical"/>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10sp"
+                        android:text="Промени"/>
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10sp"
+                        android:text="Премахни"/>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-        <TextView
+
+        <LinearLayout
+            android:layout_below="@+id/MiddleTreeContainer"
+            android:orientation="vertical"
+            android:background="@drawable/simple_border"
+            android:gravity="center"
+            android:layout_marginVertical="5sp"
+            android:padding="20sp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Бележки"/>
+            android:layout_height="400sp">
 
-    </LinearLayout>
-
-</RelativeLayout>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Other admin stuff"
+                android:textSize="25sp"/>
+        </LinearLayout>
+    </RelativeLayout>
+</ScrollView>

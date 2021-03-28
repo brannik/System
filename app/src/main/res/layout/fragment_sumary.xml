@@ -229,8 +229,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/LineEight"
-        android:layout_above="@+id/LineTen"
-        android:layout_marginVertical="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginVertical="20sp"
         android:id="@+id/LineNine">
 
         <ListView
@@ -239,35 +239,6 @@
             android:layout_height="wrap_content" />
     </FrameLayout>
 
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LineTen"
-        android:layout_centerHorizontal="true"
-        android:layout_above="@id/LineTenn">
 
-        <TextView
-            android:id="@+id/txtUpdateNotify"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="25sp"
-            android:text="Some random text"
-            />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/LineTenn"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true">
-        <Button
-            android:id="@+id/btnUpdateApp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="@string/btnUpdate" />
-    </FrameLayout>
 
 </RelativeLayout>

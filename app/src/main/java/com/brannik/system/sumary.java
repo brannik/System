@@ -1,5 +1,6 @@
 package com.brannik.system;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -26,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
@@ -44,6 +46,7 @@ public class sumary extends Fragment implements View.OnClickListener {
     private static final String ARG_PARAM2 = "param2";
     private static final String ARG_PARAM3 = "param3";
     private static final String ARG_PARAM4 = "param4";
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -99,6 +102,7 @@ public class sumary extends Fragment implements View.OnClickListener {
     FrameLayout warningFrame;
     TextView warningText;
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -128,29 +132,6 @@ public class sumary extends Fragment implements View.OnClickListener {
         int index = GLOBE.userRank();
         rank.setText(GLOBE.getankByIndex(index));
 
-
-        Button updateBtn = (Button) inf.findViewById(R.id.btnUpdateApp);
-
-        updateBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-
-
-        TextView updNotify = (TextView) inf.findViewById(R.id.txtUpdateNotify);
-
-        updateBtn.setOnClickListener(this);
-
-        int newUpd = GLOBE.needUpdate();
-        if(newUpd == 1){
-            updateBtn.setVisibility(View.VISIBLE);
-            updNotify.setText("Налична е нова версия !" );
-        }else{
-            updateBtn.setVisibility(View.GONE);
-            updNotify.setText("Инсталирана е последната версия " + GLOBE.getCurrVersion());
-        }
 
         Calendar calendar = Calendar.getInstance();
         int id = GLOBE.getAccId();
@@ -261,15 +242,6 @@ public class sumary extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btnUpdateApp:
-                Log.d("DEBUG","start updating app");
-                Button updBtn = (Button) v.findViewById(R.id.btnUpdateApp);
-                updBtn.setEnabled(false);
-                new updaterFTP(v).execute();
-                break;
-        }
+
     }
-
-
 }

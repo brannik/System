@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity{
     public static Context appContext;
     public static Context getAppContext(){return appContext;}
     public static Intent i;
-
+    Globals GLOBE;
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
     public int unchecked = 0;
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity{
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String total = data.getString("RESPONSE");
-                                Log.d("DEBUG","ERROR >>>" + total);
+                                Log.d("DEBUG","TOKEN RESPONSE >>>" + total);
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity{
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+                Log.d("DEBUG", "TOKEN VOLLEY ERROR -> " + error);
             }
         });
         stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
@@ -104,10 +104,11 @@ public class MainActivity extends AppCompatActivity{
 
         appContext = getApplicationContext();
         //verifyStoragePermissions(MainActivity.this);
-        Globals GLOBE = new Globals(appContext);
+        GLOBE = new Globals(appContext);
         new LoginRequest().execute();
-        new UpdateApp().execute();
 
+        Intent serviceIntent = new Intent(this, NotificationReciever.class);
+        MainActivity.getAppContext().startService(serviceIntent);
 
 
         wait(1000);
@@ -134,7 +135,6 @@ public class MainActivity extends AppCompatActivity{
         int check = GLOBE.userExsi();
         if(check == 1){
             generateTocken(GLOBE);
-
             // display data
             SectionsPagerAdapter sectionsPagerAdapter = new SectionsPagerAdapter(this, getSupportFragmentManager());
             ViewPager viewPager = findViewById(R.id.view_pager);
@@ -327,6 +327,5 @@ public class MainActivity extends AppCompatActivity{
             Thread.currentThread().interrupt();
         }
     }
-
 
 }

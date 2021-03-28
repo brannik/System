@@ -13,13 +13,10 @@ public class Globals extends AppCompatActivity {
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     public static String URL = "http://app-api.redirectme.net/api.php";
-    public static String URLADMIN = "http://app-api.redirectme.net/admin/admin.php";
     //public static String URL = "http://192.168.0.105/api.php";
 
     public static String[] RANKS;
     public static String[] SKLAD;
-    public static int newVersion;
-
 
     public Globals(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
@@ -39,9 +36,6 @@ public class Globals extends AppCompatActivity {
     }
 
     // getters
-    public int needUpdate(){
-        return sharedPreferences.getInt("upd_state",0);
-    }
     public static String getDevId(){
         return getUniquePsuedoID();
     }
@@ -80,26 +74,8 @@ public class Globals extends AppCompatActivity {
         return SKLAD[y];
     }
 
-    public int getCurrVersion(){
-        return sharedPreferences.getInt("version",0);
-    }
-
-    public String getCurrVersionInfo(){
-        return sharedPreferences.getString("version_info","none");
-    }
-
     // setters
-    public void setVersion(int ver){
-        editor = sharedPreferences.edit();
-        editor.putInt("version",ver);
-        editor.apply();
-    }
 
-    public void setVersionInfo(String info){
-            editor = sharedPreferences.edit();
-            editor.putString("version_info",info);
-            editor.apply();
-    }
 
     public void setUnchecked(int count){
         editor = sharedPreferences.edit();

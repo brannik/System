@@ -29,6 +29,7 @@
     <string name="documents">Бележки</string>
     <string name="default_notification_channel_id">my_app_channel</string>
     <string name="fcm_message">Внимание</string>
+    <string name="fcm_message_notification">Ново известие.</string>
 
     <!-- CALENDAR -->
 
