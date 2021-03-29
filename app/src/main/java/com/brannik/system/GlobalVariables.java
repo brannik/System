@@ -4,15 +4,20 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.LinkedList;
 import java.util.UUID;
+
+import static java.lang.Integer.parseInt;
 
 public class GlobalVariables extends AppCompatActivity {
 
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
     public static String URL = "http://app-api.redirectme.net/api.php";
+    public static String FILE_URL = "http://app-api.redirectme.net/app/app-debug.apk";
     //public static String URL = "http://192.168.0.105/api.php";
 
     public static String[] RANKS;
@@ -76,6 +81,77 @@ public class GlobalVariables extends AppCompatActivity {
 
     // setters
 
+    public void setAppVersion(String ver){
+        editor = sharedPreferences.edit();
+        editor.putString("VERSION",ver);
+        editor.apply();
+
+    }
+    public String getAppVersion(){
+        return sharedPreferences.getString("VERSION","0");
+    }
+
+    public void setAppNewVersion(String ver,@Nullable String info){
+        editor = sharedPreferences.edit();
+        editor.putString("NEW_VERSION",ver);
+        editor.putString("NEW_VERSION_INFO",info);
+        editor.apply();
+    }
+
+    public String getAppNewVersionInfo(){
+        return sharedPreferences.getString("NEW_VERSION_INFO","none");
+    }
+    public String getAppNewVersion(){
+        return sharedPreferences.getString("NEW_VERSION","0");
+    }
+
+    public Boolean compareVersions(){
+        // if else
+        return parseInt(getAppVersion()) < parseInt(getAppNewVersion());
+    }
+
+    public String convertCurrVersion(){
+        String txtVersion;
+        LinkedList<Integer> stack = new LinkedList<Integer>();
+        int ver = parseInt(getAppVersion());
+        while(ver > 0){
+            stack.push(ver % 10);
+            ver = ver / 10;
+        }
+        txtVersion = "V" + stack.get(0) + "." + stack.get(1) + "." + stack.get(2);
+        return txtVersion;
+    }
+
+    public String convertNewVersion(){
+        String txtVersion;
+        LinkedList<Integer> stack = new LinkedList<Integer>();
+        int ver = Integer.parseInt(getAppNewVersion());
+        String info;
+        if(!getAppNewVersionInfo().equals("none")){
+            info = getAppNewVersionInfo();
+        }else{
+            info = "";
+        }
+        while(ver > 0){
+            stack.push(ver % 10);
+            ver = ver / 10;
+        }
+        txtVersion = "V" + stack.get(0) + "." + stack.get(1) + "." + stack.get(2) + "\n" + info;
+        return txtVersion;
+    }
+
+    public String convertNewVersionNoInfo(){
+        String txtVersion;
+        LinkedList<Integer> stack = new LinkedList<Integer>();
+        int ver = Integer.parseInt(getAppNewVersion());
+        while(ver > 0){
+            stack.push(ver % 10);
+            ver = ver / 10;
+        }
+        txtVersion = "V" + stack.get(0) + "." + stack.get(1) + "." + stack.get(2) ;
+        return txtVersion;
+    }
+
 
     public void setUnchecked(int count){
         editor = sharedPreferences.edit();
@@ -89,9 +165,9 @@ public class GlobalVariables extends AppCompatActivity {
         editor.apply();
     }
 
-    public void StoreToken(String tocken){
+    public void StoreToken(String token){
         editor = sharedPreferences.edit();
-        editor.putString("TOKEN",tocken);
+        editor.putString("TOKEN",token);
         editor.apply();
     }
 

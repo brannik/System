@@ -1,14 +1,19 @@
 package com.brannik.system;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -17,7 +22,7 @@ import androidx.fragment.app.Fragment;
  */
 public class AdminCP extends Fragment {
     GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
-
+    Dialog messageDialog;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -65,8 +70,9 @@ public class AdminCP extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inf = inflater.inflate(R.layout.fragment_admin_main, container, false);
-
+        messageDialog = new Dialog(this.getContext());
         AdminAccountsFunctions admin_accounts = new AdminAccountsFunctions();
+        AdminDocumentsFunctions admin_documents = new AdminDocumentsFunctions();
         Spinner spinnerAcc = (Spinner) inf.findViewById(R.id.spinnerAccManagement);
 
         String[] ranks =  {"Зареди потребителите"};
@@ -84,11 +90,64 @@ public class AdminCP extends Fragment {
             }
         });
 
+        Button btnFindDoc = (Button) inf.findViewById(R.id.btnDocumentFind);
+        EditText editTxtFind = (EditText) inf.findViewById(R.id.editTxtDocumentFind);
+        btnFindDoc.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int textToFind = parseInt(editTxtFind.getText().toString());
+                if(validateData(textToFind)){
+                    admin_documents.buildDocumentsControllPage(textToFind);
+                }else{
+                    int count = 0;
+                    while (textToFind != 0) {
+                        // num = num/10
+                        textToFind /= 10;
+                        ++count;
+                    }
+                    showMessage("Не е въведен валиден номер. Трябва да съдържа 7 цифри а са въведени - " + count);
+                }
+            }
+        });
+
+
+
         //admin.populateAccountSpinner(spinner,inf,null); // this -> ADMIN_VAR
 
 
 
         return inf;
+    }
+
+    private Boolean validateData(int data){
+        Boolean check = false;
+        if(data != 0 ) {
+            int length = (int) (Math.log10(data) + 1);
+            //Log.d("DEBUG","LENGTH ->" + length);
+            if (length == 7) {
+                check = true;
+            } else {
+                check = false;
+            }
+        }else{
+            check = false;
+        }
+
+        return check;
+    }
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.dialog_message);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+            }
+        });
+        messageDialog.show();
+
     }
 
 

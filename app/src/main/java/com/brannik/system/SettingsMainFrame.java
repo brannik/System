@@ -1,15 +1,58 @@
 package com.brannik.system;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Color;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.os.PowerManager;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
+import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
+
+import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.List;
+import java.util.Objects;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +70,10 @@ public class SettingsMainFrame extends Fragment {
     private String mParam1;
     private String mParam2;
     Dialog timePicker;
+    Dialog messageDialog;
+    Dialog downloadDialog;
+
+    ProgressDialog mProgressDialog;
 
     public SettingsMainFrame() {
         // Required empty public constructor
@@ -65,14 +112,21 @@ public class SettingsMainFrame extends Fragment {
         View inf = inflater.inflate(R.layout.fragment_layout_settings, container, false);
         // Inflate the layout for this fragment
         timePicker = new Dialog(this.getContext());
+        messageDialog = new Dialog(this.getContext());
+        downloadDialog = new Dialog(this.getContext());
+        GlobalVariables globals = new GlobalVariables(MainActivity.getAppContext());
+
         TextView textFirst = (TextView) inf.findViewById(R.id.txtEditFirstTime);
         TextView textSecond = (TextView) inf.findViewById(R.id.txtEditSecondTime);
 
+        Button btnUpdate = (Button) inf.findViewById(R.id.btnUpdateVersion);
+        TextView txtUpdate = (TextView) inf.findViewById(R.id.txtVersion);
+        checkVersionFromServer(globals, btnUpdate, txtUpdate,inf.getContext());
         textFirst.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    pickTime(inf,1);
+                if (hasFocus) {
+                    pickTime(inf, 1);
                 }
             }
         });
@@ -80,15 +134,215 @@ public class SettingsMainFrame extends Fragment {
         textSecond.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus){
-                    pickTime(inf,2);
+                if (hasFocus) {
+                    pickTime(inf, 2);
                 }
             }
         });
+
+
         return inf;
     }
 
-    public void pickTime(View view,int type) {
+    public void checkVersionFromServer(GlobalVariables global, Button btn, TextView txt,Context context) {
+
+        RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
+        String url = GlobalVariables.URL + "?request=update";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @SuppressLint("SetTextI18n")
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray jsonArray = new JSONArray(response);
+                            //Log.d("DEBUG","DEBUG->" + response);
+                            for (int i = 0; i < jsonArray.length(); i++) {
+                                JSONObject data = jsonArray.getJSONObject(i);
+                                String newVersion = data.getString("last_version");
+                                String newVersionInfo = data.getString("info");
+                                global.setAppNewVersion(newVersion, newVersionInfo);
+
+                            }
+                            if (global.compareVersions()) {
+                                btn.setText("Изтегли");
+                                btn.setVisibility(View.VISIBLE);
+                                btn.setPadding(15, 15, 15, 15);
+                                txt.setText("Нова версия " + global.convertNewVersion());
+                                txt.setTextColor(Color.parseColor("#bdbdbd"));
+                                txt.setPadding(15, 15, 15, 15);
+                                txt.setTextSize(20);
+                            } else {
+                                btn.setVisibility(View.INVISIBLE);
+                                txt.setText("Това е последна версия " + global.convertCurrVersion());
+                                btn.setVisibility(View.GONE);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                // call update voley
+                                // new Dialog with progress then message notification and close app
+
+
+// instantiate it within the onCreate method
+                                mProgressDialog = new ProgressDialog(context);
+                                mProgressDialog.setMessage("Изтегляне на версия " + global.convertNewVersionNoInfo() + ".apk");
+                                mProgressDialog.setIndeterminate(true);
+                                mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+                                mProgressDialog.setCanceledOnTouchOutside(false);
+                                mProgressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL, "Инсталирай", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Toast.makeText(context,"Все още не работи",Toast.LENGTH_SHORT).show();
+
+                                    }
+                                });
+                                mProgressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Затвори", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+
+                                    }
+                                });
+                                mProgressDialog.setCancelable(true);
+
+// execute this when the downloader must be fired
+                                final DownloadTask downloadTask = new DownloadTask(context,global);
+                                downloadTask.execute(GlobalVariables.FILE_URL);
+
+                                mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+
+                                    @Override
+                                    public void onCancel(DialogInterface dialog) {
+                                        downloadTask.cancel(true); //cancel the task
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("DEBUG", "VOLLEY ERROR -> " + error);
+            }
+
+        });
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        queue.add(stringRequest);
+    }
+
+
+
+    @SuppressLint("StaticFieldLeak")
+    private class DownloadTask extends AsyncTask<String, Integer, String> {
+
+        private final Context context;
+        private PowerManager.WakeLock mWakeLock;
+        private final GlobalVariables globals;
+        private Button button;
+        private Dialog finalDialog;
+        public DownloadTask(Context context, GlobalVariables globals) {
+            this.context = context;
+            this.globals = globals;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // take CPU lock to prevent CPU from going off if the user
+            // presses the power button during download
+            PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+            mWakeLock = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,
+                    getClass().getName());
+            mWakeLock.acquire();
+            mProgressDialog.show();
+        }
+
+        @Override
+        protected void onProgressUpdate(Integer... progress) {
+            super.onProgressUpdate(progress);
+            // if we get here, length is known, now set indeterminate to false
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setMax(100);
+            mProgressDialog.setProgress(progress[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            mWakeLock.release();
+            //mProgressDialog.dismiss();
+            if(result != null){
+                //Toast.makeText(context,, Toast.LENGTH_LONG).show();
+                showMessage("Download error: "+result);
+            }else{
+                globals.setAppVersion(globals.getAppNewVersion());
+                showMessage("Изтеглянето завърши отидете в паметта на телефона/DOWNLOADS и инсталирайте новата версия - " + globals.convertNewVersionNoInfo());
+
+            }
+        }
+
+        @Override
+        protected String doInBackground(String... sUrl) {
+            InputStream input = null;
+            OutputStream output = null;
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(sUrl[0]);
+                connection = (HttpURLConnection) url.openConnection();
+                connection.connect();
+
+                // expect HTTP 200 OK, so we don't mistakenly save error report
+                // instead of the file
+                if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
+                    return "Server returned HTTP " + connection.getResponseCode()
+                            + " " + connection.getResponseMessage();
+                }
+
+                // this will be useful to display download percentage
+                // might be -1: server did not report the length
+                int fileLength = connection.getContentLength();
+                // download the file
+                input = connection.getInputStream();
+                output = new FileOutputStream(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/app-update-" + globals.convertNewVersionNoInfo()+".apk");
+
+                byte data[] = new byte[4096];
+                long total = 0;
+                int count;
+                while ((count = input.read(data)) != -1) {
+                    // allow canceling with back button
+                    if (isCancelled()) {
+                        input.close();
+                        return null;
+                    }
+                    total += count;
+                    // publishing the progress....
+                    if (fileLength > 0) // only if total length is known
+                        publishProgress((int) (total * 100 / fileLength));
+                    output.write(data, 0, count);
+                }
+            } catch (Exception e) {
+                return e.toString();
+            } finally {
+                try {
+                    if (output != null)
+                        output.close();
+                    if (input != null)
+                        input.close();
+                } catch (IOException ignored) {
+                }
+
+                if (connection != null)
+                    connection.disconnect();
+            }
+            return null;
+        }
+    }
+
+    public void pickTime(View view, int type) {
 
         timePicker.setContentView(R.layout.time_picker);
         TimePicker timPick = (TimePicker) timePicker.findViewById(R.id.TimeUI);
@@ -98,7 +352,7 @@ public class SettingsMainFrame extends Fragment {
         OK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(type == 1){
+                if (type == 1) {
                     int time;
                     int min;
                     time = timPick.getHour();
@@ -107,7 +361,7 @@ public class SettingsMainFrame extends Fragment {
                     String clock = time + ":" + min;
                     text.setText(clock);
                     text.clearFocus();
-                }else{
+                } else {
                     int time;
                     int min;
                     time = timPick.getHour();
@@ -129,6 +383,25 @@ public class SettingsMainFrame extends Fragment {
         });
 
         timePicker.show();
+
+    }
+
+
+    public void showMessage(String msg) {
+        messageDialog.setContentView(R.layout.dialog_message);
+        TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
+        text.setText(msg);
+        Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
+
+
+        btnClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                messageDialog.dismiss();
+            }
+        });
+        messageDialog.show();
+
 
     }
 }

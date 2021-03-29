@@ -9,7 +9,6 @@
     <uses-permission
         android:name="android.permission.INTERNET"
         android:required="true" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission
@@ -39,6 +38,8 @@
         android:theme="@style/Theme.System"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+
+
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

@@ -194,15 +194,19 @@
                 android:gravity="center"
                 android:text="Промяна на бележка"
                 android:textSize="25sp"/>
+
             <EditText
+                android:id="@+id/editTxtDocumentFind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number"
-                android:hint="Въведете номер"/>
+                android:hint="Въведете номер"
+                android:inputType="number" />
+
             <Button
+                android:id="@+id/btnDocumentFind"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Търси"/>
+                android:text="Търси" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

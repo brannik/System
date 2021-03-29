@@ -16,13 +16,17 @@
         android:background="@drawable/simple_border"
         android:orientation="vertical">
         <TextView
+            android:id="@+id/txtVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="update v"/>
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="Налична е нава версия..."/>
         <Button
+            android:id="@+id/btnUpdateVersion"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="update btn"/>
+            android:text="Изтегли нова версия"/>
     </LinearLayout>
 
         <LinearLayout

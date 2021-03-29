@@ -40,8 +40,13 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import static android.Manifest.permission.FOREGROUND_SERVICE;
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.Manifest.permission.READ_PHONE_STATE;
+import static android.Manifest.permission.REQUEST_INSTALL_PACKAGES;
+import static android.Manifest.permission.WAKE_LOCK;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission_group.CAMERA;
-import static java.lang.Integer.parseInt;
 
 public class MainActivity extends AppCompatActivity{
     public static Context appContext;
@@ -112,16 +117,18 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[] {Manifest.permission.CAMERA,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    READ_EXTERNAL_STORAGE,
+                    WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.ACCESS_NOTIFICATION_POLICY,
                     Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
                     Manifest.permission.INTERNET,
                     Manifest.permission_group.PHONE,
-                    Manifest.permission.WAKE_LOCK,
-                    Manifest.permission.FOREGROUND_SERVICE
+                    WAKE_LOCK,
+                    FOREGROUND_SERVICE
             }, 1);
         }
 
@@ -193,110 +200,67 @@ public class MainActivity extends AppCompatActivity{
         }
 
     }
-    private final String[] neededPermissions = new String[]{CAMERA};
+
+
+    private final String[] neededPermissions = new String[]{CAMERA,REQUEST_INSTALL_PACKAGES,FOREGROUND_SERVICE,WAKE_LOCK,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE,READ_PHONE_STATE};
     private boolean checkPermission() {
-
         ArrayList<String> permissionsNotGranted = new ArrayList<>();
-
         for (String permission : neededPermissions) {
-
             if (ContextCompat.checkSelfPermission(this, permission) != PackageManager.PERMISSION_GRANTED) {
-
                 permissionsNotGranted.add(permission);
-
             }
-
         }
 
         if (!permissionsNotGranted.isEmpty()) {
-
             boolean shouldShowAlert = false;
-
             for (String permission : permissionsNotGranted) {
-
                 shouldShowAlert = ActivityCompat.shouldShowRequestPermissionRationale(this, permission);
-
             }
-
             if (shouldShowAlert) {
-
                 showPermissionAlert(permissionsNotGranted.toArray(new String[0]));
-
             } else {
-
                 requestPermissions(permissionsNotGranted.toArray(new String[0]));
-
             }
-
             return false;
-
         }
-
         return true;
-
     }
 
 
     private void showPermissionAlert(final String[] permissions) {
-
         AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
-
         alertBuilder.setCancelable(true);
-
         alertBuilder.setTitle("Permission Required");
-
         alertBuilder.setMessage("Camea permission is required to move forward.");
-
         alertBuilder.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
             public void onClick(DialogInterface dialog, int which) {
-
                 requestPermissions(permissions);
-
             }
-
         });
-
         AlertDialog alert = alertBuilder.create();
-
         alert.show();
-
     }
 
 
 
     private void requestPermissions(String[] permissions) {
-
         ActivityCompat.requestPermissions(MainActivity.this, permissions, 1001);
-
     }
 
 
 
     @Override
-
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
         if (requestCode == 1001) {
-
             for (int result : grantResults) {
-
                 if (result == PackageManager.PERMISSION_DENIED) {
-
                     Toast.makeText(MainActivity.this, "This permission is required", Toast.LENGTH_LONG).show();
-
                     checkPermission();
-
                     return;
-
                 }
-
             }
-
             /* Code after permission granted */
-
         }
-
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
     }
