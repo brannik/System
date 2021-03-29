@@ -9,23 +9,23 @@ import android.graphics.Path;
 import android.util.AttributeSet;
 import android.view.View;
 
-public class Overlay extends View {
+public class CameraOverlayFrame extends View {
     Paint paint;
     Path path;
-    Globals globe;
+    GlobalVariables globe;
 
-    public Overlay(Context context) {
+    public CameraOverlayFrame(Context context) {
         super(context);
         init();
 
     }
 
-    public Overlay(Context context, AttributeSet attrs) {
+    public CameraOverlayFrame(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public Overlay(Context context, AttributeSet attrs, int defStyle) {
+    public CameraOverlayFrame(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init();
     }

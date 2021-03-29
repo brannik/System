@@ -39,7 +39,7 @@ public class Register extends AppCompatActivity {
         sName = (EditText) findViewById(R.id.txtSName);
         btnRegister.setOnClickListener(listener);
         txtDevId = (TextView) findViewById(R.id.txtDevId);
-        txtDevId.setText(Globals.getDevId());
+        txtDevId.setText(GlobalVariables.getDevId());
         usrName = (EditText) findViewById(R.id.txtEditUsrName);
         errors = (TextView) findViewById(R.id.errors_text);
     }

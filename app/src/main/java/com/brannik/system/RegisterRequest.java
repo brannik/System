@@ -21,17 +21,17 @@ public class RegisterRequest extends AsyncTask<String,String,String> {
     @SuppressLint("StaticFieldLeak")
     Context context = MainActivity.getAppContext();
     @SuppressLint("StaticFieldLeak")
-    Globals GLOBE = new Globals(context);
+    GlobalVariables GLOBE = new GlobalVariables(context);
 
     @Override
     protected String doInBackground(String... strings) {
         try {
             // Enter URL address where your php file resides
-            String id = Globals.getDevId();
+            String id = GlobalVariables.getDevId();
             String f_name=Register.getFName();
             String s_name=Register.getSName();
             String username = Register.getUserName();
-            url = new URL(Globals.URL + "?request=register&dev_id=" + id + "&f_name=" + f_name + "&s_name=" + s_name + "&username=" + username);
+            url = new URL(GlobalVariables.URL + "?request=register&dev_id=" + id + "&f_name=" + f_name + "&s_name=" + s_name + "&username=" + username);
 
         } catch (MalformedURLException e) {
             // TODO Auto-generated catch block

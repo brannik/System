@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -27,17 +26,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link sumary#newInstance} factory method to
+ * Use the {@link HomeScreenMainFrame#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class sumary extends Fragment implements View.OnClickListener {
+public class HomeScreenMainFrame extends Fragment implements View.OnClickListener {
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -55,9 +53,9 @@ public class sumary extends Fragment implements View.OnClickListener {
     private String mParam4;
 
     private final ArrayList<String> array = new ArrayList<>();
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+    GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
 
-    public sumary() {
+    public HomeScreenMainFrame() {
         // Required empty public constructor
 
     }
@@ -73,8 +71,8 @@ public class sumary extends Fragment implements View.OnClickListener {
      * @return A new instance of fragment sumary.
      */
     // TODO: Rename and change types and number of parameters
-    public static sumary newInstance(String param1, String param2,String param3,String param4) {
-        sumary fragment = new sumary();
+    public static HomeScreenMainFrame newInstance(String param1, String param2, String param3, String param4) {
+        HomeScreenMainFrame fragment = new HomeScreenMainFrame();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -108,7 +106,7 @@ public class sumary extends Fragment implements View.OnClickListener {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View inf = inflater.inflate(R.layout.fragment_sumary, container, false);
+        View inf = inflater.inflate(R.layout.fragment_layout_home, container, false);
         TextView hours = (TextView) inf.findViewById(R.id.txtHours);
         hours.setText("10");
 
@@ -150,7 +148,7 @@ public class sumary extends Fragment implements View.OnClickListener {
 
     private void checks(int acc_id,int sklad,int month,View view){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        String url = Globals.URL + "?request=get_doc_count&month=" + month + "&acc_id=" + acc_id + "&sklad=" + sklad;
+        String url = GlobalVariables.URL + "?request=get_doc_count&month=" + month + "&acc_id=" + acc_id + "&sklad=" + sklad;
         docCount = (TextView) view.findViewById(R.id.txtCount);
         warningFrame = (FrameLayout) view.findViewById(R.id.LineEight);
         warningFrame.setVisibility(View.INVISIBLE);
@@ -202,7 +200,7 @@ public class sumary extends Fragment implements View.OnClickListener {
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int ID = GLOBE.getAccId();
         int SKLAD = GLOBE.getSklad();
-        String url = Globals.URL + "?request=in_app_notify&acc_id=" + ID + "&sklad_id=" + SKLAD;
+        String url = GlobalVariables.URL + "?request=in_app_notify&acc_id=" + ID + "&sklad_id=" + SKLAD;
         //String url ="http://app-api.servehttp.com/api.php?request=test";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -221,7 +219,7 @@ public class sumary extends Fragment implements View.OnClickListener {
                                     android.R.layout.simple_list_item_1,
                                     array);
 
-                            listView.setAdapter(new MyCustomAdapterNotifications(array, view.getContext()) );
+                            listView.setAdapter(new HomeScreenNotificationsAdaptor(array, view.getContext()) );
                             //listView.setAdapter(arrayAdapter);
                         } catch (JSONException e) {
                             e.printStackTrace();

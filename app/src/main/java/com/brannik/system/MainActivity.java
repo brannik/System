@@ -11,9 +11,6 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -50,12 +47,12 @@ public class MainActivity extends AppCompatActivity{
     public static Context appContext;
     public static Context getAppContext(){return appContext;}
     public static Intent i;
-    Globals GLOBE;
+    GlobalVariables GLOBE;
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
     public int unchecked = 0;
 
-    private void generateTocken(Globals globe){
+    private void generateTocken(GlobalVariables globe){
         FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
             @Override
             public void onSuccess(InstanceIdResult instanceIdResult) {
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity{
 
     private void sendToken(int accid,String token){
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        String url = Globals.URL + "?request=update_token&acc_id=" + accid + "&token=" + token;
+        String url = GlobalVariables.URL + "?request=update_token&acc_id=" + accid + "&token=" + token;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -104,10 +101,10 @@ public class MainActivity extends AppCompatActivity{
 
         appContext = getApplicationContext();
         //verifyStoragePermissions(MainActivity.this);
-        GLOBE = new Globals(appContext);
+        GLOBE = new GlobalVariables(appContext);
         new LoginRequest().execute();
 
-        Intent serviceIntent = new Intent(this, NotificationReciever.class);
+        Intent serviceIntent = new Intent(this, FBNotificationsReceiver.class);
         MainActivity.getAppContext().startService(serviceIntent);
 
 

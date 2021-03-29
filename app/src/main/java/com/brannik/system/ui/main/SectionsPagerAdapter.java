@@ -9,21 +9,21 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 
-import com.brannik.system.Globals;
+import com.brannik.system.GlobalVariables;
 import com.brannik.system.MainActivity;
 import com.brannik.system.R;
-import com.brannik.system.admin;
-import com.brannik.system.extra;
-import com.brannik.system.settings;
-import com.brannik.system.shifts;
-import com.brannik.system.sumary;
-import com.brannik.system.sundays;
+import com.brannik.system.AdminCP;
+import com.brannik.system.ExtraDHMain;
+import com.brannik.system.SettingsMainFrame;
+import com.brannik.system.ShiftsMainFrame;
+import com.brannik.system.HomeScreenMainFrame;
+import com.brannik.system.DocumentsMainFrame;
 /**
  * A [FragmentPagerAdapter] that returns a fragment corresponding to
  * one of the sections/tabs/pages.
  */
 public class SectionsPagerAdapter extends FragmentPagerAdapter {
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+    GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
     @StringRes
     private static final int[] TAB_TITLES = new int[]{
             R.string.tab_text_1,
@@ -52,22 +52,22 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
         Fragment fragment=null;
         switch(position){
             case 0:
-                fragment = sumary.newInstance(Globals.getDevId(),"username","names","rank");
+                fragment = HomeScreenMainFrame.newInstance(GlobalVariables.getDevId(),"username","names","rank");
                 break;
             case 1:
-                fragment = shifts.newInstance(Globals.getDevId(),"shifts");
+                fragment = ShiftsMainFrame.newInstance(GlobalVariables.getDevId(),"shifts");
                 break;
             case 2:
-                fragment = sundays.newInstance(Globals.getDevId(),"sundays");
+                fragment = DocumentsMainFrame.newInstance(GlobalVariables.getDevId(),"sundays");
                 break;
             case 3:
-                fragment = extra.newInstance(Globals.getDevId(),"extra");
+                fragment = ExtraDHMain.newInstance(GlobalVariables.getDevId(),"extra");
                 break;
             case 4:
-                fragment = settings.newInstance(Globals.getDevId(),"ACC");
+                fragment = SettingsMainFrame.newInstance(GlobalVariables.getDevId(),"ACC");
                 break;
             case 5:
-                fragment = admin.newInstance(Globals.getDevId(),"admin");
+                fragment = AdminCP.newInstance(GlobalVariables.getDevId(),"admin");
                 break;
         }
         return fragment;

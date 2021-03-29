@@ -28,13 +28,13 @@ import java.util.Arrays;
 
 import static java.lang.Integer.parseInt;
 
-public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
+public class DatesRequestYesNoAdaptor extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private final Context context;
     private final View view;
-    Globals globals = new Globals(MainActivity.getAppContext());
+    GlobalVariables globals = new GlobalVariables(MainActivity.getAppContext());
     Dialog messageDialog;
-    public MyCustomAdapter(ArrayList<String> list, Context context,View view) {
+    public DatesRequestYesNoAdaptor(ArrayList<String> list, Context context, View view) {
         this.list = list;
         this.context = context;
         this.view = view;
@@ -130,14 +130,14 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
     }
 
     public void showMessage(String msg) {
-        messageDialog.setContentView(R.layout.message_popup);
+        messageDialog.setContentView(R.layout.dialog_message);
         TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
         text.setText(msg);
         Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 new shifts().buildRequestNotifications(view);
+                 new ShiftsMainFrame().buildRequestNotifications(view);
                 messageDialog.dismiss();
             }
 
@@ -158,10 +158,10 @@ public class MyCustomAdapter extends BaseAdapter implements ListAdapter {
         int accId = globals.getAccId();
         switch(type){
             case 1: // accept
-                url = Globals.URL + "?request=accept_request&date_id=" + dateId + "&sender=" + sender + "&notify_id=" + notifyId + "&my_acc=" + accId + "&names=" + name + "&message=" + message + "&dateStr=" + dateString;
+                url = GlobalVariables.URL + "?request=accept_request&date_id=" + dateId + "&sender=" + sender + "&notify_id=" + notifyId + "&my_acc=" + accId + "&names=" + name + "&message=" + message + "&dateStr=" + dateString;
                 break;
             case 2: // decline
-                url = Globals.URL + "?request=decline_request&date_id=" + dateId + "&sender=" + sender + "&notify_id=" + notifyId + "&my_acc=" + accId + "&names=" + name + "&message=" + message + "&dateStr=" + dateString;
+                url = GlobalVariables.URL + "?request=decline_request&date_id=" + dateId + "&sender=" + sender + "&notify_id=" + notifyId + "&my_acc=" + accId + "&names=" + name + "&message=" + message + "&dateStr=" + dateString;
                 break;
         }
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,

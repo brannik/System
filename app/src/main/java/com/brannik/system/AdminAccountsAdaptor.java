@@ -1,6 +1,6 @@
 package com.brannik.system;
 
-public class UserAdapter {
+public class AdminAccountsAdaptor {
     private String id;
     private String username;
     private String name;
@@ -8,7 +8,7 @@ public class UserAdapter {
     private String rank;
     private String sklad;
 
-    public UserAdapter(String id, String username, String name, String s_name, String rank, String sklad) {
+    public AdminAccountsAdaptor(String id, String username, String name, String s_name, String rank, String sklad) {
         this.id = id;
         this.username = username;
         this.name = name;

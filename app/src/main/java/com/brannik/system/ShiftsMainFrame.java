@@ -42,10 +42,10 @@ import static java.lang.Integer.parseInt;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link shifts#newInstance} factory method to
+ * Use the {@link ShiftsMainFrame#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class shifts extends Fragment implements OnNavigationButtonClickedListener {
+public class ShiftsMainFrame extends Fragment implements OnNavigationButtonClickedListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,7 +61,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     HashMap<Integer,Object> dateHashMap = new HashMap<>();
     Dialog messageDialog;
 
-    Globals globals = new Globals(MainActivity.getAppContext());
+    GlobalVariables globals = new GlobalVariables(MainActivity.getAppContext());
 
     private final ArrayList<String> arrSecondShift = new ArrayList<>();
     private final ArrayList<String> arrSunday = new ArrayList<>();
@@ -75,7 +75,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     Boolean restMine = false;
     int reqType = 0;
 
-    public shifts() {
+    public ShiftsMainFrame() {
         // Required empty public constructor
     }
 
@@ -88,8 +88,8 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
      * @return A new instance of fragment shifts.
      */
     // TODO: Rename and change types and number of parameters
-    public static shifts newInstance(String param1, String param2) {
-        shifts fragment = new shifts();
+    public static ShiftsMainFrame newInstance(String param1, String param2) {
+        ShiftsMainFrame fragment = new ShiftsMainFrame();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -110,7 +110,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View inf =  inflater.inflate(R.layout.fragment_shifts, container, false);
+        View inf =  inflater.inflate(R.layout.fragment_layout_shifts, container, false);
         customCalendar = inf.findViewById(R.id.custom_calendar);
 
         HashMap<Object, Property> descHashMap = new HashMap<>();
@@ -224,7 +224,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int id = globals.getAccId();
         int sklad = globals.getSklad();
-        String url = Globals.URL + "?request=check_date&year=" + year + "&month=" + month + "&day=" + day + "&acc_id=" + id + "&sklad=" + sklad;
+        String url = GlobalVariables.URL + "?request=check_date&year=" + year + "&month=" + month + "&day=" + day + "&acc_id=" + id + "&sklad=" + sklad;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -281,7 +281,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
 
     private void dateActions(int year,int month,int day){
-        dateActions.setContentView(R.layout.date_actions);
+        dateActions.setContentView(R.layout.dialog_actions_for_this_day);
         TextView textHeader = (TextView) dateActions.findViewById(R.id.current_date_header);
         TextView secondShLabel = (TextView) dateActions.findViewById(R.id.dateTextSecondSh);
         Button btnSecondShift = (Button) dateActions.findViewById(R.id.btnSecondShift);
@@ -483,7 +483,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         String url = null;
 
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        url = Globals.URL + "?request=request_date&req_type=" + type + "&date_type=" + dateType +"&my_acc=" + my_acc_id + "&sklad=" + sklad + "&year=" + year + "&month=" + month + "&day=" + day + "&old_date_id=" + date_id + "&old_date_text=" + date_text + "&old_date_owner=" + date_owner_id + "&my_names=" + my_names;
+        url = GlobalVariables.URL + "?request=request_date&req_type=" + type + "&date_type=" + dateType +"&my_acc=" + my_acc_id + "&sklad=" + sklad + "&year=" + year + "&month=" + month + "&day=" + day + "&old_date_id=" + date_id + "&old_date_text=" + date_text + "&old_date_owner=" + date_owner_id + "&my_names=" + my_names;
 
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -530,7 +530,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
 
 
     public void showMessage(String msg) {
-        messageDialog.setContentView(R.layout.message_popup);
+        messageDialog.setContentView(R.layout.dialog_message);
         TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
         text.setText(msg);
         Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
@@ -552,7 +552,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         int id = globals.getAccId();
         int sklad = globals.getSklad();
-        String url = Globals.URL + "?request=get_requests&acc_id=" + id + "&sklad=" + sklad;
+        String url = GlobalVariables.URL + "?request=get_requests&acc_id=" + id + "&sklad=" + sklad;
 
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -576,7 +576,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
                                 // format with separators ##
                                 array.add(text);
                             }
-                            listV.setAdapter(new MyCustomAdapter(array, view.getContext(),view ));
+                            listV.setAdapter(new DatesRequestYesNoAdaptor(array, view.getContext(),view ));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -615,7 +615,7 @@ public class shifts extends Fragment implements OnNavigationButtonClickedListene
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd");
         String date = dateFormat.format(calendar.getTime());
 
-        String url = Globals.URL + "?request=get_calendar&year=" + year + "&month=" + month + "&sklad=" + sklad;
+        String url = GlobalVariables.URL + "?request=get_calendar&year=" + year + "&month=" + month + "&sklad=" + sklad;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override

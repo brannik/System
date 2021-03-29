@@ -10,7 +10,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
@@ -27,12 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
 
-public class ADMIN_VAR {
+public class AdminAccountsFunctions {
     Dialog messageDialog;
     private final String[][] ranks={
             {"1","Гост"},
@@ -67,10 +65,32 @@ public class ADMIN_VAR {
         return skladNamesText;
     }
 
+    public String getRankIdByName(String name){
+        String id="";
+        for(int i=0;i<ranks.length;i++){
+            if (ranks[i][1].equals(name)) {
+                id = ranks[i][0];
+                break;
+            }
+        }
+        return id;
+    }
+
+    public String getSkladIdByName(String name){
+        String id="";
+        for(int i=0;i<skladNames.length;i++){
+            if(skladNames[i][1].equals(name)){
+                id=skladNames[i][0];
+                break;
+            }
+        }
+        return id;
+    }
+
     public void buildAccAdminSection(View view,Spinner spinner,@Nullable Integer sklad){
         messageDialog = new Dialog(view.getContext());
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
-        String url = Globals.URL + "?request=adminGetAccounts&sklad="+sklad;
+        String url = GlobalVariables.URL + "?request=adminGetAccounts&sklad="+sklad;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -78,8 +98,8 @@ public class ADMIN_VAR {
 
                         try {
                             JSONArray jsonArray = new JSONArray(response);
-                            List<UserAdapter> userList = new ArrayList<>();
-                            UserAdapter user;
+                            List<AdminAccountsAdaptor> userList = new ArrayList<>();
+                            AdminAccountsAdaptor user;
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String acc_id = data.getString("acc_id");
@@ -88,29 +108,29 @@ public class ADMIN_VAR {
                                 String s_name = data.getString("s_name");
                                 String rank = data.getString("rank");
                                 String sklad = data.getString("sklad");
-                                user = new UserAdapter(acc_id,username,name,s_name,rank,sklad);
+                                user = new AdminAccountsAdaptor(acc_id,username,name,s_name,rank,sklad);
                                 userList.add(user);
 
                             }
 
-                            ArrayAdapter<UserAdapter> adapter = new ArrayAdapter<UserAdapter>(view.getContext(),
+                            ArrayAdapter<AdminAccountsAdaptor> adapter = new ArrayAdapter<AdminAccountsAdaptor>(view.getContext(),
                                     android.R.layout.simple_spinner_item, userList);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinner.setAdapter(adapter);
                             spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                                    UserAdapter user = (UserAdapter) parent.getSelectedItem();
+                                    AdminAccountsAdaptor user = (AdminAccountsAdaptor) parent.getSelectedItem();
                                     displayUserData(user);
                                 }
                                 @Override
                                 public void onNothingSelected(AdapterView<?> parent) {
                                 }
                                 public void getSelectedUser(View v) {
-                                    UserAdapter user = (UserAdapter) spinner.getSelectedItem();
+                                    AdminAccountsAdaptor user = (AdminAccountsAdaptor) spinner.getSelectedItem();
                                     displayUserData(user);
                                 }
-                                private void displayUserData(UserAdapter user) {
+                                private void displayUserData(AdminAccountsAdaptor user) {
                                     String name = user.getName();
                                     String rank = user.getRank();
                                     String currSklad = user.getSklad();
@@ -146,8 +166,10 @@ public class ADMIN_VAR {
                                             data[1] = userUsername.getText().toString();
                                             data[2] = userFName.getText().toString();
                                             data[3] = userSName.getText().toString();
-                                            data[4] = rankSpinner.getSelectedItem().toString();
-                                            data[5] = skladSpinner.getSelectedItem().toString();
+                                            String rank_id = getRankIdByName(rankSpinner.getSelectedItem().toString());
+                                            data[4] = rank_id;
+                                            String sklad_id = getSkladIdByName(skladSpinner.getSelectedItem().toString());
+                                            data[5] = sklad_id;
                                             //Toast.makeText(MainActivity.getAppContext(),data[1] + " " + data[0],Toast.LENGTH_SHORT).show();
                                             sendAction(1,data);
                                         }
@@ -168,9 +190,9 @@ public class ADMIN_VAR {
                                     RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
                                     String url;
                                     if(action == 1){
-                                        url = Globals.URL + "?request=adminEditAccount&acc_id=" + data[0] + "&username=" + data[1] + "&f_name=" + data[2] + "&s_name=" + data[3] + "&rank=" + data[4] + "&sklad=" + data[5];
+                                        url = GlobalVariables.URL + "?request=adminEditAccount&acc_id=" + data[0] + "&username=" + data[1] + "&f_name=" + data[2] + "&s_name=" + data[3] + "&rank=" + data[4] + "&sklad=" + data[5];
                                     }else{
-                                        url = Globals.URL + "?request=adminDeleteAccount&acc_id=" + data[0];
+                                        url = GlobalVariables.URL + "?request=adminDeleteAccount&acc_id=" + data[0];
                                     }
 
                                     StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -214,7 +236,7 @@ public class ADMIN_VAR {
     }
 
     public void showMessage(String msg) {
-        messageDialog.setContentView(R.layout.message_popup);
+        messageDialog.setContentView(R.layout.dialog_message);
         TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
         text.setText(msg);
         Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);

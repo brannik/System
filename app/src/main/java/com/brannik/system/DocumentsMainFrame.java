@@ -63,11 +63,11 @@ import static java.lang.String.valueOf;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link sundays#newInstance} factory method to
+ * Use the {@link DocumentsMainFrame#newInstance} factory method to
  * create an instance of this fragment.
  */
 @SuppressWarnings("ALL")
-public class sundays extends Fragment implements View.OnClickListener{
+public class DocumentsMainFrame extends Fragment implements View.OnClickListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -84,7 +84,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     private Integer i = 0;
     private Boolean allowToSend = true;
 
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+    GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
     Dialog myDialog;
     Dialog messageDialog;
     Dialog datePicker;
@@ -94,7 +94,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public static Bitmap imageBitmap;
 
-    public sundays() {
+    public DocumentsMainFrame() {
         // Required empty public constructor
     }
 
@@ -107,8 +107,8 @@ public class sundays extends Fragment implements View.OnClickListener{
      * @return A new instance of fragment sundays.
      */
     // TODO: Rename and change types and number of parameters
-    public static sundays newInstance(String param1, String param2) {
-        sundays fragment = new sundays();
+    public static DocumentsMainFrame newInstance(String param1, String param2) {
+        DocumentsMainFrame fragment = new DocumentsMainFrame();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -129,7 +129,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inf = inflater.inflate(R.layout.fragment_sundays, container, false);
+        View inf = inflater.inflate(R.layout.fragment_documents_main, container, false);
         Button btnAdd = (Button) inf.findViewById(R.id.btnNewDocument);
         Button btnDel = (Button) inf.findViewById(R.id.btnDelete);
         Button btnFind = (Button) inf.findViewById(R.id.btnFindDocument);
@@ -158,12 +158,12 @@ public class sundays extends Fragment implements View.OnClickListener{
         ArrayAdapter arrayAdapter = new ArrayAdapter(MainActivity.getAppContext(),
                 android.R.layout.simple_list_item_1,
                 array);
-        listView.setAdapter(new MyCustomAdapterDocuments(array, view.getContext(),type) );
+        listView.setAdapter(new DocumentsListAdaptor(array, view.getContext(),type) );
         //listView.setAdapter(arrayAdapter);
     }
 
     public void showMessage(String msg) {
-        messageDialog.setContentView(R.layout.message_popup);
+        messageDialog.setContentView(R.layout.dialog_message);
         TextView text = (TextView) messageDialog.findViewById(R.id.txtMessage);
         text.setText(msg);
         Button btnClose = (Button) messageDialog.findViewById(R.id.btnOk);
@@ -178,7 +178,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     }
 
     public void showDatePicker() {
-        datePicker.setContentView(R.layout.date_picker);
+        datePicker.setContentView(R.layout.dialog_select_month_documents);
         TextView txtDate = (TextView) datePicker.findViewById(R.id.txtDate);
         TextView txtYear = (TextView) datePicker.findViewById(R.id.txtYear);
         DateFormat dateFormat = new SimpleDateFormat("MM");
@@ -206,7 +206,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     public void ShowPopup() {
         // get first element from documents array and display it
         i = 0;
-        myDialog.setContentView(R.layout.popup);
+        myDialog.setContentView(R.layout.dialog_documents_action);
         TextView text = (TextView) myDialog.findViewById(R.id.txtShowDocument);
         TextView txtCounter = (TextView) myDialog.findViewById(R.id.txtCounter);
         String temp = valueOf(i + 1) + " от " + valueOf(documentsCount - 1);
@@ -257,7 +257,7 @@ public class sundays extends Fragment implements View.OnClickListener{
     }
 
     public void showConfirmDialog(String msg) {
-        cameraCapture.setContentView(R.layout.confirm);
+        cameraCapture.setContentView(R.layout.dialog_confirm_document_number);
         TextView docNumber = (TextView) cameraCapture.findViewById(R.id.editNumber);
         docNumber.setText(msg);
         Button btnDone = (Button) cameraCapture.findViewById(R.id.btnDone);
@@ -298,7 +298,7 @@ public class sundays extends Fragment implements View.OnClickListener{
 
 
         camera = Camera.open();
-        cameraCallback cam = new cameraCallback(getContext(),camera);
+        CameraCallback cam = new CameraCallback(getContext(),camera);
         frameLayout.addView(cam);
 
         ButterKnife.bind(this, customCamera);
@@ -570,7 +570,7 @@ public class sundays extends Fragment implements View.OnClickListener{
         switch(type){
             case "NEW_DOC":
                 if(validateData(data)){
-                    url = Globals.URL + "?request=add_new_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                    url = GlobalVariables.URL + "?request=add_new_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
                     requestType = 1;
                 }else{
                     url = "";
@@ -579,7 +579,7 @@ public class sundays extends Fragment implements View.OnClickListener{
                 break;
             case "DELETE_DOC":
                 if(validateData(data)){
-                    url = Globals.URL + "?request=delete_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                    url = GlobalVariables.URL + "?request=delete_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
                     requestType = 2;
                 }else{
                     url = "";
@@ -587,26 +587,26 @@ public class sundays extends Fragment implements View.OnClickListener{
                 }
                 break;
             case "FIND_DOC":
-                url = Globals.URL + "?request=find_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
+                url = GlobalVariables.URL + "?request=find_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD;
                 requestType = 3;
                 break;
             case "LIST_ALL":
                 // premesti sled dialog window-a
                 // purvo pokaji prozorec da se izbere mesec i godina
 
-                url = Globals.URL + "?request=list_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD + "&year=" + dataTwo;
+                url = GlobalVariables.URL + "?request=list_document&data=" + data + "&acc_id=" + ID + "&sklad=" + SKLAD + "&year=" + dataTwo;
                 requestType = 4;
                 break;
             case "GET_ALL_ENTER_MODE":
-                url = Globals.URL + "?request=entering_mode&acc_id=" + ID + "&sklad=" + SKLAD;
+                url = GlobalVariables.URL + "?request=entering_mode&acc_id=" + ID + "&sklad=" + SKLAD;
                 requestType = 5;
                 break;
             case "CHECK_DOCUMENT":
-                url = Globals.URL + "?request=entering_mode_document&doc_id=" + data;
+                url = GlobalVariables.URL + "?request=entering_mode_document&doc_id=" + data;
                 requestType = 6;
                 break;
             default:
-                url = Globals.URL + "?request=test";
+                url = GlobalVariables.URL + "?request=test";
         }
 
         //String url ="http://app-api.servehttp.com/api.php?request=test";

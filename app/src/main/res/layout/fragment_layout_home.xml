@@ -6,7 +6,7 @@
     android:layout_margin="15sp"
     android:padding="15sp"
     android:background="@drawable/simple_border"
-    tools:context=".sumary">
+    tools:context=".HomeScreenMainFrame">
 
     <FrameLayout
         android:layout_width="match_parent"

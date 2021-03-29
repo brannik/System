@@ -9,10 +9,10 @@ import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link extra#newInstance} factory method to
+ * Use the {@link ExtraDHMain#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class extra extends Fragment {
+public class ExtraDHMain extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -23,7 +23,7 @@ public class extra extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public extra() {
+    public ExtraDHMain() {
         // Required empty public constructor
     }
 
@@ -36,8 +36,8 @@ public class extra extends Fragment {
      * @return A new instance of fragment extra.
      */
     // TODO: Rename and change types and number of parameters
-    public static extra newInstance(String param1, String param2) {
-        extra fragment = new extra();
+    public static ExtraDHMain newInstance(String param1, String param2) {
+        ExtraDHMain fragment = new ExtraDHMain();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

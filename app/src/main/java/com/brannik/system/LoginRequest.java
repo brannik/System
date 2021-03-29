@@ -20,13 +20,13 @@ public class LoginRequest extends AsyncTask<String,String,String> {
     HttpURLConnection conn;
     URL url = null;
 
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+    GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
 
     @Override
     protected String doInBackground(String... strings) {
         try {
             // Enter URL address where your php file resides
-            String id = Globals.getDevId();
+            String id = GlobalVariables.getDevId();
             int month = Calendar.getInstance().get(Calendar.MONTH);
             url = new URL(GLOBE.URL + "?request=login&dev_id=" + id + "&month=" + month);
 

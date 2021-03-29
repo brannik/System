@@ -24,7 +24,7 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
 @SuppressLint("MissingFirebaseInstanceTokenRefresh")
-public class NotificationReciever extends FirebaseMessagingService {
+public class FBNotificationsReceiver extends FirebaseMessagingService {
     @Override
     public void onCreate() {
         super.onCreate();

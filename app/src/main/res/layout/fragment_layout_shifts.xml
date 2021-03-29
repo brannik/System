@@ -8,7 +8,7 @@
     android:padding="15sp"
     android:background="@drawable/simple_border"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".shifts"
+    tools:context=".ShiftsMainFrame"
      >
 
     <FrameLayout

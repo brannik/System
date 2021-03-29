@@ -1,26 +1,22 @@
 package com.brannik.system;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link admin#newInstance} factory method to
+ * Use the {@link AdminCP#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class admin extends Fragment {
-    Globals GLOBE = new Globals(MainActivity.getAppContext());
+public class AdminCP extends Fragment {
+    GlobalVariables GLOBE = new GlobalVariables(MainActivity.getAppContext());
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,7 +28,7 @@ public class admin extends Fragment {
     private String mParam2;
 
 
-    public admin() {
+    public AdminCP() {
 
         // Required empty public constructor
     }
@@ -46,8 +42,8 @@ public class admin extends Fragment {
      * @return A new instance of fragment admin.
      */
     // TODO: Rename and change types and number of parameters
-    public static admin newInstance(String param1, String param2) {
-        admin fragment = new admin();
+    public static AdminCP newInstance(String param1, String param2) {
+        AdminCP fragment = new AdminCP();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -68,9 +64,9 @@ public class admin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View inf = inflater.inflate(R.layout.fragment_admin, container, false);
+        View inf = inflater.inflate(R.layout.fragment_admin_main, container, false);
 
-        ADMIN_VAR admin = new ADMIN_VAR();
+        AdminAccountsFunctions admin_accounts = new AdminAccountsFunctions();
         Spinner spinnerAcc = (Spinner) inf.findViewById(R.id.spinnerAccManagement);
 
         String[] ranks =  {"Зареди потребителите"};
@@ -84,7 +80,7 @@ public class admin extends Fragment {
         btnLoad.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                admin.buildAccAdminSection(inf,spinnerAcc,null);
+                admin_accounts.buildAccAdminSection(inf,spinnerAcc,null);
             }
         });
 

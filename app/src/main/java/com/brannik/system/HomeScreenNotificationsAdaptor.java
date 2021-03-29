@@ -10,11 +10,11 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class MyCustomAdapterNotifications extends BaseAdapter implements ListAdapter {
+public class HomeScreenNotificationsAdaptor extends BaseAdapter implements ListAdapter {
     private ArrayList<String> list = new ArrayList<String>();
     private final Context context;
 
-    public MyCustomAdapterNotifications(ArrayList<String> list, Context context) {
+    public HomeScreenNotificationsAdaptor(ArrayList<String> list, Context context) {
         this.list = list;
         this.context = context;
     }

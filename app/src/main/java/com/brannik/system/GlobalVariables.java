@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.UUID;
 
-public class Globals extends AppCompatActivity {
+public class GlobalVariables extends AppCompatActivity {
 
     private final SharedPreferences sharedPreferences;
     public static SharedPreferences.Editor editor;
@@ -18,7 +18,7 @@ public class Globals extends AppCompatActivity {
     public static String[] RANKS;
     public static String[] SKLAD;
 
-    public Globals(Context context) {
+    public GlobalVariables(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
         RANKS = new String[3];
         RANKS[0] = "Гост";

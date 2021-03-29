@@ -14,13 +14,13 @@ import java.io.IOException;
 import java.util.List;
 
 @SuppressWarnings("ALL")
-public class cameraCallback extends SurfaceView implements SurfaceHolder.Callback {
+public class CameraCallback extends SurfaceView implements SurfaceHolder.Callback {
     Camera camera;
     SurfaceHolder holder;
     Paint paint = new Paint();
     public static boolean previewing = false;
 
-    public cameraCallback(Context context,Camera camera) {
+    public CameraCallback(Context context, Camera camera) {
         super(context);
         this.camera = camera;
         holder = getHolder();
