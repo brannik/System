@@ -33,8 +33,8 @@ import static java.lang.Integer.parseInt;
 public class AdminAccountsFunctions {
     Dialog messageDialog;
     private final String[][] ranks={
-            {"1","Гост"},
-            {"2","Потребител"},
+            {"1","Потребител"},
+            {"2","Модератор"},
             {"3","Администратор"}
     };
     private final String[][] skladNames= {
@@ -108,7 +108,8 @@ public class AdminAccountsFunctions {
                                 String s_name = data.getString("s_name");
                                 String rank = data.getString("rank");
                                 String sklad = data.getString("sklad");
-                                user = new AdminAccountsAdaptor(acc_id,username,name,s_name,rank,sklad);
+                                String token = data.getString("token");
+                                user = new AdminAccountsAdaptor(acc_id,username,name,s_name,rank,sklad,token);
                                 userList.add(user);
 
                             }
@@ -141,6 +142,8 @@ public class AdminAccountsFunctions {
                                     EditText userFName = (EditText) view.findViewById(R.id.adminUserSettingsName);
                                     EditText userSName = (EditText) view.findViewById(R.id.adminUserSettingsSName);
                                     EditText userUsername = (EditText) view.findViewById(R.id.adminUserSettingsUsername);
+                                    TextView tokenText = (TextView) view.findViewById(R.id.txtToken);
+                                    tokenText.setText(user.getToken());
                                     userFName.setText(name);
                                     userSName.setText(s_name);
                                     userUsername.setText(userName);

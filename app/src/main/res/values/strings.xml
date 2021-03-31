@@ -30,6 +30,9 @@
     <string name="default_notification_channel_id">my_app_channel</string>
     <string name="fcm_message">Внимание</string>
     <string name="fcm_message_notification">Ново известие.</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="configure">Configure</string>
+    <string name="add_widget">Add widget</string>
 
     <!-- CALENDAR -->
 

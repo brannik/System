@@ -1,244 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    tools:context=".HomeScreenMainFrame"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:background="@color/dark"
     android:layout_height="match_parent"
-    android:layout_margin="15sp"
-    android:padding="15sp"
-    android:background="@drawable/simple_border"
-    tools:context=".HomeScreenMainFrame">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<RelativeLayout
+    android:background="@color/dark"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
 
-    <FrameLayout
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/testTopFrame"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5sp"
-
-        android:id="@+id/LineOne"
+        android:layout_height="100sp"
+        app:cardCornerRadius="2dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardElevation="2dp"
+        android:fadingEdgeLength="10dp"
         >
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="РАНК"
-            android:layout_gravity="left"/>
-
-        <TextView
-            android:id="@+id/txtRank"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:text="TextView"
-            android:textSize="20sp" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:id="@+id/LaneTwo"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5sp"
-        android:layout_below="@id/LineOne">
-
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="left"
-            android:text="ПОТРЕБИТЕЛ" />
-
-        <TextView
-            android:id="@+id/txtUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="right"
-            android:text="TextView" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5sp"
-        android:id="@+id/LaneThree"
-        android:layout_below="@id/LaneTwo">
-
-        <TextView
-            android:id="@+id/textView8"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="left"
-            android:text="СКЛАД" />
-
-        <TextView
-            android:id="@+id/txtSkladNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:text="TextView"
-            android:textSize="20sp" />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@+id/LaneThree"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="5sp"
-        android:id="@+id/LaneFour">
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="left"
-            android:text="ИМЕ" />
-
-        <TextView
-            android:id="@+id/txtNames"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="right"
-            android:gravity="center"
-            android:text="TextView"
-             />
-
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@+id/LaneFour"
-        android:id="@+id/LaneFive"
-        android:layout_marginHorizontal="30sp"
-        android:layout_marginVertical="10sp">
-
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="left"
-            android:text="@string/hours"/>
-
-        <TextView
-            android:id="@+id/txtHours"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="right"
-            android:text="TextView"/>
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:layout_below="@+id/LaneFive"
-        android:layout_marginVertical="10sp"
-        android:layout_marginHorizontal="30sp"
-        android:id="@+id/LineSix">
-
-        <TextView
-            android:id="@+id/textView4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="left"
-            android:text="@string/days"
-             />
-
-        <TextView
-            android:id="@+id/txtDays"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="right"
-            android:text="TextView"
-             />
-    </FrameLayout>
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LineSix"
-
-        android:layout_marginVertical="10sp"
-        android:layout_marginHorizontal="30sp"
-        android:id="@+id/LineSeven">
-
-        <TextView
-            android:id="@+id/textView43"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="left"
-            android:text="@string/documents"
-            />
-
-        <TextView
-            android:id="@+id/txtCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:layout_gravity="right"
-            />
-    </FrameLayout>
-
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LineSeven"
-        android:layout_marginVertical="10sp"
-        android:layout_marginHorizontal="30sp"
-        android:background="@drawable/warning"
-        android:visibility="invisible"
-        android:elevation="4sp"
-        android:id="@+id/LineEight">
-
-
-        <TextView
-            android:id="@+id/txtWarning"
-            android:layout_margin="10sp"
-            android:textAlignment="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="30sp"
-            android:textColor="@color/yellow"
-            android:layout_gravity="center"
-            android:text="WARNING !!!"
-            />
-    </FrameLayout>
-
-
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/LineEight"
-        android:layout_alignParentBottom="true"
-        android:layout_marginVertical="20sp"
-        android:id="@+id/LineNine">
-
-        <ListView
-            android:id="@+id/listView"
+        <RelativeLayout
+            android:background="@color/dark"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </FrameLayout>
+            android:layout_height="match_parent">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/profilePic"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_alignParentEnd="true"
+                android:background="@drawable/home_default_acc_picture"
+                />
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtUsername"
+                android:layout_width="wrap_content"
+                android:layout_marginTop="15dp"
+                android:textColor="@color/text_color"
+                android:autoSizeTextType="uniform"
+                android:layout_marginStart="30dp"
+                android:layout_height="wrap_content"
+                android:text="USERNAME"
+                android:textSize="25sp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtNames"
+                android:textColor="@color/text_color"
+                android:autoSizeTextType="uniform"
+                android:layout_width="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtUsername"
+                android:textSize="20sp"
+                android:text="f_name and s_name"/>
+
+        </RelativeLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/testMiddlePanel"
+        android:layout_below="@+id/testTopFrame"
+        android:layout_marginTop="20dp"
+        app:cardBackgroundColor="@color/dark"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.circularreveal.CircularRevealGridLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/dark"
+            android:columnCount="3"
+            android:layout_gravity="center"
+            android:rowCount="2"
+            android:orientation="horizontal">
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon4"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_total_documents"/>
+                    <TextView
+                        android:id="@+id/txtCount"
+                        android:layout_below="@+id/testIcon4"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="15"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon5"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_checked_documents"/>
+                    <TextView
+                        android:layout_below="@+id/testIcon5"
+                        android:id="@+id/txtCheckedDocCount"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="to do"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_unchecked_documents"/>
+                    <TextView
+                        android:id="@+id/txtUnchekedDocuments"
+                        android:layout_below="@+id/testIcon"
+                        android:layout_width="wrap_content"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="to do"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
 
 
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon6"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_extra_hours"/>
+                    <TextView
+                        android:id="@+id/txtHours"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_below="@+id/testIcon6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="15"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+                app:cardElevation="6dp"
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon3"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_extra_days"/>
+                    <TextView
+                        android:layout_below="@+id/testIcon3"
+                        android:id="@+id/txtDays"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="152"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                app:cardElevation="6dp"
+                android:layout_width="wrap_content"
+                android:layout_margin="10dp"
+
+                app:cardBackgroundColor="@color/dark_1"
+                android:layout_height="wrap_content">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/testIcon2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:layout_margin="10dp"
+                        android:background="@drawable/home_user_rank"/>
+                    <TextView
+                        android:layout_below="@+id/testIcon2"
+                        android:id="@+id/txtRank"
+                        android:textColor="@color/text_color"
+                        android:autoSizeTextType="uniform"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:textSize="20sp"
+                        android:layout_marginBottom="5dp"
+                        android:text="АДМИН"/>
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </com.google.android.material.circularreveal.CircularRevealGridLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        android:id="@+id/txtWarningFrame"
+        app:cardElevation="10dp"
+        android:layout_width="match_parent"
+        android:minHeight="65dp"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/dark_2"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="30dp"
+        android:visibility="visible"
+        android:layout_marginBottom="10dp"
+        android:layout_below="@+id/testMiddlePanel">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/warningIcon"
+                android:layout_width="60dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_alignParentStart="true"
+                android:background="@drawable/home_warning"
+                android:layout_height="60dp"/>
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/txtWarning"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/text_color"
+                android:textSize="15sp"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@id/warningIcon"
+                android:text="this is warning"/>
+        </RelativeLayout>
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+    <ListView
+        android:layout_margin="10dp"
+        android:id="@+id/listView"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/txtWarningFrame"
+        android:layout_width="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_height="300sp">
+    </ListView>
 
 </RelativeLayout>
+</ScrollView>

@@ -26,9 +26,9 @@ public class GlobalVariables extends AppCompatActivity {
     public GlobalVariables(Context context) {
         sharedPreferences = context.getSharedPreferences("SystemData", Context.MODE_PRIVATE);
         RANKS = new String[3];
-        RANKS[0] = "Гост";
-        RANKS[1] = "Потребител";
-        RANKS[2] = "Администратор";
+        RANKS[0] = "Потр";
+        RANKS[1] = "Мод";
+        RANKS[2] = "Админ";
 
         SKLAD = new String[7];
         SKLAD[0] = "Няма";

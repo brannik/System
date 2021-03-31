@@ -1,103 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    tools:context=".DocumentsMainFrame"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    style="@style/Theme.System"
+    android:layout_marginTop="20dp"
+    android:layout_centerHorizontal="true"
     android:layout_height="match_parent"
-    android:layout_margin="15sp"
-    android:padding="15sp"
-    android:background="@drawable/simple_border"
-    tools:context=".DocumentsMainFrame">
-
-    <FrameLayout
-        android:id="@+id/RowOne"
-        android:layout_width="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_height="wrap_content">
-
-        <EditText
-            android:id="@+id/editDocumentNumber"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:hint="Въведете номер на бележка"
-            android:inputType="number" />
-    </FrameLayout>
-    <FrameLayout
-        android:id="@+id/RowTwo"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/RowOne">
-
-        <Button
-            android:id="@+id/btnNewDocument"
-            android:layout_width="match_parent"
+        android:id="@+id/topLayout">
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
             android:layout_height="wrap_content"
-            android:text="@string/btnNewDocument" />
-    </FrameLayout>
+            android:layout_width="wrap_content"
+            android:id="@+id/btnNewDocumentTop"
+            android:layout_margin="5dp"
+            app:cardElevation="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:background="@color/dark_2"
+                android:id="@+id/btnNewDocument"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:id="@+id/btnNewDocumentIconText"
+                    android:background="@drawable/documents_icon_add_textbox"
+                    android:layout_alignParentStart="true"
+                    android:visibility="gone"
+                    android:layout_height="40dp"/>
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:id="@+id/btnNewDocumentIconCamera"
+                    android:background="@drawable/documents_icon_add_camera"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="40dp"/>
+            </RelativeLayout>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-    <FrameLayout
-        android:id="@+id/RowThree"
-        android:layout_below="@+id/RowTwo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btnDelete"
-            android:layout_width="match_parent"
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
             android:layout_height="wrap_content"
-            android:text="@string/btnDelDocument" />
-    </FrameLayout>
-
-
-    <FrameLayout
-        android:id="@+id/RowFour"
-        android:layout_below="@+id/RowThree"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <Button
-            android:id="@+id/btnFindDocument"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnFindDocument" />
-    </FrameLayout>
+            android:layout_margin="5dp"
+            android:layout_toEndOf="@+id/btnNewDocumentTop"
+            android:layout_centerHorizontal="true"
+            app:cardElevation="10dp"
+            >
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editDocumentNumber"
+                android:layout_width="match_parent"
+                android:inputType="number"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_margin="5dp"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
 
-    <FrameLayout
-        android:id="@+id/RowFive"
-        android:layout_below="@+id/RowFour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnDocumentEnter"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnDocumentEnter" />
-    </FrameLayout>
+    </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/RowSix"
-        android:layout_below="@+id/RowFive"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/btnListDocuments"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/btnListDocument" />
-    </FrameLayout>
 
-    <FrameLayout
-        android:layout_below="@+id/RowSix"
-        android:layout_width="match_parent"
+    <com.google.android.material.circularreveal.CircularRevealGridLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:id="@+id/midLayout"
+        android:layout_below="@+id/topLayout"
+        android:layout_centerHorizontal="true"
+        android:columnCount="2"
+        android:rowCount="2">
 
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+
+            android:layout_toEndOf="@+id/btnFindDocument"
+            android:layout_margin="5dp"
+            app:cardElevation="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:background="@color/dark_2"
+                android:id="@+id/btnFindDocument"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnFindIcon"
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/documents_icon_search"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="40dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_toStartOf="@id/btnFindIcon"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="15dp"
+                    android:autoSizeTextType="uniform"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Намери"
+                    />
+            </RelativeLayout>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@+id/btnDeleteTop"
+            android:layout_margin="5dp"
+            app:cardElevation="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:background="@color/dark_2"
+                android:id="@+id/btnDelete"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnDeleteIcon"
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/documents_delete_icon"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="40dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_toStartOf="@id/btnDeleteIcon"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="15dp"
+                    android:autoSizeTextType="uniform"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Премахни"
+                    />
+            </RelativeLayout>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            app:cardElevation="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:background="@color/dark_2"
+                android:id="@+id/btnDocumentEnter"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnCheckDocument"
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/documents_icon_check_document"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="40dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_toStartOf="@id/btnCheckDocument"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="15dp"
+                    android:autoSizeTextType="uniform"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Отрази"
+                    />
+            </RelativeLayout>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_margin="5dp"
+            app:cardElevation="10dp"
+            >
+            <RelativeLayout
+                android:layout_width="150dp"
+                android:background="@color/dark_2"
+                android:id="@+id/btnListDocuments"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/btnListAll"
+                    android:layout_width="40dp"
+                    android:layout_margin="5dp"
+                    android:background="@drawable/documents_icon_list_all"
+                    android:layout_alignParentStart="true"
+                    android:layout_height="40dp"/>
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:layout_toStartOf="@id/btnListAll"
+                    android:layout_centerVertical="true"
+                    android:textColor="@color/text_color"
+                    android:textSize="20sp"
+                    android:layout_marginEnd="15dp"
+                    android:autoSizeTextType="uniform"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="Всички"
+                    />
+            </RelativeLayout>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+    </com.google.android.material.circularreveal.CircularRevealGridLayout>
+
+    <RelativeLayout
+        android:layout_below="@+id/midLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
         <ListView
+            android:scrollbars="vertical"
             android:id="@+id/listDocuments"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </FrameLayout>
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"/>
 
+    </RelativeLayout>
 </RelativeLayout>

@@ -7,19 +7,23 @@ public class AdminAccountsAdaptor {
     private String s_name;
     private String rank;
     private String sklad;
+    private String token;
 
-    public AdminAccountsAdaptor(String id, String username, String name, String s_name, String rank, String sklad) {
+    public AdminAccountsAdaptor(String id, String username, String name, String s_name, String rank, String sklad,String token) {
         this.id = id;
         this.username = username;
         this.name = name;
         this.s_name = s_name;
         this.rank = rank;
         this.sklad = sklad;
+        this.token = token;
     }
 
     public String getId() {
         return id;
     }
+
+    public String getToken(){return token;}
 
     public void setId(String id) {
         this.id = id;

@@ -1,27 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<com.google.android.material.circularreveal.cardview.CircularRevealCardView
     android:layout_height="wrap_content"
-    android:background="@drawable/list_view_border"
-    android:layout_margin="5dp"
-    android:padding="5dp">
-    <LinearLayout
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="6dp"
+    app:cardBackgroundColor="@color/dark_2"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout
+        android:minHeight="60dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="2dp"
-        android:gravity="center"
-        >
-        <TextView
-            android:id="@+id/txtNotify"
-            android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_alignParentStart="true"
+            android:layout_margin="5dp"
+            android:background="@drawable/notification_icon"
+            android:id="@+id/notify_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"/>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:text="simple text"
-            android:textColor="@color/yellow"
-            android:background="#83EA1111"
-            android:autoSizeTextType="uniform"
-            />
-        </LinearLayout>
-</RelativeLayout>
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:layout_centerVertical="true"
+            android:textSize="15sp"
+            android:textColor="@color/text_color"
+            android:layout_toEndOf="@+id/notify_icon"
+            android:text="asdasd"
+            android:layout_alignParentEnd="true"
+            android:id="@+id/txtNotify"/>
+    </RelativeLayout>
+</com.google.android.material.circularreveal.cardview.CircularRevealCardView>

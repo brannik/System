@@ -8,10 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -20,6 +22,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import static java.lang.Integer.parseInt;
+import static java.lang.Integer.valueOf;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,6 +101,8 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
 
 
     TextView docCount;
+    TextView uncheckedCount;
+    TextView checkedCount;
     FrameLayout warningFrame;
     TextView warningText;
 
@@ -122,9 +128,9 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
         TextView names = (TextView) inf.findViewById(R.id.txtNames);
         names.setText(GLOBE.getNames());
 
-        TextView sklad = (TextView) inf.findViewById(R.id.txtSkladNumber);
-        int indexSklad = GLOBE.getSklad();
-        sklad.setText(GLOBE.getSkladByIndex(indexSklad));
+        //TextView sklad = (TextView) inf.findViewById(R.id.txtSkladNumber);
+        //int indexSklad = GLOBE.getSklad();
+        //sklad.setText(GLOBE.getSkladByIndex(indexSklad));
 
         TextView rank = (TextView) inf.findViewById(R.id.txtRank);
         int index = GLOBE.userRank();
@@ -141,6 +147,16 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
         // call function to prepare list
         prepareList(inf);
 
+        ImageView profilePic = (ImageView) inf.findViewById(R.id.profilePic);
+        profilePic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Snackbar snackbar = Snackbar
+                        .make(inf, "Change profile picture", Snackbar.LENGTH_LONG);
+                snackbar.setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE);
+                snackbar.show();
+            }
+        });
 
 
         return inf;
@@ -150,7 +166,9 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
         RequestQueue queue = Volley.newRequestQueue(MainActivity.getAppContext());
         String url = GlobalVariables.URL + "?request=get_doc_count&month=" + month + "&acc_id=" + acc_id + "&sklad=" + sklad;
         docCount = (TextView) view.findViewById(R.id.txtCount);
-        warningFrame = (FrameLayout) view.findViewById(R.id.LineEight);
+        uncheckedCount = (TextView) view.findViewById(R.id.txtUnchekedDocuments);
+        checkedCount = (TextView) view.findViewById(R.id.txtCheckedDocCount);
+        warningFrame = (FrameLayout) view.findViewById(R.id.txtWarningFrame);
         warningFrame.setVisibility(View.INVISIBLE);
         warningText = (TextView) view.findViewById(R.id.txtWarning);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -168,6 +186,7 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
                                 int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
                                 int today = calend.get(Calendar.DAY_OF_MONTH);
                                 int t = lastDay - today;
+                                t = t + 1;
                                 if(t <= 6){
                                     if(parseInt(unchecked) > 0) {
                                         warningFrame.setVisibility(View.VISIBLE);
@@ -177,6 +196,13 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
                                     }
                                 }
                                 docCount.setText(total);
+                                if(parseInt(unchecked) > 0) {
+                                    uncheckedCount.setText(unchecked);
+                                }else{
+                                    uncheckedCount.setText("0");
+                                }
+                                int ch = parseInt(total) - parseInt(unchecked);
+                                checkedCount.setText(String.valueOf(ch));
                                 //Log.d("DEBUG","COUNTER_>" + response);
                             }
                         } catch (JSONException e) {

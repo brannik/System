@@ -193,6 +193,7 @@ public class SettingsMainFrame extends Fragment {
                                 mProgressDialog.setIndeterminate(true);
                                 mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
                                 mProgressDialog.setCanceledOnTouchOutside(false);
+
                                 mProgressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL, "Инсталирай", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {

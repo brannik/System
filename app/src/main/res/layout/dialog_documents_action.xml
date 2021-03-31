@@ -1,20 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_constrainedHeight="true"
-    app:layout_constrainedWidth="true"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/simple_border"
     >
 
     <LinearLayout
-        app:layout_constrainedHeight="true"
-        app:layout_constrainedWidth="true"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
@@ -49,9 +44,10 @@
             android:gravity="center"
             android:background="@drawable/window_border"
             android:layout_marginTop="40dp"
+            android:textColor="@color/yellow"
             android:paddingHorizontal="15dp"
             android:text="test"
-            android:textSize="30dp"
+            android:textSize="25dp"
             tools:ignore="MissingConstraints" />
 
         <Button
@@ -77,4 +73,4 @@
             android:text="Затвори" />
     </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

@@ -9,5 +9,19 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="yellow">#F8FF3B</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+
+    <color name="main_blue">#2196F3</color>
+    <color name="background_blue">#074373</color>
+
+    <color name="darker">#1E1E1E</color>
+    <color name="dark">#2C2A2A</color>
+    <color name="dark_1">#424242</color>
+    <color name="dark_2">#737373</color>
+    <color name="text_color">#00BCD4</color>
+
 
 </resources>

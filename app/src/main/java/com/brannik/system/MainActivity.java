@@ -11,6 +11,8 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,6 +49,7 @@ import static android.Manifest.permission.REQUEST_INSTALL_PACKAGES;
 import static android.Manifest.permission.WAKE_LOCK;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 import static android.Manifest.permission_group.CAMERA;
+import static android.view.WindowManager.LayoutParams.FLAG_FULLSCREEN;
 
 public class MainActivity extends AppCompatActivity{
     public static Context appContext;
@@ -103,7 +106,7 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        getWindow().setFlags(FLAG_FULLSCREEN, FLAG_FULLSCREEN);
         appContext = getApplicationContext();
         //verifyStoragePermissions(MainActivity.this);
         GLOBE = new GlobalVariables(appContext);

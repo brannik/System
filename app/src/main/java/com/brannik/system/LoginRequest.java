@@ -3,6 +3,8 @@ package com.brannik.system;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -129,6 +131,7 @@ public class LoginRequest extends AsyncTask<String,String,String> {
             String action  = reader3.getString("action");
             if(action.equals("login")){
                 Toast.makeText(MainActivity.getAppContext(), "Успешно вписване в системата", Toast.LENGTH_LONG).show();
+
             }else{
                 Toast.makeText(MainActivity.getAppContext(), "Това устройство не е регистрирано в системата!!!", Toast.LENGTH_LONG).show();
             }

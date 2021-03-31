@@ -16,16 +16,16 @@
             android:layout_height="match_parent"
             android:textColor="@color/white"
             android:id="@+id/text_view"
-            android:padding="2sp"
+            android:padding="2dp"
             android:gravity="top"/>
         <TextView
             android:background="@android:color/holo_purple"
             android:layout_width="match_parent"
-            android:layout_height="33sp"
+            android:layout_height="25dp"
             android:textColor="@color/white"
             android:layout_gravity="bottom"
             android:text="ЗАЕТО"
-            android:textSize="8sp"
+            android:textSize="8dp"
             android:gravity="center"
             android:paddingHorizontal="7dp"
             android:paddingVertical="3dp"/>

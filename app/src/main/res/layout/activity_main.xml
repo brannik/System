@@ -11,17 +11,17 @@
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.System.AppBarOverlay">
+        android:theme="@style/Theme.System">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:tabPaddingEnd="2dp"
+            android:background="@color/dark_1"
             app:tabSelectedTextColor="@color/yellow"
-            app:tabRippleColor="@color/yellow"
-            app:tabIndicator="@color/yellow"
+            app:tabTextColor="@color/dark_2"
+
+            app:tabPaddingEnd="2dp"
             app:tabPaddingStart="2dp"
             app:tabTextAppearance="@style/TextAppearance.AppCompat.Small.Inverse" />
     </com.google.android.material.appbar.AppBarLayout>
@@ -29,6 +29,7 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
+        android:background="@color/dark"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 

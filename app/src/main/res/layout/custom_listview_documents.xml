@@ -1,126 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<RelativeLayout
     android:layout_height="wrap_content"
-    android:background="@drawable/list_view_border"
-    android:layout_margin="5dp"
-    android:padding="5dp">
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="2dp"
-        android:gravity="center">
 
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/layoutMainFrame"
+        android:layout_marginVertical="4dp"
         android:orientation="horizontal">
-        <TextView
-            android:id="@+id/labelNumber"
+        <RelativeLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="No"
-            android:paddingHorizontal="5dp"
-            android:textColor="@color/yellow"
-            android:background="#83EA1111"
-            android:autoSizeTextType="uniform"
-            />
-        <TextView
-            android:id="@+id/txtDocNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:textColor="@color/yellow"
-            android:background="#83DC6565"
-            android:autoSizeTextType="uniform"
-            />
-        <TextView
-            android:id="@+id/labelDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:text="Дата"
-            android:textColor="@color/yellow"
-            android:background="#83EA1111"
-            android:autoSizeTextType="uniform"
-            />
-        <TextView
-            android:id="@+id/txtDocDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:textColor="@color/yellow"
-            android:background="#83DC6565"
-            android:autoSizeTextType="uniform"
-            />
-
-        <TextView
-            android:id="@+id/labelStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:text="Статус"
-            android:textColor="@color/yellow"
-            android:background="#83EA1111"
-            android:autoSizeTextType="uniform"
-            />
-        <TextView
-            android:id="@+id/docStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingHorizontal="5dp"
-            android:textColor="@color/yellow"
-            android:background="#83DC6565"
-            android:autoSizeTextType="uniform"
-            />
-    </LinearLayout>
+            android:layout_gravity="center_vertical"
+            android:layout_height="wrap_content">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="40dp"
+                android:id="@+id/iconStatusTwoRow"
+                android:layout_margin="2dp"
+                android:layout_marginHorizontal="10dp"
+                android:visibility="gone"
+                android:background="@drawable/document_checked"
+                android:layout_height="40dp"/>
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="20dp"
+                android:id="@+id/iconStatusOneRow"
+                android:layout_margin="2dp"
+                android:layout_marginHorizontal="10dp"
+                android:visibility="gone"
+                android:background="@drawable/document_checked"
+                android:layout_height="20dp"/>
+        </RelativeLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:id="@+id/hiddenList"
-            android:visibility="gone">
-            <TextView
-                android:text="Потребител: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:textColor="@color/yellow"
-                android:background="#83EA1111"
-                android:autoSizeTextType="uniform"
-                />
-            <TextView
-                android:id="@+id/textOwner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:textColor="@color/yellow"
-                android:background="#83DC6565"
-                android:autoSizeTextType="uniform"
-                />
-            <TextView
-                android:text="Склад: "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:textColor="@color/yellow"
-                android:background="#83EA1111"
-                android:autoSizeTextType="uniform"
-                />
-            <TextView
-                android:id="@+id/textSklad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="5dp"
-                android:textColor="@color/yellow"
-                android:background="#83DC6565"
-                android:autoSizeTextType="uniform"
-                />
-        </LinearLayout>
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/dataRowOne"
+                android:layout_marginVertical="1dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/dataNumberLabel"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:layout_marginHorizontal="2dp" />
 
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/dataRowTwo"
+                android:layout_marginVertical="1dp"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:textSize="20sp"
+                    android:layout_alignParentStart="true"
+                    android:id="@+id/dataOwnerLabel"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:layout_marginHorizontal="8dp"
+                    />
+
+            </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:id="@+id/dataRowTree"
+                android:layout_height="wrap_content">
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="wrap_content"
+                    android:textSize="20sp"
+                    android:id="@+id/dataSkladLabel"
+                    android:layout_height="wrap_content"
+                    android:autoSizeTextType="uniform"
+                    android:layout_marginHorizontal="2dp"
+                    />
+
+            </RelativeLayout>
+
+        </LinearLayout>
     </LinearLayout>
 </RelativeLayout>

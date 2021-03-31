@@ -81,7 +81,7 @@ public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        if(GLOBE.userRank() < 2){
+        if(GLOBE.userRank() < 1){
             return 5;
         }else{
             return 6;

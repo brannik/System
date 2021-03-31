@@ -13,7 +13,10 @@ import android.graphics.Paint;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +24,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.Fragment;
 
@@ -130,13 +136,38 @@ public class DocumentsMainFrame extends Fragment implements View.OnClickListener
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View inf = inflater.inflate(R.layout.fragment_documents_main, container, false);
-        Button btnAdd = (Button) inf.findViewById(R.id.btnNewDocument);
-        Button btnDel = (Button) inf.findViewById(R.id.btnDelete);
-        Button btnFind = (Button) inf.findViewById(R.id.btnFindDocument);
-        Button btnList = (Button) inf.findViewById(R.id.btnListDocuments);
-        Button btnMode = (Button) inf.findViewById(R.id.btnDocumentEnter);
-
+        RelativeLayout btnAdd = (RelativeLayout) inf.findViewById(R.id.btnNewDocument);
+        RelativeLayout btnDel = (RelativeLayout) inf.findViewById(R.id.btnDelete);
+        RelativeLayout btnFind = (RelativeLayout) inf.findViewById(R.id.btnFindDocument);
+        RelativeLayout btnList = (RelativeLayout) inf.findViewById(R.id.btnListDocuments);
+        RelativeLayout btnMode = (RelativeLayout) inf.findViewById(R.id.btnDocumentEnter);
+        ImageView newBtnIconCamera = (ImageView) inf.findViewById(R.id.btnNewDocumentIconCamera);
+        ImageView newBtnIconText = (ImageView) inf.findViewById(R.id.btnNewDocumentIconText);
         EditText docNumber = (EditText) inf.findViewById(R.id.editDocumentNumber);
+
+        docNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.equals("") || s == null){
+                    newBtnIconCamera.setVisibility(View.VISIBLE);
+                    newBtnIconText.setVisibility(View.GONE);
+                }else{
+                    newBtnIconCamera.setVisibility(View.GONE);
+                    newBtnIconText.setVisibility(View.VISIBLE);
+                }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         btnAdd.setOnClickListener(this);
         btnDel.setOnClickListener(this);
