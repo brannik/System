@@ -5,7 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/simple_border"
+    android:background="@color/dark_2"
     >
 
     <LinearLayout
@@ -14,28 +14,27 @@
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingVertical="10dp"
+        android:padding="10dp"
         tools:ignore="MissingConstraints"
-        android:background="@color/white"
+        android:background="@color/dark"
         >
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@android:color/holo_blue_light"
+            android:layout_height="wrap_content"
+            android:background="@color/darker"
             android:text="Отразяване"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:paddingHorizontal="20dp"
-            android:layout_marginBottom="40dp"
+            android:textColor="@color/text_color"
+            android:layout_marginBottom="10dp"
             android:autoSizeTextType="uniform"/>
         <TextView
             android:id="@+id/txtCounter"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:gravity="center"
+            android:textColor="@color/text_color"
             android:textSize="25dp"
-            android:layout_marginTop="10dp"
+            android:layout_margin="10dp"
             />
         <TextView
             android:id="@+id/txtShowDocument"
@@ -43,7 +42,6 @@
             android:layout_height="60dp"
             android:gravity="center"
             android:background="@drawable/window_border"
-            android:layout_marginTop="40dp"
             android:textColor="@color/yellow"
             android:paddingHorizontal="15dp"
             android:text="test"
@@ -52,6 +50,7 @@
 
         <Button
             android:id="@+id/btnEnter"
+            android:textColor="@color/text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -59,6 +58,7 @@
 
         <Button
             android:id="@+id/btnSkip"
+            android:textColor="@color/text_color"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -68,6 +68,7 @@
         <Button
             android:id="@+id/btnClose"
             android:layout_width="match_parent"
+            android:textColor="@color/text_color"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Затвори" />

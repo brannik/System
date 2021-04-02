@@ -6,25 +6,24 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:layout_margin="15sp"
-    android:padding="15sp"
-    android:background="@drawable/simple_border"
+    android:background="@color/dark"
     app:layout_constrainedHeight="true"
     app:layout_constrainedWidth="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:gravity="top"
         android:orientation="vertical"
         tools:ignore="MissingConstraints">
         <TextView
             android:id="@+id/current_date_header"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:background="@android:color/holo_blue_light"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:background="@color/darker"
             android:gravity="center"
-            android:textColor="@color/white"
+            android:textColor="@color/text_color"
             android:paddingHorizontal="20dp"
             android:autoSizeTextType="uniform"/>
         <LinearLayout
@@ -37,7 +36,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:layout_marginVertical="10dp"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
@@ -46,7 +45,10 @@
                 android:id="@+id/dateTextSecondSh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/dark_1"
+                android:textColor="@color/text_color"
                 android:padding="10sp"
+                android:gravity="center"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
                 android:textSize="12sp"
@@ -54,7 +56,9 @@
             <Button
                 android:id="@+id/btnSecondShift"
                 android:layout_width="match_parent"
-                android:textSize="12sp"
+                android:textSize="15sp"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/text_color"
                 android:layout_height="wrap_content"
                 android:text="Заяви" />
         </LinearLayout>
@@ -69,23 +73,28 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:layout_marginVertical="10dp"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
                 android:text="Почивка" />
             <TextView
+                android:background="@color/dark_1"
                 android:id="@+id/dateTextRest"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10sp"
+                android:textColor="@color/text_color"
                 android:textSize="12sp"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
                 android:text="На тази дата почивка е: " />
             <Button
                 android:id="@+id/btnRest"
-                android:textSize="12sp"
+                android:layout_marginHorizontal="10dp"
+                android:textSize="15sp"
+                android:textColor="@color/text_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Заяви" />
@@ -100,7 +109,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/text_color"
                 android:layout_marginVertical="10dp"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
@@ -108,7 +117,10 @@
             <TextView
                 android:id="@+id/dateTextSunday"
                 android:layout_width="match_parent"
+                android:gravity="center"
+                android:background="@color/dark_1"
                 android:layout_height="wrap_content"
+                android:textColor="@color/text_color"
                 android:autoSizeTextType="uniform"
                 android:layout_marginHorizontal="10dp"
                 android:padding="10sp"
@@ -116,7 +128,9 @@
                 android:text="На тази дата неделя е:" />
             <Button
                 android:id="@+id/btnSunday"
-                android:textSize="12sp"
+                android:textSize="15sp"
+                android:layout_marginHorizontal="10dp"
+                android:textColor="@color/text_color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Заяви" />

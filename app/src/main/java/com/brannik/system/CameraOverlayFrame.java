@@ -11,8 +11,6 @@ import android.view.View;
 
 public class CameraOverlayFrame extends View {
     Paint paint;
-    Path path;
-    GlobalVariables globe;
 
     public CameraOverlayFrame(Context context) {
         super(context);

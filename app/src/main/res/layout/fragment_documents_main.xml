@@ -6,23 +6,26 @@
     android:layout_marginTop="20dp"
     android:layout_centerHorizontal="true"
     android:layout_height="match_parent"
+    android:background="@color/dark"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:id="@+id/topLayout">
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:id="@+id/btnNewDocumentTop"
+            android:layout_alignParentStart="true"
             android:layout_margin="5dp"
             app:cardElevation="10dp"
             >
             <RelativeLayout
                 android:layout_width="wrap_content"
-                android:background="@color/dark_2"
+                android:background="@color/darker"
                 android:id="@+id/btnNewDocument"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -46,17 +49,21 @@
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:layout_margin="5dp"
+            android:layout_alignParentEnd="true"
+            android:background="@color/dark"
             android:layout_toEndOf="@+id/btnNewDocumentTop"
             android:layout_centerHorizontal="true"
             app:cardElevation="10dp"
             >
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editDocumentNumber"
+                android:background="@color/dark"
                 android:layout_width="match_parent"
                 android:inputType="number"
-                android:layout_gravity="center"
+                android:textColor="@color/text_color"
                 android:gravity="center"
+                android:minHeight="45dp"
+                android:hint="Въведете номер"
                 android:layout_margin="5dp"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
@@ -85,7 +92,7 @@
             >
             <RelativeLayout
                 android:layout_width="150dp"
-                android:background="@color/dark_2"
+                android:background="@color/darker"
                 android:id="@+id/btnFindDocument"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -118,7 +125,7 @@
             >
             <RelativeLayout
                 android:layout_width="150dp"
-                android:background="@color/dark_2"
+                android:background="@color/darker"
                 android:id="@+id/btnDelete"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -151,7 +158,7 @@
             >
             <RelativeLayout
                 android:layout_width="150dp"
-                android:background="@color/dark_2"
+                android:background="@color/darker"
                 android:id="@+id/btnDocumentEnter"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView
@@ -184,7 +191,7 @@
             >
             <RelativeLayout
                 android:layout_width="150dp"
-                android:background="@color/dark_2"
+                android:background="@color/darker"
                 android:id="@+id/btnListDocuments"
                 android:layout_height="wrap_content">
                 <androidx.appcompat.widget.AppCompatImageView

@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -85,8 +87,8 @@ public class DatesRequestYesNoAdaptor extends BaseAdapter implements ListAdapter
 
 
 
-        Button accept= (Button)view.findViewById(R.id.btnAccept);
-        Button decline = (Button) view.findViewById(R.id.btnDecline);
+        CardView accept= (CardView)view.findViewById(R.id.btnAccept);
+        CardView decline = (CardView) view.findViewById(R.id.btnDecline);
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override

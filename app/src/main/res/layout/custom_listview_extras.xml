@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.circularreveal.cardview.CircularRevealCardView
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_margin="5dp"
+    app:cardElevation="6dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/dark_1"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <RelativeLayout android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:background="@color/dark_1">
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_alignParentStart="true"
+            android:gravity="center"
+            android:id="@+id/txtDateText"
+            android:background="@color/dark_2"
+            android:textSize="18sp"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:layout_toStartOf="@id/btnOptions"
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_color"
+            android:text="04-03-2021 -> 10 часа"/>
+        <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+            android:layout_width="35dp"
+            android:id="@+id/btnOptions"
+            android:layout_marginHorizontal="10dp"
+            app:cardBackgroundColor="@color/darker"
+            android:layout_alignParentEnd="true"
+            app:cardElevation="6dp"
+            android:padding="2dp"
+            android:layout_centerVertical="true"
+            android:layout_height="35dp">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="match_parent"
+                android:background="@drawable/icon_btn_date_settings"
+                android:layout_height="match_parent"/>
+        </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+    </RelativeLayout>
+</com.google.android.material.circularreveal.cardview.CircularRevealCardView>

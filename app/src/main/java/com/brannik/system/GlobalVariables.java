@@ -79,6 +79,20 @@ public class GlobalVariables extends AppCompatActivity {
         return SKLAD[y];
     }
 
+    public void setDateHours(int hours,int days){
+        editor = sharedPreferences.edit();
+        editor.putInt("EXTRA_HOURS",hours);
+        editor.putInt("EXTRA_DAYS",days);
+        editor.apply();
+    }
+    public String getExtraDays(){
+        return String.valueOf(sharedPreferences.getInt("EXTRA_DAYS",0));
+    }
+
+    public String getExtraHours(){
+        return String.valueOf(sharedPreferences.getInt("EXTRA_HOURS",0));
+    }
+
     // setters
 
     public void setAppVersion(String ver){

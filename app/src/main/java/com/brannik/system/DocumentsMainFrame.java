@@ -153,7 +153,8 @@ public class DocumentsMainFrame extends Fragment implements View.OnClickListener
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.equals("") || s == null){
+                String str = s.toString();
+                if(str.matches("")){
                     newBtnIconCamera.setVisibility(View.VISIBLE);
                     newBtnIconText.setVisibility(View.GONE);
                 }else{
@@ -165,7 +166,14 @@ public class DocumentsMainFrame extends Fragment implements View.OnClickListener
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                String str = s.toString();
+                if(str.matches("")){
+                    newBtnIconCamera.setVisibility(View.VISIBLE);
+                    newBtnIconText.setVisibility(View.GONE);
+                }else{
+                    newBtnIconCamera.setVisibility(View.GONE);
+                    newBtnIconText.setVisibility(View.VISIBLE);
+                }
             }
         });
 
@@ -412,7 +420,6 @@ public class DocumentsMainFrame extends Fragment implements View.OnClickListener
 
                     //save result
                     if (croppedBitmap != null) {
-                        changeBitmapContrastBrightness(croppedBitmap,5,90);
                         imageBitmap = croppedBitmap;
                         detectTextFromImage();
                         //camera.release();
@@ -425,33 +432,6 @@ public class DocumentsMainFrame extends Fragment implements View.OnClickListener
 
     }
 
-    public static Bitmap changeBitmapContrastBrightness(Bitmap bmp, float contrast, float brightness)
-    {
-        /**
-         *
-         * @param bmp input bitmap
-         * @param contrast 0..10 1 is default
-         * @param brightness -255..255 0 is default
-         * @return new bitmap
-         */
-        ColorMatrix cm = new ColorMatrix(new float[]
-                {
-                        contrast, 0, 0, 0, brightness,
-                        0, contrast, 0, 0, brightness,
-                        0, 0, contrast, 0, brightness,
-                        0, 0, 0, 1, 0
-                });
-
-        Bitmap ret = Bitmap.createBitmap(bmp.getWidth(), bmp.getHeight(), bmp.getConfig());
-
-        Canvas canvas = new Canvas(ret);
-
-        Paint paint = new Paint();
-        paint.setColorFilter(new ColorMatrixColorFilter(cm));
-        canvas.drawBitmap(bmp, 0, 0, paint);
-
-        return ret;
-    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

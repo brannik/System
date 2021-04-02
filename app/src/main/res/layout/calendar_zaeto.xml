@@ -10,6 +10,7 @@
         android:layout_width="50sp"
         android:layout_height="60sp"
         android:layout_margin="2dp"
+        app:cardElevation="6dp"
         app:cardCornerRadius="4dp">
         <TextView
             android:layout_width="match_parent"

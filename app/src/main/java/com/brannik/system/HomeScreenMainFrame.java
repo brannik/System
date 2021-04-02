@@ -113,11 +113,7 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
         // Inflate the layout for this fragment
 
         View inf = inflater.inflate(R.layout.fragment_layout_home, container, false);
-        TextView hours = (TextView) inf.findViewById(R.id.txtHours);
-        hours.setText("10");
 
-        TextView days = (TextView) inf.findViewById(R.id.txtDays);
-        days.setText("3");
 
         //TextView dev_id = (TextView) inf.findViewById(R.id.txtDev);
         //dev_id.setText(mParam1);
@@ -159,6 +155,7 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
         });
 
 
+
         return inf;
     }
 
@@ -176,12 +173,17 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
                     @Override
                     public void onResponse(String response) {
                         JSONArray jsonArray = null;
+                        TextView hours = (TextView) view.findViewById(R.id.txtHours);
+                        TextView days = (TextView) view.findViewById(R.id.txtDays);
                         try {
                             jsonArray = new JSONArray(response);
                             for(int i=0;i<jsonArray.length();i++){
                                 JSONObject data = jsonArray.getJSONObject(i);
                                 String total = data.getString("COUNT_TOTAL");
                                 String unchecked = data.getString("COUNT_UNCHECKED");
+                                String count_days = data.getString("COUNT_DAYS");
+                                String count_hours = data.getString("COUNT_HOURS");
+
                                 Calendar calend = Calendar.getInstance();
                                 int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
                                 int today = calend.get(Calendar.DAY_OF_MONTH);
@@ -203,6 +205,9 @@ public class HomeScreenMainFrame extends Fragment implements View.OnClickListene
                                 }
                                 int ch = parseInt(total) - parseInt(unchecked);
                                 checkedCount.setText(String.valueOf(ch));
+                                GLOBE.setDateHours(parseInt(count_hours),parseInt(count_days));
+                                days.setText(count_days);
+                                hours.setText(count_hours);
                                 //Log.d("DEBUG","COUNTER_>" + response);
                             }
                         } catch (JSONException e) {
