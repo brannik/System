@@ -25,7 +25,7 @@
             android:textColor="@color/text_color"
             android:text="04-03-2021 -> 10 часа"/>
         <com.google.android.material.circularreveal.cardview.CircularRevealCardView
-            android:layout_width="35dp"
+            android:layout_width="30dp"
             android:id="@+id/btnOptions"
             android:layout_marginHorizontal="10dp"
             app:cardBackgroundColor="@color/darker"
@@ -33,7 +33,7 @@
             app:cardElevation="6dp"
             android:padding="2dp"
             android:layout_centerVertical="true"
-            android:layout_height="35dp">
+            android:layout_height="30dp">
             <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:background="@drawable/icon_btn_date_settings"

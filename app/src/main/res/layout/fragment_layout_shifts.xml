@@ -2,14 +2,13 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 <RelativeLayout
 
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_margin="15sp"
     android:padding="15sp"
-    android:background="@drawable/simple_border"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ShiftsMainFrame"
      >
@@ -32,7 +31,7 @@
     <FrameLayout
         android:id="@+id/ROW"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginTop="20dp"
         android:layout_below="@+id/RowHeader"
         android:layout_alignParentBottom="true">
@@ -40,7 +39,7 @@
             android:id="@+id/listRequests"
             android:layout_width="wrap_content"
             android:autoSizeTextType="uniform"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             tools:targetApi="o" />
     </FrameLayout>
 

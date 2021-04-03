@@ -79,6 +79,15 @@ public class GlobalVariables extends AppCompatActivity {
         return SKLAD[y];
     }
 
+    public Boolean firstRun(){
+        return sharedPreferences.getBoolean("IS_FIRST_RUN",true);
+    }
+    public void setFirstRun(Boolean state){
+        editor = sharedPreferences.edit();
+        editor.putBoolean("IS_FIRST_RUN",state);
+        editor.apply();
+    }
+
     public void setDateHours(int hours,int days){
         editor = sharedPreferences.edit();
         editor.putInt("EXTRA_HOURS",hours);
