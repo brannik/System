@@ -15,6 +15,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.PowerManager;
+import android.os.storage.StorageManager;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -183,11 +184,7 @@ public class SettingsMainFrame extends Fragment {
                         btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                // call update voley
-                                // new Dialog with progress then message notification and close app
 
-
-// instantiate it within the onCreate method
                                 mProgressDialog = new ProgressDialog(context);
                                 mProgressDialog.setMessage("Изтегляне на версия " + global.convertNewVersionNoInfo() + ".apk");
                                 mProgressDialog.setIndeterminate(true);
@@ -197,8 +194,9 @@ public class SettingsMainFrame extends Fragment {
                                 mProgressDialog.setButton(ProgressDialog.BUTTON_NEUTRAL, "Инсталирай", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialog, int which) {
-                                        Toast.makeText(context,"Все още не работи",Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(context,"Все още не работи",Toast.LENGTH_SHORT).show();
 
+                                        //MainActivity.getAppContext().unregisterReceiver(this);
                                     }
                                 });
                                 mProgressDialog.setButton(ProgressDialog.BUTTON_NEGATIVE, "Затвори", new DialogInterface.OnClickListener() {
@@ -212,7 +210,6 @@ public class SettingsMainFrame extends Fragment {
 // execute this when the downloader must be fired
                                 final DownloadTask downloadTask = new DownloadTask(context,global);
                                 downloadTask.execute(GlobalVariables.FILE_URL);
-
                                 mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
 
                                     @Override
@@ -220,6 +217,7 @@ public class SettingsMainFrame extends Fragment {
                                         downloadTask.cancel(true); //cancel the task
                                     }
                                 });
+
                             }
                         });
                     }
@@ -281,8 +279,37 @@ public class SettingsMainFrame extends Fragment {
                 showMessage("Download error: "+result);
             }else{
                 globals.setAppVersion(globals.getAppNewVersion());
-                showMessage("Изтеглянето завърши отидете в паметта на телефона/DOWNLOADS и инсталирайте новата версия - " + globals.convertNewVersionNoInfo());
+                installApk();
+                Log.d("DEBUG","Install started");
+                mProgressDialog.dismiss();
+                //showMessage("Изтеглянето завърши отидете в паметта на телефона/DOWNLOADS и инсталирайте новата версия - " + globals.convertNewVersionNoInfo());
+            }
+        }
 
+        private void installApk() {
+            try {
+                String PATH = Objects.requireNonNull(MainActivity.getAppContext().getExternalFilesDir(null)).getAbsolutePath();
+                File file = new File(PATH + Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/app-update-" + globals.convertNewVersionNoInfo()+".apk");
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                if (Build.VERSION.SDK_INT >= 24) {
+                    Uri downloaded_apk = FileProvider.getUriForFile(MainActivity.getAppContext(), MainActivity.getAppContext().getApplicationContext().getPackageName() + ".provider", file);
+                    intent.setDataAndType(downloaded_apk, "application/com.brannik.system");
+                    List<ResolveInfo> resInfoList = MainActivity.getAppContext().getPackageManager().queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+                    for (ResolveInfo resolveInfo : resInfoList) {
+                        MainActivity.getAppContext().grantUriPermission(MainActivity.getAppContext().getApplicationContext().getPackageName() + ".provider", downloaded_apk, Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    }
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    startActivity(intent);
+                } else {
+                    intent.setAction(Intent.ACTION_VIEW);
+                    intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    intent.putExtra(Intent.EXTRA_NOT_UNKNOWN_SOURCE, true);
+                    intent.setDataAndType(Uri.fromFile(file), "application/com.brannik.system");
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 

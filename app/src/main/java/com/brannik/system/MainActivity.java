@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -60,6 +61,16 @@ public class MainActivity extends AppCompatActivity{
     public static Context getAppContext(){return appContext;}
     public static Intent i;
     GlobalVariables GLOBE;
+    private final int REQUEST_PERMISSION = 1;
+    private final String[] permissions = {
+            Manifest.permission.CAMERA,
+            WRITE_EXTERNAL_STORAGE,
+            READ_PHONE_STATE,
+            Manifest.permission.INSTALL_PACKAGES,
+            Manifest.permission.INTERNET,
+            FOREGROUND_SERVICE,
+            WAKE_LOCK
+    };
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
     private void generateTocken(GlobalVariables globe){
@@ -124,20 +135,6 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
 
-
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[] {Manifest.permission.CAMERA,
-                    READ_EXTERNAL_STORAGE,
-                    WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.ACCESS_NOTIFICATION_POLICY,
-                    Manifest.permission.BIND_NOTIFICATION_LISTENER_SERVICE,
-                    Manifest.permission.INTERNET,
-                    Manifest.permission_group.PHONE,
-                    WAKE_LOCK,
-                    FOREGROUND_SERVICE
-            }, 1);
-        }
-
         int lastDay = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH);
         int today = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         int t = lastDay - today;
@@ -199,69 +196,61 @@ public class MainActivity extends AppCompatActivity{
             }
 
             //addNotification();
-
-            Boolean chekFRun = GLOBE.firstRun();
-            if(chekFRun){
-                // on first run
-                if(ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission_group.CAMERA) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.INTERNET) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        READ_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        READ_PHONE_STATE) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        FOREGROUND_SERVICE) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        WRITE_EXTERNAL_STORAGE) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        REQUEST_INSTALL_PACKAGES) + ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission_group.CALENDAR) +ContextCompat.checkSelfPermission(MainActivity.this,
-                        Manifest.permission.INSTALL_PACKAGES) != PackageManager.PERMISSION_GRANTED){
-                    if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                            Manifest.permission_group.CAMERA) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    Manifest.permission.INTERNET) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    READ_EXTERNAL_STORAGE) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    READ_PHONE_STATE) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    FOREGROUND_SERVICE) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    WRITE_EXTERNAL_STORAGE) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    REQUEST_INSTALL_PACKAGES) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    Manifest.permission.INSTALL_PACKAGES) ||
-                            ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,
-                                    Manifest.permission_group.CALENDAR)){
-
-                        ActivityCompat.requestPermissions(MainActivity.this,
-                                new String[]{
-                                        CAMERA,
-                                        READ_EXTERNAL_STORAGE,
-                                        READ_PHONE_STATE,
-                                        FOREGROUND_SERVICE,
-                                        WRITE_EXTERNAL_STORAGE,
-                                        REQUEST_INSTALL_PACKAGES,
-                                        Manifest.permission.INTERNET,
-                                        Manifest.permission.INSTALL_PACKAGES,
-                                        Manifest.permission_group.CALENDAR
-                                },
-                                CAMERA_PERMISSION
-                        );
-                    }
-
-                }
+            if(ContextCompat.checkSelfPermission(MainActivity.this,
+                    WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ){
+                Toast.makeText(MainActivity.this,"You have granted this permission",Toast.LENGTH_SHORT).show();
             }else{
-                Toast.makeText(MainActivity.appContext,"Ne sa nujni permissions",Toast.LENGTH_SHORT).show();
+                requestPermission();
             }
 
+            StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
+            StrictMode.setVmPolicy(builder.build());
 
         }else if(check == 0){
             // display register form
             i = new Intent(MainActivity.this, Register.class);
             startActivity(i);
+
         }else{
             Log.d("DEBUG","check error");
         }
 
+
+
+    }
+
+    private void requestPermission(){
+        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
+            new AlertDialog.Builder(this)
+                    .setTitle("Permision needed")
+                    .setMessage("asd")
+                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions(MainActivity.this,permissions,REQUEST_PERMISSION);
+                        }
+                    })
+                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }else{
+            ActivityCompat.requestPermissions(this,permissions,REQUEST_PERMISSION);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if(requestCode == REQUEST_PERMISSION){
+            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(MainActivity.this,"Granted",Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(MainActivity.this,"Not granted ranted",Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 
     @Override

@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.brannik.system">
-
+    
+    <uses-permission
+        android:name="android.permission.WAKE_LOCK"
+        android:required="true" />
     <uses-permission
         android:name="android.permission.ACCESS_NETWORK_STATE"
         android:required="true" />
@@ -14,9 +17,6 @@
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
-    <uses-permission
-        android:name="android.permission.WAKE_LOCK"
-        android:required="true" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-feature
@@ -25,6 +25,7 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <queries android:name="android.permission.QUERY_ALL_PACKAGES"/>
 
     <application
         android:allowBackup="true"
@@ -69,7 +70,7 @@
             android:theme="@style/Theme.System.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
@@ -77,6 +78,16 @@
                 android:name="com.google.firebase.ml.vision.DEPENDENCIES"
                 android:value="ocr" />
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>
