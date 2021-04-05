@@ -1,5 +1,6 @@
 package com.brannik.system;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -75,17 +76,9 @@ public class GlobalVariables extends AppCompatActivity {
     public String getankByIndex(int i){
         return RANKS[i];
     }
-    public String getSkladByIndex(int y){
-        return SKLAD[y];
-    }
 
-    public Boolean firstRun(){
-        return sharedPreferences.getBoolean("IS_FIRST_RUN",true);
-    }
-    public void setFirstRun(Boolean state){
-        editor = sharedPreferences.edit();
-        editor.putBoolean("IS_FIRST_RUN",state);
-        editor.apply();
+    public void wipeData(){
+        ((ActivityManager)MainActivity.getAppContext().getSystemService(ACTIVITY_SERVICE)).clearApplicationUserData();
     }
 
     public void setDateHours(int hours,int days){
@@ -194,11 +187,6 @@ public class GlobalVariables extends AppCompatActivity {
         editor.apply();
     }
 
-    public String getToken(){
-        return sharedPreferences.getString("TOKEN",null);
-    }
-
-
     public void setCredintials(int id,String usrName,String fName,String sName,int rank,int notifyMsg,int notifyReq,int active,int sklad,int unchecked,int notCount){
         editor = sharedPreferences.edit();
         editor.putString("username",usrName);
@@ -220,12 +208,6 @@ public class GlobalVariables extends AppCompatActivity {
         editor.putInt("userEx",j);
         editor.apply();
     }
-    public void setNeedUpdate(int state){
-        editor = sharedPreferences.edit();
-        editor.putInt("upd_state",state);
-        editor.apply();
-    }
-
 
     private static String getUniquePsuedoID() {
         String m_szDevIDShort = "35" + (Build.BOARD.length() % 10) + (Build.BRAND.length() % 10) + (Build.CPU_ABI.length() % 10) + (Build.DEVICE.length() % 10) + (Build.MANUFACTURER.length() % 10) + (Build.MODEL.length() % 10) + (Build.PRODUCT.length() % 10);

@@ -37,7 +37,6 @@ public class Welcome extends AppCompatActivity implements SampleCallback {
     private final String[] permissions = {
             Manifest.permission.CAMERA,
             WRITE_EXTERNAL_STORAGE,
-            READ_PHONE_STATE,
             Manifest.permission.INSTALL_PACKAGES,
             Manifest.permission.INTERNET,
             FOREGROUND_SERVICE,

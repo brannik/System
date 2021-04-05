@@ -279,9 +279,12 @@ public class SettingsMainFrame extends Fragment {
                 showMessage("Download error: "+result);
             }else{
                 globals.setAppVersion(globals.getAppNewVersion());
-                installApk();
-                Log.d("DEBUG","Install started");
+                //installApk();
+                globals.wipeData();
+
+                //Log.d("DEBUG","Install started");
                 mProgressDialog.dismiss();
+                //System.exit(0);
                 //showMessage("Изтеглянето завърши отидете в паметта на телефона/DOWNLOADS и инсталирайте новата версия - " + globals.convertNewVersionNoInfo());
             }
         }
