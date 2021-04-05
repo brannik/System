@@ -61,16 +61,7 @@ public class MainActivity extends AppCompatActivity{
     public static Context getAppContext(){return appContext;}
     public static Intent i;
     GlobalVariables GLOBE;
-    private final int REQUEST_PERMISSION = 1;
-    private final String[] permissions = {
-            Manifest.permission.CAMERA,
-            WRITE_EXTERNAL_STORAGE,
-            READ_PHONE_STATE,
-            Manifest.permission.INSTALL_PACKAGES,
-            Manifest.permission.INTERNET,
-            FOREGROUND_SERVICE,
-            WAKE_LOCK
-    };
+
     @RequiresApi(api = Build.VERSION_CODES.P)
     @SuppressLint("HardwareIds")
     private void generateTocken(GlobalVariables globe){
@@ -200,7 +191,8 @@ public class MainActivity extends AppCompatActivity{
                     WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED ){
                 Toast.makeText(MainActivity.this,"You have granted this permission",Toast.LENGTH_SHORT).show();
             }else{
-                requestPermission();
+                //requestPermission();
+                welcomeScreen();
             }
 
             StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
@@ -218,40 +210,12 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
-
-    private void requestPermission(){
-        if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.CAMERA)){
-            new AlertDialog.Builder(this)
-                    .setTitle("Permision needed")
-                    .setMessage("asd")
-                    .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(MainActivity.this,permissions,REQUEST_PERMISSION);
-                        }
-                    })
-                    .setNegativeButton("NO", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create().show();
-        }else{
-            ActivityCompat.requestPermissions(this,permissions,REQUEST_PERMISSION);
-        }
+    private void welcomeScreen(){
+        Intent intent = new Intent(MainActivity.this,Welcome.class);
+        startActivity(intent);
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if(requestCode == REQUEST_PERMISSION){
-            if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-                Toast.makeText(MainActivity.this,"Granted",Toast.LENGTH_SHORT).show();
-            }else{
-                Toast.makeText(MainActivity.this,"Not granted ranted",Toast.LENGTH_SHORT).show();
-            }
-        }
-    }
+
 
     @Override
     protected void onStop() {

@@ -40,6 +40,21 @@
     -->
     <string name="hello_world">Hello Square World!</string>
 
+
+
+    <string name="txtHomeGuide"></string>
+    <string name="welcome_text">С този съветник ще ти обясня на кратко какво означават иконите в приложението.</string>
+    <string name="stepTwoHeader">Тук са описани иконите и значенията им.</string>
+    <string name="icon_home_info_total">Тук е показан общия брой бележки до които си отразил за съответния месец</string>
+    <string name="home_icon_info_checked">Тук е показан броя на отразените ти бележки за този месец</string>
+    <string name="home_icon_info_unchecked">Тук е показан броя на бележките които НЕ се отразил за този месец</string>
+    <string name="home_icon_info_extraDays_info">Тук са сумирани всички твои извънредни дни</string>
+    <string name="home_icon_info_extraHours">Тук са сумирани всички твои извънредни часове</string>
+    <string name="home_icon_info_warning">Тази икона се показва заедно със съобщение което е изпратено от Администратор и не може да бъде премахнато</string>
+    <string name="home_icon_info_accountRank">Тук е показан вида на твоя потребителски профил</string>
+    <string name="home_icon_info_request_notification">Тази икона се показва ако имаш чакаща заявка за размяна на дата. Може да се премахне като приемеш/откажеш заявката в раздел График</string>
+    <string name="agreement">Ако си прочел всичко можеш да превключиш бутона "Разбирам" след което бутона напред</string>
+
     <!-- CALENDAR -->
 
 </resources>

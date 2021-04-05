@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/dark"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Welcome">
+
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        android:layout_width="match_parent"
+        android:id="@+id/titleCard"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        app:cardElevation="10dp"
+        app:cardBackgroundColor="@color/darker">
+        <TextView
+            android:id="@+id/topHintText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="Wellcome"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:textColor="@color/text_color"
+            android:textSize="20sp"/>
+
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        android:id="@+id/middleCard"
+        android:layout_width="match_parent"
+        android:layout_below="@id/titleCard"
+        android:layout_above="@id/progressBar"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/dark_1"
+        app:cardElevation="10dp"
+        android:layout_height="wrap_content">
+
+        <fragment
+            android:id="@+id/fragment"
+            android:name="com.brannik.system.fragment_step_start"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+
+    <ProgressBar
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:id="@+id/progressBar"
+        android:layout_above="@id/bottomCard"
+        android:layout_marginHorizontal="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"/>
+
+    <com.google.android.material.circularreveal.cardview.CircularRevealCardView
+        android:layout_width="match_parent"
+        android:id="@+id/bottomCard"
+        app:cardElevation="10dp"
+        android:layout_margin="10dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:cardBackgroundColor="@color/dark_1">
+        <TextView
+            android:id="@+id/stepCounterText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:text="1 от 5"
+            android:layout_marginHorizontal="30dp"
+            android:textSize="20sp"
+            android:textColor="@color/text_color"/>
+        <Button
+            android:id="@+id/btnNextStep"
+            android:layout_gravity="right"
+            android:textColor="@color/text_color"
+            android:enabled="false"
+            android:text="Напред"
+            android:layout_marginEnd="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </com.google.android.material.circularreveal.cardview.CircularRevealCardView>
+</RelativeLayout>

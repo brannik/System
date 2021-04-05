@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.brannik.system">
-    
+
     <uses-permission
         android:name="android.permission.WAKE_LOCK"
         android:required="true" />
@@ -25,7 +25,8 @@
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
-    <queries android:name="android.permission.QUERY_ALL_PACKAGES"/>
+
+    <queries android:name="android.permission.QUERY_ALL_PACKAGES" />
 
     <application
         android:allowBackup="true"
@@ -40,6 +41,9 @@
         android:theme="@style/Theme.System"
         android:usesCleartextTraffic="true"
         tools:ignore="AllowBackup">
+        <activity
+            android:name=".Welcome"
+            android:theme="@style/Theme.System.NoActionBar"/>
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -71,6 +75,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
